@@ -13,6 +13,7 @@
 Route::get("/login", 'LoginController@index');
 Route::post("/login", 'LoginController@login');
 Route::any("/logout", 'LoginController@logout');
+Route::any("/wechat", 'WechatController@serve');
 
 Route::get('wx/', function () {
     return view('index');

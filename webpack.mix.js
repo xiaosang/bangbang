@@ -11,7 +11,7 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/weixin/app.js', 'public/js')
+mix.js('resources/assets/js/weixin/app.js', 'public/js/weixin.js')
 	.js('resources/assets/js/admin/app.js', 'public/js/admin.js')
    .sass('resources/assets/sass/app.scss', 'public/css')
    .extract(['vue', 'element-ui', 'vue-router']);

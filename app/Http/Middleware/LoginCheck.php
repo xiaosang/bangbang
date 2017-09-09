@@ -17,6 +17,14 @@ class LoginCheck
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        //TODO 指定用户测试
+        $dev_user_id = env('DEV_USER_ID', 0);
+        if ($dev_user_id && $dev_user_id != get_session_user_id()) {
+            $user = User::get_info($dev_user_id);
+            if ($user) {
+                session(['user' => $user, 'permission' => null]);
+            }
+        }
 
         if (get_session_user_id()) {
             return $next($request);

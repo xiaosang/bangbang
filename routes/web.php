@@ -25,7 +25,7 @@ Route::group(['middleware' => ['login.check']], function () {
 
 });
 
-Route::group(['middleware' => ['wechat.binding'],['prefix'=>'wx']], function () {
+Route::group(['middleware' => ['wechat.binding'],'prefix'=>'wx'], function () {
 
     Route::get('/', 'Wx\IndexController@index');
     include('weixin.php');

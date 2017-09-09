@@ -13,13 +13,20 @@
 Route::get("/login", 'LoginController@index');
 Route::post("/login", 'LoginController@login');
 Route::any("/logout", 'LoginController@logout');
-Route::any("/wechat", 'WechatController@serve');
+Route::any("/wechat", 'Wx\WechatController@serve');
 
-Route::get('wx/', function () {
-    return view('index');
-});
+//Route::get('wx/', function () {
+//    return view('index');
+//});
+
 Route::group(['middleware' => ['login.check']], function () {
 	Route::get('/', 'IndexController@index');
-	// include('admin.php');
-    // include('wxin.php');
+	 include('admin.php');
+
+});
+
+Route::group(['middleware' => ['wechat.binding'],['prefix'=>'wx']], function () {
+
+    Route::get('/', 'Wx\IndexController@index');
+    include('weixin.php');
 });

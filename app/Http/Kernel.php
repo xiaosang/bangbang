@@ -40,6 +40,10 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+        'wechat.binding' => [
+            \App\Http\Middleware\WechatOauth::class,
+            \App\Http\Middleware\IDAuth::class,
+        ],
     ];
 
     /**
@@ -58,5 +62,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         //判断是否登录中间件
         'login.check' => \App\Http\Middleware\LoginCheck::class,
+
+        //微信授权
+        'wechat.oauth' => \App\Http\Middleware\WeChatOauth::class,
     ];
 }

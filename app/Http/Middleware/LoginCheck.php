@@ -21,7 +21,7 @@ class LoginCheck
         $dev_user_id = env('DEV_USER_ID', 0);
         if ($dev_user_id && $dev_user_id != get_session_user_id()) {
             $user = User::get_info($dev_user_id);
-            if ($user) {
+            if ($user->status==0&&$user->is_delete==0) {
                 session(['user' => $user, 'permission' => null]);
             }
         }

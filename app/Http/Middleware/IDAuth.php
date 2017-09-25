@@ -33,7 +33,7 @@ class IDAuth
             if ($openid) {
                 $user = DB::table('user')
                     ->where('openid', $openid)
-//                    ->where('is_v', 1)
+                    ->where('status', 0)->where('is_delete',0)
                     ->first();
                 if ($user&&!empty($user->openid)) {
                     $isAuth = true;

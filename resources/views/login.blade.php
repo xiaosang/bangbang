@@ -36,10 +36,11 @@
             right: 50%;
             left: 50%;
             margin-left: -170px;
+            
         }
 
         #login_account {
-            background-color: #fff;
+            background-color: rgba(0,0,0,0);
             width: 480px;
             height: 320px;
             padding: 20px;
@@ -86,7 +87,7 @@
             font-size: 16px;
             color: #2f4050;
             border: solid 1px #2f4050;
-            background-color: #fff;
+            opacity : 0.1;
         }
 
         #login_account .submit:hover {
@@ -153,9 +154,7 @@
 <div class="main_box">
     <div id="login_account">
         <div style="text-align: center;">
-            <h3 style="color: #FC611F;text-align: left;padding-left: 5px;padding-bottom: 3px;border-bottom: solid 3px #666;margin-bottom:35px;">
-                管理员登录
-            </h3>
+           
             <input id="account" class="input-login" placeholder="用户名" type="text"/>
             <input id="pwd" class="input-login" placeholder="密码" type="password"/>
 

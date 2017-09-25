@@ -12,7 +12,7 @@ class User
     public static function get_account($loginName)
     {
         $res = DB::table('admin')
-            ->where(['account'=>$loginName,'is_delete'=>0])
+            ->where(['account'=>$loginName])
             ->first();
         return $res;
     }

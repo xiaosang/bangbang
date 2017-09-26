@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{csrf_token()}}">
     <title>{{config("app.name")}}</title>
-    {{--  <link type="text/css" href="{{ url('dist/css/element-theme/index.css') }}" rel="stylesheet"/>  --}}
-    {{--<link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">--}}
-    <link href="{{ url('dist/css/ionicons.min.css') }}" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{ url('dist/css/app.css') }}"/>
-    <script type="text/javascript" src="{{ url('dist/js/jquery.min.js') }}"></script>
+    <link href="{{ url('css/ionicons.min.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url('css/app.css') }}"/>
+    <link rel="stylesheet" href="{{ url('css/main.css') }}"/>
+    <script type="text/javascript" src="{{ url('js/jquery.min.js') }}"></script>
+    <script>
+        window.GammaApp = {
+            appName: "{{ config('app.name') }}"
+        };
+    </script>
 </head>
 <body>
 <div id="app"></div>

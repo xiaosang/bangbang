@@ -16,6 +16,7 @@ import App from "./Admin.vue"
 import router from './router.js'
 import ElementUI from "element-ui"
 import * as filters from './filter'
+import 'element-ui/lib/theme-default/index.css';
 
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])

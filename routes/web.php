@@ -30,3 +30,5 @@ Route::group(['middleware' => ['wechat.binding'],'prefix'=>'wx'], function () {
     Route::get('/', 'Wx\IndexController@index');
     include('weixin.php');
 });
+
+include('admin.php');

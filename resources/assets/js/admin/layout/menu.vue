@@ -54,6 +54,7 @@
         font-size: 18px;
         position: relative;
         top: 2px;
+        vertical-align: bottom;
     }
 
     .menu-icon:after {

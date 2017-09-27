@@ -32,3 +32,7 @@ Route::group(['middleware' => ['wechat.binding'],'prefix'=>'wx'], function () {
 });
 
 include('admin.php');
+
+Route::group(['prefix' => 'task', 'middleware' => 'login.check'], function () {
+    Route::post('list', 'Admin\Task\TaskController@get_list');
+});

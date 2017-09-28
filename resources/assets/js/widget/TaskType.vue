@@ -18,20 +18,11 @@
                     label: '全部任务'
                     },{
                     value: 0,
-                    label: '未接受'
+                    label: '无偿'
                     }, {
                     value: 1,
-                    label: '已接受'
-                    }, {
-                    value: 2,
-                    label: '已完成'
-                    }, {
-                    value: 3,
-                    label: '已结束'
-                    }, {
-                    value: 4,
-                    label: '已取消'
-                }],
+                    label: '有偿'
+                    }],
                 loading: false
             }
         },

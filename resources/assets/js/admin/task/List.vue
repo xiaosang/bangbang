@@ -8,10 +8,17 @@
                 <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
             </el-breadcrumb>
         </div>
+        <div>
+            <span>任务状态</span><TaskStatus @change="myChange"></TaskStatus>
+            <span>任务类型</span><TaskType @change="myTypeChange"></TaskType>
+        </div>
+        
+        <h3></h3>
         <el-table
             :data="taskAll"
             border
-            style="width: 100%;">
+            style="width: 100%;"
+            v-loading="tableLoading">
             <el-table-column
             type="index"
             width="50">
@@ -34,8 +41,8 @@
                 </template>
             </el-table-column>
             <el-table-column
-            prop="classification"
-            label="任务类型">
+            prop="key"
+            label="完成秘钥">
             </el-table-column>
             <el-table-column
             label="是否匿名"
@@ -101,35 +108,21 @@
         </el-pagination>
     </div>
 </template>
-<style>
-
-</style>
 
 <script>
+    import TaskStatus from '../../widget/TaskStatus.vue'
+    import TaskType from '../../widget/TaskType.vue'
   export default {
+      components: {
+            TaskStatus,
+            TaskType
+        },
     data() {
       return {
-        // tableData: [{
-        //   date: '2016-05-02',
-        //   name: '王小虎',
-        //   address: '上海市普陀区金沙江路 1518 弄'
-        // }, {
-        //   date: '2016-05-04',
-        //   name: '王小虎',
-        //   address: '上海市普陀区金沙江路 1517 弄'
-        // }, {
-        //   date: '2016-05-01',
-        //   name: '王小虎',
-        //   address: '上海市普陀区金沙江路 1519 弄'
-        // }, {
-        //   date: '2016-05-03',
-        //   name: '王小虎',
-        //   address: '上海市普陀区金沙江路 1516 弄'
-        // }],
         taskAll : [],
-
-
-
+        status : -1,
+        type : -1,
+        tableLoading : false,
 
          // 分页
         page: 1,
@@ -140,18 +133,22 @@
 
     methods:{
         getList(){
+            this.tableLoading = true
             var self = this
             var param = {
                 page_size: this.page_size, 
-                page: this.page
+                page: this.page,
+                status : this.status,
+                type : this.type,
             };
-            axios.post("/task/list",param).then(function (response) {
+            axios.post("/task/list",param).then(response =>{
                 
                 self.taskAll = response.data.result.data
                 console.log(self.taskAll)
                 self.paginate_total = response.data.result.total
-            }).catch(function (error) {
-                
+                self.tableLoading = false
+            }).catch(error => {
+                this.$massage("网络错误")
             })
         },
         size_change: function (size) {
@@ -164,6 +161,56 @@
         },
         handleDelete: function (index,row){
             console.log(index,row)
+        },
+        myChange: function(value){
+            console.log(value)
+            this.status = value
+            this.getList()
+        },
+        myTypeChange: function(value){
+            this.type = value
+            this.getList()
+        },
+        handleDelete: function(index,row){
+            // console.log(index,row)
+           
+                    
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post("/task/del",{
+                        id : row.id
+                    }).then(response =>{
+                        var data = response.data;
+                        console.log(data)
+                        if (data.code == 0) {
+                            //success
+                            this.$message({
+                                title: '提示',
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            this.getList();
+                        } else {
+                            this.$message({
+                                title: '提示',
+                                message: data.msg,
+                                type: 'warning'
+                            });
+                        }
+                    }).catch(error => {
+                        this.$message("网络错误")
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
+                });
+            
+            
         }
     },
     mounted(){

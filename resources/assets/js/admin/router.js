@@ -6,27 +6,24 @@ export default new VueRouter({
     saveScrollPosition: true,
     routes: [
     	{
-            //name: "自动回复配置",
             path: '/wx/reply',
             component: resolve =>void(require(['./wx/reply.vue'], resolve))
         },
         {
-            //name: "微信基础配置",
             path: '/wx/config',
             component: resolve =>void(require(['./wx/config.vue'], resolve))
         },
         {
-            //name: "模板消息配置",
             path: '/wx/template',
             component: resolve =>void(require(['./wx/template.vue'], resolve))
         },
         {
-            //name: "微信菜单配置",
-            path: '/wx/menu',
+            path: '/wx/menu1',
             component: resolve =>void(require(['./wx/menu.vue'], resolve))
+        },
         {
             path: '/task/list',
-            component: resolve =>void(require(['../admin/task/List.vue'], resolve))
+            component: resolve =>void(require(['./task/List.vue'], resolve))
         },
     ]
 })

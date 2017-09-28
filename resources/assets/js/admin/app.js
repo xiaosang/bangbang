@@ -22,9 +22,6 @@ Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
 
-const FastClick = require('fastclick')
-FastClick.attach(document.body)
-
 require("es6-promise").polyfill()
 
 Vue.use(ElementUI);

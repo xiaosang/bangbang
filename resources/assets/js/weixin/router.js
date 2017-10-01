@@ -20,5 +20,15 @@ export default new VueRouter({
             path:'/main',
             component: resolve =>void(require(['./components/Main.vue'], resolve))
         },
+        {
+            name:"社交",
+            path:'/connect',
+            component: resolve =>void(require(['./components/Connect.vue'], resolve))
+        },
+        {
+            name:"我的",
+            path:'/me',
+            component: resolve =>void(require(['./components/Me.vue'], resolve))
+        },
     ]
 })

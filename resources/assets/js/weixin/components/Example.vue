@@ -1,30 +1,21 @@
 <template>
-    <div class="container">
-
-        <i class="ion-person"></i>
-        <i class="ion-chatboxes"></i>
-        <i class="ion-chatbubbles"></i>
-        <group>
-            <cell title="title" value="value"></cell>
-        </group>
-        <navbottom></navbottom>
+    <div>
+        <h1>Example</h1>
     </div>
 </template>
 
 <script>
-    import Navbottom from './NavBottom.vue'
     import { Group, Cell } from 'vux'
     export default {
         components: {
             Group,
-            Cell,
-            Navbottom
+            Cell
         },
         data(){
             return {}
         },
         mounted() {
-
+//            console.log('Component mounted.')
         }
     }
 </script>

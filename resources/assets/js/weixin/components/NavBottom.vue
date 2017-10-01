@@ -83,7 +83,7 @@
                         break
 //                    case '/private_letter': this.select_num= 1
 //                        break
-                    case '/wenku': this.select_num = 1
+                    case '/connect': this.select_num = 1
                         break
                     case '/me': this.select_num = 2
                         break
@@ -91,9 +91,9 @@
             },
             change_index(){
                 var self = this
-                setTimeout(function () {
-                    self.$vux.loading.hide()
-                },3000)
+//                setTimeout(function () {
+//                    self.$vux.loading.hide()
+//                },3000)
             }
 
         },

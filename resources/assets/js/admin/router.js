@@ -20,9 +20,8 @@ export default new VueRouter({
         {
             //name: "微信菜单配置",
             path: '/wx/menu',
-            component: resolve => void(require(['./wx/menu.vue'], resolve))
-        },
-        {
+            component: resolve =>void(require(['./wx/menu.vue'], resolve))
+        },{
             path: '/task/list',
             component: resolve =>void(require(['./task/List.vue'], resolve))
         },

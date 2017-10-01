@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 53px;">
         <div class="nav_bottom">
             <tabbar v-model="select_num" @on-index-change="change_index">
                 <tabbar-item link="/main" index="0">

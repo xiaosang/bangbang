@@ -1,11 +1,15 @@
 <template>
     <div class="container">
-        1234532
+        <navbottom></navbottom>
     </div>
 </template>
 
 <script>
+    import Navbottom from './NavBottom.vue'
     export default {
+        components:{
+            Navbottom
+        },
         data(){
             return {}
         },

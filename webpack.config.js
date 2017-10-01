@@ -233,7 +233,8 @@ module.exports.plugins = (module.exports.plugins || []).concat([
     new plugins.CopyWebpackPlugin([
         {from: 'resources/assets/library/img/', to: 'img'},
         {from: 'resources/assets/library/css', to: 'css'},
-        {from: 'resources/assets/library/js/', to: 'js'}
+        {from: 'resources/assets/library/js/', to: 'js'},
+        {from: 'resources/assets/library/font/', to: 'fonts'}
     ]),
 
     new plugins.StatsWriterPlugin({

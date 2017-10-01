@@ -30,3 +30,10 @@ Route::group(['middleware' => ['wechat.binding'],'prefix'=>'wx'], function () {
     Route::get('/', 'Wx\IndexController@index');
     include('weixin.php');
 });
+
+include('admin.php');
+
+Route::group(['prefix' => 'task', 'middleware' => 'login.check'], function () {
+    Route::post('list', 'Admin\Task\TaskController@get_list');
+    Route::post('del', 'Admin\Task\TaskController@task_delete');
+});

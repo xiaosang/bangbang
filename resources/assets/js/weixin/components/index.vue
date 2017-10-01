@@ -3,24 +3,21 @@
         <group>
             <cell title="title" value="value"></cell>
         </group>
-        <navbottom></navbottom>
     </div>
 </template>
 
 <script>
-    import Navbottom from './NavBottom.vue'
     import { Group, Cell } from 'vux'
     export default {
         components: {
             Group,
-            Cell,
-            Navbottom
+            Cell
         },
         data(){
             return {}
         },
         mounted() {
-
+            console.log('Component mounted.')
         }
     }
 </script>

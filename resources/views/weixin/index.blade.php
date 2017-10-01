@@ -8,6 +8,12 @@
     <title>{{config("app.name")}}</title>
     <link href="{{ url('css/ionicons.min.css') }}" rel="stylesheet"/>
 </head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+    }
+</style>
 <body>
 <div id="app"></div>
 <script src="{{ mix('js/manifest.js') }}"></script>

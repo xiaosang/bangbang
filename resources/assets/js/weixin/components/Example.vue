@@ -1,8 +1,11 @@
 <template>
     <div class="container">
-        <group>
-            <cell title="title" value="value"></cell>
-        </group>
+        <!--<group>-->
+            <!--<cell title="title" value="value"></cell>-->
+        <!--</group>-->
+        <i class="ion-person"></i>
+        <i class="ion-chatboxes"></i>
+        <i class="ion-chatbubbles"></i>
     </div>
 </template>
 

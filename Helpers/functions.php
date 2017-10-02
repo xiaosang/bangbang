@@ -133,17 +133,11 @@ function create_uuid($prefix = "")
  * @param $salt
  * @return string
  */
-function encrypt_password($password, $salt)
+function encrypt_password($password)
 {
-    return md5(md5($password) . $salt);
+    return md5(md5($password));
 }
 
-function get_salt()
-{
-    $uuid = create_uuid();
-    $salt = substr($uuid, strlen($uuid) - 4, 4);
-    return $salt;
-}
 function get_pinyin_simple($str)
 {
     return \Overtrue\LaravelPinyin\Facades\Pinyin::abbr($str);

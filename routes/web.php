@@ -37,3 +37,9 @@ Route::group(['prefix' => 'task', 'middleware' => 'login.check'], function () {
     Route::post('list', 'Admin\Task\TaskController@get_list');
     Route::post('del', 'Admin\Task\TaskController@task_delete');
 });
+Route::group(['prefix' => 'order', 'middleware' => 'login.check'], function () {
+    Route::post('uorder', 'Admin\Order\OrderController@get_uorder_list');
+    Route::post('udel', 'Admin\Order\OrderController@uorder_delete');
+    Route::post('payorder', 'Admin\Order\OrderController@get_pay_order_list');
+    Route::post('paydel', 'Admin\Order\OrderController@pay_order_delete');
+});

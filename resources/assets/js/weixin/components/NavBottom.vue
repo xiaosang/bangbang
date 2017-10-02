@@ -30,6 +30,9 @@
     a{
         text-decoration: none;
     }
+    .weui-tabbar__icon i{
+        color: #000;
+    }
 </style>
 
 <script type="text/ecmascript-6">

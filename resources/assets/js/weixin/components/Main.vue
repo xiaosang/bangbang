@@ -3,7 +3,6 @@
         <swiper id="swiper" loop auto :list="swiperImg"></swiper>
 
         <swipeout v-if="!announcement">
-
             <swipeout-item transition-mode="follow">
                 <div slot="right-menu">
                     <swipeout-button @click.native="noShowAnnouncement()" type="warn">不再显示</swipeout-button>
@@ -12,12 +11,14 @@
                     <marquee  scrollamount="4">{{ announcementContent }}</marquee>
                 </div>
             </swipeout-item>
-
         </swipeout>
 
         <grid>
             <grid-item :link="item.url"  v-for="item,index in menu" :key="index">
-                <img slot="icon" :src="item.img">
+                <div class="weui-grid__icon">
+                    <i :class="item.icon"></i>
+                </div>
+                <!--<img slot="icon" :src="item.img">-->
                 <span class="grid-center">{{ item.title }}</span>
             </grid-item>
         </grid>
@@ -51,17 +52,17 @@
         data(){
             return {
                 swiperImg: [{
-                    url: 'http://www.baidu.com',
+                    url: 'javascript:;',
                     img: 'https://static.vux.li/demo/1.jpg',
                     title: '送你一朵fua',
                     fallbackImg: 'https://static.vux.li/demo/3.jpg'
                 }, {
-                    url: 'http://www.baidu.com',
+                    url: 'javascript:;',
                     img: 'https://static.vux.li/demo/2.jpg',
                     title: '送你一辆车',
                     fallbackImg: 'https://static.vux.li/demo/3.jpg'
                 }, {
-                    url: 'http://www.baidu.com',
+                    url: 'javascript:;',
                     img: 'https://static.vux.li/demo/2.jpg',
                     title: '送你一次旅行',
                     fallbackImg: 'https://static.vux.li/demo/3.jpg'
@@ -70,23 +71,27 @@
                 announcementContent:'公告：桑金超早上迟到，罚吃屎两天！',
                 menu:[
                     {
-                        url:'http://www.baidu.com',
+                        url: 'javascript:;',
                         img:'/img/icon-pwd.png',
+                        icon:'ion-compose',
                         title:'发布'
                     },
                     {
-                        url:'http://www.baidu.com',
+                        url: 'javascript:;',
                         img:'/img/icon-pwd.png',
+                        icon:'ion-document-text',
                         title:'公告'
                     },
                     {
-                        url:'http://www.baidu.com',
+                        url: 'javascript:;',
                         img:'/img/icon-pwd.png',
+                        icon:'ion-person',
                         title:'我的'
                     },
                     {
-                        url:'http://www.baidu.com',
+                        url: 'javascript:;',
                         img:'/img/icon-pwd.png',
+                        icon:'ion-more',
                         title:'更多'
                     }
                 ],
@@ -183,6 +188,14 @@
         padding-top: 8px;
         margin:4px 0;
         background: white;
+    }
+    .weui-grid__icon i{
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 24px;
+        text-align: center;
+        color: #000;
     }
     /*任务*/
     .task{

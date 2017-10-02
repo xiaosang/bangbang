@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin\User;
+use App\Models\Admin\Super;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Session;
@@ -23,7 +23,7 @@ class LoginController extends Controller
         if ($request->isMethod('post')) {
             $name = $request->name;//code or mobile
             $pwd = $request->pass;
-            $user = User::get_account($name);
+            $user = Super::get_account($name);
             if ($user) {
 
                 //dd(encrypt_password($pwd, $user->salt));

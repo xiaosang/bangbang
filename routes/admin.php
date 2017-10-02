@@ -1,8 +1,12 @@
 <?php
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::post('user/password', 'Admin\UserController@password');    //修改密码
+    Route::post('super/password', 'Admin\SuperController@password');    //修改密码
+
     Route::get('/menu/get', 'Admin\MenuController@get_menu');
+    Route::group(['prefix' => 'user'], function () {
+    	Route::post("/list", 'Admin\UserController@get_list');
+    });
     Route::group(['prefix' => 'weixin'], function () {
         Route::post("/config/set", 'Admin\WeixinController@set_config');
         Route::post("/config/get", 'Admin\WeixinController@get_config');

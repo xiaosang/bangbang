@@ -73,7 +73,7 @@
                 var self = this;
                 this.$refs.form.validate(function(valid){
                     if (valid) {
-                        axios.post('admin/user/password',self.form).then(function(res){
+                        axios.post('admin/super/password',self.form).then(function(res){
                             if(res.data.status){
                                 self.$message({
                                     title: '成功',

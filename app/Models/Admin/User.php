@@ -3,47 +3,21 @@
 namespace App\Models\Admin;
 
 use DB;
-use Log;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Excel;
 
-class User
+/**
+ * 用户管理
+ * Class User
+ * @package App\Models
+ */
+class User extends Model
 {
-
-    /*登陆判断*/
-    public static function get_account($loginName)
+    public static function get_list($page_size = 50)
     {
-        $res = DB::table('admin')
-            ->where(['account'=>$loginName])
-            ->first();
-        return $res;
+        $sql = DB::table('user');
+        return $sql->paginate($page_size);
     }
-
-    static function is_password_right($pwd)
-    {
-        $user = DB::table('admin')->where('id', get_session_user_id())->first();
-        return $user->password == encrypt_password($pwd);
-    }
-    static function change_password($new_pwd)
-    {
-        $password = encrypt_password($new_pwd);
-        $res = DB::table('admin')
-            ->where('id', get_session_user_id())
-            ->update(['password' => $password, 'update_time' => time()]);
-        return $res;
-    }
-    // /*个人信息*/
-    // public static function get_info($id)
-    // {
-    //     //TODO $fields 有值过滤返回字段,没有就取所有的
-    //     $query = DB::table('admin');
-    //     $query->where(['id'=>$id
-    // ,'is_delete'=>0]);
-    //     if ($fields) {
-    //         $query->select($fields);
-    //     } else {
-    //         $query->select('id','email','account');
-    //     }
-    //     return $query->first();
-    // }
-
 }
-

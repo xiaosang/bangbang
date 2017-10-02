@@ -6,6 +6,10 @@ export default new VueRouter({
     saveScrollPosition: true,
     routes: [
     	{
+            path: '/user/password',
+            component: resolve =>void(require(['./user/password.vue'], resolve))
+        },
+    	{
             path: '/wx/reply',
             component: resolve =>void(require(['./wx/reply.vue'], resolve))
         },

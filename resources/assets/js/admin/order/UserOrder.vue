@@ -3,61 +3,50 @@
         <div class="gm-breadcrumb">
             <!--<i class="ion-ios-home gm-home"></i>-->
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/task/list">任务管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/task/list">全部任务</el-breadcrumb-item>
+                <el-breadcrumb-item to="/order/uorder">订单管理</el-breadcrumb-item>
+                <el-breadcrumb-item to="/order/uorder">用户订单</el-breadcrumb-item>
                 <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
             </el-breadcrumb>
         </div>
         <div>
-            <span>任务状态</span><TaskStatus @change="myChange"></TaskStatus>
-            <span>任务类型</span><TaskType @change="myTypeChange"></TaskType>
+            <span>订单状态</span><TaskStatus @change="myChange"></TaskStatus>
+            <span>订单类型</span><TaskType @change="myTypeChange"></TaskType>
+            <span>订单时间
+                <el-date-picker
+                    v-model="dateRange"
+                    type="daterange"
+                    placeholder="选择日期范围">
+                </el-date-picker>
+                <el-button
+                    size="small"
+                    type="info"
+                    @click="getDate">查询</el-button>
+            </span>
         </div>
         
         <h3></h3>
         <el-table
-            :data="taskAll"
+            :data="orderAll"
             border
             style="width: 100%;"
             v-loading="tableLoading">
             <el-table-column
             type="index"
-            width="35">
+            width="50">
             </el-table-column>
             <el-table-column
-            prop="name"
-            label="名称"
+            prop="order_code"
+            label="订单编号">
+            </el-table-column>
+            <el-table-column
+            label="是否支付"
             width="100">
+            <template  scope="scope"><span v-if="scope.row.is_pay">是</span><span v-if="!scope.row.is_pay">否</span></template>
             </el-table-column>
             <el-table-column
-            label="详情"
+            label="支付时间"
             width="100">
-                <template scope="scope">
-                    <el-popover trigger="click" placement="right">
-                    <p style="max-width:200px"> {{ scope.row.content }}</p>
-                    <div slot="reference" class="name-wrapper">
-                        <el-tag style="cursor: pointer">点击查看</el-tag>
-                    </div>
-                    </el-popover>
-                </template>
-            </el-table-column>
-            <el-table-column
-            prop="key"
-            label="完成秘钥">
-            </el-table-column>
-            <el-table-column
-            label="是否匿名"
-            width="100">
-            <template  scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
-            </el-table-column>
-            <el-table-column
-            label="预计接受时间"
-            width="130">
-            </el-table-column>
-            <template  scope="scope">{{ scope.row.expected_time|date }}</template>
-            <el-table-column
-            label="接受完成时间"
-            width="130">
-            <template  scope="scope">{{ scope.row.complete_time|date }}</template>
+            <template  scope="scope">{{ scope.row.create_time|date}}</template>
             </el-table-column>
             <el-table-column
             label="支付金额"
@@ -65,14 +54,31 @@
             <template  scope="scope">{{ scope.row.pay_money/100 }}</template>
             </el-table-column>
             <el-table-column
-            prop="user_name"
-            label="创建用户"
+            prop="release_user_name"
+            label="发布用户"
             width="100">
             </el-table-column>
             <el-table-column
-            label="类型"
+            prop="accept_user_namr"
+            label="接受用户"
             width="100">
-            <template  scope="scope"><span v-if="!scope.row.type">有偿</span><span v-if="scope.row.type">无偿</span></template>    
+            </el-table-column>
+            <el-table-column
+            prop="task_name"
+            label="任务名称"
+            width="100">
+            </el-table-column>
+            <el-table-column
+            label="详情"
+            width="100">
+                <template scope="scope">
+                    <el-popover trigger="click" placement="right">
+                    <p style="max-width:200px"> {{ scope.row.task_content }}</p>
+                    <div slot="reference" class="name-wrapper">
+                        <el-tag style="cursor: pointer">点击查看</el-tag>
+                    </div>
+                    </el-popover>
+                </template>
             </el-table-column>
             <el-table-column
             label="状态" 
@@ -97,7 +103,7 @@
             </el-table-column>
             <el-table-column 
              label="操作"
-             style="width:100">
+             width="100">
                 <template scope="scope">
                     <el-button
                     size="small"
@@ -128,11 +134,13 @@
         },
     data() {
       return {
-        taskAll : [],
+        orderAll : [],
         status : -1,
         type : -1,
         tableLoading : false,
-
+        dateRange : '',
+        startDate : null,
+        endDate : null,
          // 分页
         page: 1,
         page_size: 5,
@@ -149,11 +157,13 @@
                 page: this.page,
                 status : this.status,
                 type : this.type,
+                endDate : this.endDate,
+                startDate : this.startDate,
             };
-            axios.post("/task/list",param).then(response =>{
+            axios.post("/order/uorder",param).then(response =>{
                 
-                self.taskAll = response.data.result.data
-                console.log(self.taskAll)
+                self.orderAll = response.data.result.data
+                console.log(self.orderAll)
                 self.paginate_total = response.data.result.total
                 self.tableLoading = false
             }).catch(error => {
@@ -180,6 +190,11 @@
             this.type = value
             this.getList()
         },
+        getDate: function(){
+          this.startDate = this.dateRange[0]
+          this.endDate = this.dateRange[1]
+          this.getList()
+        },
         handleDelete: function(index,row){
             // console.log(index,row)
            
@@ -189,7 +204,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.post("/task/del",{
+                    axios.post("/order/udel",{
                         id : row.id
                     }).then(response =>{
                         var data = response.data;

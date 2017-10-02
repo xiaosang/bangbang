@@ -17,10 +17,10 @@
                     value: -1,
                     label: '全部任务'
                     },{
-                    value: 0,
+                    value: 1,
                     label: '无偿'
                     }, {
-                    value: 1,
+                    value: 0,
                     label: '有偿'
                     }],
                 loading: false

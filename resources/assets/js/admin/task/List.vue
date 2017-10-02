@@ -50,14 +50,14 @@
             <template  scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
             </el-table-column>
             <el-table-column
-            prop="expected_time"
             label="预计接受时间"
             width="130">
             </el-table-column>
+            <template  scope="scope">{{ scope.row.expected_time|date }}</template>
             <el-table-column
-            prop="complete_time"
             label="接受完成时间"
             width="130">
+            <template  scope="scope">{{ scope.row.complete_time|date }}</template>
             </el-table-column>
             <el-table-column
             label="支付金额"

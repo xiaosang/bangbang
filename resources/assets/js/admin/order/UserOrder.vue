@@ -44,6 +44,11 @@
             <template  scope="scope"><span v-if="scope.row.is_pay">是</span><span v-if="!scope.row.is_pay">否</span></template>
             </el-table-column>
             <el-table-column
+            label="支付时间"
+            width="100">
+            <template  scope="scope">{{ scope.row.create_time|date}}</template>
+            </el-table-column>
+            <el-table-column
             label="支付金额"
             width="100">
             <template  scope="scope">{{ scope.row.pay_money/100 }}</template>

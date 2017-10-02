@@ -43,6 +43,12 @@ export default new VueRouter({
         },{
             path: '/task/list',
             component: resolve =>void(require(['./task/List.vue'], resolve))
+        },{
+            path: '/order/uorder',
+            component: resolve =>void(require(['./order/UserOrder.vue'], resolve))
+        },{
+            path: '/order/payorder',
+            component: resolve =>void(require(['./order/PayOrder.vue'], resolve))
         },
     ]
 })

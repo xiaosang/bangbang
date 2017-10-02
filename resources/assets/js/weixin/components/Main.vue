@@ -71,7 +71,7 @@
                 announcementContent:'公告：桑金超早上迟到，罚吃屎两天！',
                 menu:[
                     {
-                        url: 'javascript:;',
+                        url: '/main/release',
                         img:'/img/icon-pwd.png',
                         icon:'ion-compose',
                         title:'发布'
@@ -80,13 +80,13 @@
                         url: 'javascript:;',
                         img:'/img/icon-pwd.png',
                         icon:'ion-document-text',
-                        title:'公告'
+                        title:'任务'
                     },
                     {
                         url: 'javascript:;',
                         img:'/img/icon-pwd.png',
-                        icon:'ion-person',
-                        title:'我的'
+                        icon:'ion-speakerphone',
+                        title:'公告'
                     },
                     {
                         url: 'javascript:;',
@@ -138,13 +138,21 @@
             },
             onScroll (pos) {
                 //控制轮播图显示
-                console.log(pos)
+//                console.log(pos)
                 if(pos.top > 66){
                     document.getElementById('swiper').style.height='0px'
-                    this.announcement = true
+                    console.log(localStorage.getItem("announcement"))
+                    console.log(!localStorage.getItem("announcement"))
+                    if(!localStorage.getItem("announcement")){
+                        this.announcement = true
+                    }
+//                    this.announcement = true
                 }else if(pos.top < -100){
                     document.getElementById('swiper').style.height='180px'
-                    this.announcement = false
+                    if(!localStorage.getItem("announcement")){
+                        this.announcement = false
+                    }
+//                    this.announcement = false
                 }
             },
             test(){

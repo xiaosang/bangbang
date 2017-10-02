@@ -1,8 +1,6 @@
 <template>
-    <div class="container">
-        <group>
-            <cell title="title" value="value"></cell>
-        </group>
+    <div>
+        <h1>Index</h1>
     </div>
 </template>
 
@@ -17,7 +15,7 @@
             return {}
         },
         mounted() {
-            console.log('Component mounted.')
+//            console.log('Component mounted.')
         }
     }
 </script>

@@ -12,7 +12,7 @@
         data(){
             return {}
         },
-        methods(){
+        methods:{
 
         },
         mounted() {

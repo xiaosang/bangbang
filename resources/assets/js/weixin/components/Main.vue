@@ -122,6 +122,7 @@
                     loadingContent: 'Loading...',
                     clsPrefix: 'xs-plugin-pulldown-'
                 },
+                swiperElement:'',
             }
         },
         methods:{
@@ -140,15 +141,15 @@
                 //控制轮播图显示
 //                console.log(pos)
                 if(pos.top > 66){
-                    document.getElementById('swiper').style.height='0px'
-                    console.log(localStorage.getItem("announcement"))
-                    console.log(!localStorage.getItem("announcement"))
+                    this.swiperElement.style.height='0px'
+//                    console.log(localStorage.getItem("announcement"))
+//                    console.log(!localStorage.getItem("announcement"))
                     if(!localStorage.getItem("announcement")){
                         this.announcement = true
                     }
 //                    this.announcement = true
                 }else if(pos.top < -100){
-                    document.getElementById('swiper').style.height='180px'
+                    this.swiperElement.style.height='180px'
                     if(!localStorage.getItem("announcement")){
                         this.announcement = false
                     }
@@ -161,6 +162,7 @@
         mounted() {
             //查看公告是否显示，本地存储
             this.announcement = localStorage.getItem('announcement');
+            this.swiperElement = document.getElementById('swiper')
 
         }
     }

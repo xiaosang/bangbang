@@ -23,7 +23,27 @@ export default new VueRouter({
         {
             name:"社交",
             path:'/connect',
-            component: resolve =>void(require(['./components/Connect.vue'], resolve))
+            component: resolve =>void(require(['./components/Connect.vue'], resolve)),
+        },
+         {
+            name: "发布",
+            path: "/createnote",
+            component: resolve =>void(require(['./components/connect/CreateNote.vue'], resolve)),
+        },
+        {
+            name: "发表帖子",
+            path: "/reportnote",
+            component: resolve =>void(require(['./components/connect/ReportNote.vue'], resolve)),
+        },
+        {
+            name: "参与帖子",
+            path: "/joinnote",
+            component: resolve =>void(require(['./components/connect/JoinNote.vue'], resolve)),
+        },
+        {
+            name: "社交消息",
+            path: "/msgnote",
+            component: resolve =>void(require(['./components/connect/MsgNote.vue'], resolve)),
         },
         {
             name:"我的",

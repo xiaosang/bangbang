@@ -15,8 +15,8 @@ window.Vue = require('vue');
  */
 import App from "./App.vue"
 import router from './router'
-import VueQuillEditor from 'vue-quill-editor'
-Vue.use(VueQuillEditor)
+// import VueQuillEditor from 'vue-quill-editor'
+// Vue.use(VueQuillEditor)
 
 const FastClick = require('fastclick')
 FastClick.attach(document.body)

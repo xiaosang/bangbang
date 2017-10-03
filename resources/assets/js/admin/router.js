@@ -6,6 +6,25 @@ export default new VueRouter({
     saveScrollPosition: true,
     routes: [
     	{
+            path: '/super/password',
+            component: resolve =>void(require(['./super/password.vue'], resolve))
+        },
+        //用户
+        {
+            path: '/user/list',
+            component: resolve =>void(require(['./user/List.vue'], resolve))
+        },
+        {
+            name: 'user_edit',
+            path: '/user/edit',
+            component: resolve =>void(require(['./user/Edit.vue'], resolve))
+        },
+        {
+            name: 'user_import',
+            path: '/user/import',
+            component: resolve =>void(require(['./user/Import.vue'], resolve))
+        },
+    	{
             path: '/wx/reply',
             component: resolve =>void(require(['./wx/reply.vue'], resolve))
         },
@@ -24,6 +43,12 @@ export default new VueRouter({
         },{
             path: '/task/list',
             component: resolve =>void(require(['./task/List.vue'], resolve))
+        },{
+            path: '/order/uorder',
+            component: resolve =>void(require(['./order/UserOrder.vue'], resolve))
+        },{
+            path: '/order/payorder',
+            component: resolve =>void(require(['./order/PayOrder.vue'], resolve))
         },
     ]
 })

@@ -25,7 +25,9 @@
 
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
             <div class="task">
-                <form-preview header-label="任务类型" header-value="有偿" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i" style="margin-bottom: 4px;" class="item"></form-preview>
+                <form-preview header-label="任务类型" header-value="有偿" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i"  class="item"></form-preview>
+                <divider style="font-size: 12px;
+    opacity: 0.4;">仅显示最新五条</divider>
             </div>
         </scroller>
 
@@ -36,7 +38,7 @@
 
 <script>
     import Navbottom from './NavBottom.vue'
-    import { Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller   } from 'vux'
+    import { Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller , Divider   } from 'vux'
     export default {
         components: {
             Navbottom,
@@ -47,7 +49,8 @@
             Grid,
             GridItem,
             FormPreview,
-            Scroller
+            Scroller,
+            Divider
         },
         data(){
             return {
@@ -211,8 +214,11 @@
     .task{
         background: rgb(241,241,241);
     }
-
+    .item{
+        margin-bottom: 4px;
+    }
 </style>
+
 <style>
     /*任务item */
     .item .weui-form-preview__hd .weui-form-preview__value{

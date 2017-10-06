@@ -9,63 +9,87 @@
         </group>
 
         <divider></divider>
-        <quill-editor v-model="note.content" :options="editorOption"></quill-editor>
+        <quill-editor v-model="note.content" ref='editor' :options="editorOption"></quill-editor>
+        <input ref="input" id="upload" style="display:none" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="upload">
 
         <divider></divider>
         <x-button type="primary" action-type="button" @click.native="setNote">提交</x-button>
 
-        <toast v-model="warned" type="text">{{warn}}</toast>
+        <toast v-model="remindState" type="text">{{remind}}</toast>
     </div>
 </template>
 
 <script>
-    import { Toast,Divider,XTextarea,XInput,XButton,XHeader, Actionsheet, TransferDom, ButtonTab, ButtonTabItem,Group, Cell } from 'vux'
+    import Uploader from 'vux-uploader'
+    import { Toast,Divider,XTextarea,XInput,XButton,XHeader, Actionsheet,
+                    TransferDom, ButtonTab, ButtonTabItem,Group, Cell } from 'vux'
     export default {
         components: {
-            Group,Cell,Toast,
+            Group,Cell,Toast,Uploader,
             XHeader,Actionsheet,ButtonTab,ButtonTabItem,
             XInput,XButton,XTextarea,Divider,
         },
         data(){
             return {
                 note: {'title':'','describe':'','content':''},
-                warned: false,
-                warn: "",
+                remindState: false,  //是否显示提醒
+                remind: "",   //提示的信息
                 editorOption:{
                     modules: {
-                        toolbar: [
-                            [{'size': [ 'small', false, 'large', 'huge' ]}],
-                            ['bold', 'italic'],
-                            [{ 'list': 'ordered'},
-                            { 'list': 'bullet' }],
-                            ['link', 'image']
-                        ],
+                        toolbar: {
+                            container: ['bold','italic',{'size': [ 'small', false, 'large', 'huge' ]},
+                                                { 'list': 'ordered'},{ 'list': 'bullet' },'image'],
+                            handlers: {
+                                'image': function() {
+                                    $('#upload').click()
+                                }
+                            }
+                        }
                     },
                     placeholder: '文章内容',
                     theme: 'snow'
                 },
+                uploadUrl: '/wx/connect/noteUpld'
             }
         },
         methods: {
+            //文件上传
+            upload () {
+                let self = this
+                let formData = new window.FormData()
+                formData.append('img', self.$refs.input.files[0])
+                axios.post(self.uploadUrl, formData).then((response) => {
+                    if(response.data.code==1){
+                        var value = response.data.msg
+                        self.addImgRange = self.$refs.editor.quill.getSelection()
+                        value = value.indexOf('http') != -1 ? value : 'http:wx/connect/getImg?img=' + value
+                        self.$refs.editor.quill.insertEmbed(self.addImgRange != null?self.addImgRange.index:0, 'image', value, Quill.sources.USER)
+                    }else{
+                        self.remind = response.data.msg
+                        self.remindState = true;
+                    }
+                })
+            },
+            //新建帖子
             setNote(){
                 let self = this
                 if(self.note.title==""){
-                    self.warn = "文章标题为必填项"
-                    self.warned = true;
+                    self.remind = "文章标题为必填项"
+                    self.remindState = true;
                     return;
                 }else if(self.note.content==""){
-                    self.warn = "文章内容为必填项"
-                    self.warned = true;
+                    self.remind = "文章内容为必填项"
+                    self.remindState = true;
                     return;
                 }
                 axios.post("wx/connect/setNote",self.note).then(function(response){
                     if(response.data.code == 0||response.data.code == 1){
-                        self.warn = response.data.msg
-                        self.warned = true;
+                        self.remind = response.data.msg
+                        self.remindState = true;
                         return;
                     }else if(response.data.code == 1){
-                        self.warn = "系统错误"
-                        self.warned = true;
+                        self.remind = "系统错误"
+                        self.remindState = true;
                         return;
                     }
                 });
@@ -79,5 +103,8 @@
 <style lang="less">
 .ql-container {
     height: 120px;
+ }
+ .ql-snow {
+    background-color:white;
  }
 </style>

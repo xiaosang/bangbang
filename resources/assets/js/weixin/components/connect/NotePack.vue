@@ -1,22 +1,21 @@
+<!-- 帖子的显示块 -->
 <template>
-	<div>
+	<div class="m-piece">
 		<div class="m-cell-media-wrap">
-			<a href="javascript:;">
-				<div class="m-cell-media-top">
-					<div class="m-cell-media">
-						<div class="m-cell-title m-ellipsis-2">
-							<slot name="title"></slot>
-						</div>
-						<div class="m-cell-detail m-ellipsis-2">
-							<slot name='describe'></slot>
-						</div>
+			<div class="m-cell-media-top">
+				<div class="m-cell-media">
+					<div class="m-cell-title m-ellipsis-2">
+						<slot name="title"></slot>
+					</div>
+					<div class="m-cell-detail m-ellipsis-2">
+						<slot name='describe'></slot>
 					</div>
 				</div>
-				<div class="m-cell-media-bottom">
-					<p v-if="author">作者：{{author}}</p>
-					<p v-if="time">时间：{{time}}</p>
-				</div>
-			</a>
+			</div>
+			<div class="m-cell-media-bottom">
+				<p v-if="author">作者：{{author}}</p>
+				<p v-if="time">时间：{{time}}</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -26,6 +25,10 @@
 	}
 </script>
 <style lang="less">
+	.m-piece{
+		margin: 5px 0px;
+		background-color: white;
+	}
 	a{text-decoration:none;}
 	.m-cell-media-wrap {
 		display: flex;
@@ -77,6 +80,7 @@
 			margin-top: 12px;
 			color: #bfbfbf;
 			position: relative;
+			font-size: 14px;
 			&:before {
 				content: '';
 				position: absolute;

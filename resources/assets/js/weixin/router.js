@@ -27,22 +27,27 @@ export default new VueRouter({
         },
          {
             name: "发布",
-            path: "/createnote",
+            path: "/note/create",
             component: resolve =>void(require(['./components/connect/CreateNote.vue'], resolve)),
         },
         {
             name: "发表帖子",
-            path: "/reportnote",
+            path: "/note/report",
             component: resolve =>void(require(['./components/connect/ReportNote.vue'], resolve)),
         },
         {
+            name: "帖子详细信息",
+            path: "/note/detail/:id",
+            component: resolve =>void(require(['./components/connect/NoteDetail.vue'], resolve)),
+        },
+        {
             name: "参与帖子",
-            path: "/joinnote",
+            path: "/note/join",
             component: resolve =>void(require(['./components/connect/JoinNote.vue'], resolve)),
         },
         {
             name: "社交消息",
-            path: "/msgnote",
+            path: "/note/msg",
             component: resolve =>void(require(['./components/connect/MsgNote.vue'], resolve)),
         },
         {

@@ -2,19 +2,19 @@
     <div>
          <div class="nav_top">
             <tabbar>
-                <tabbar-item link="/createnote" index="0">
+                <tabbar-item link="/note/create" index="0">
                     <i slot="icon" class="ion-edit"></i>
                     <span slot="label">发表帖子</span>
                 </tabbar-item>
-                <tabbar-item link="/reportnote" index="1">
+                <tabbar-item link="/note/report" index="1">
                     <i slot="icon" class="ion-ios-body"></i>
                     <span slot="label">我的帖子</span>
                 </tabbar-item>
-                <tabbar-item link="/joinnote" index="1">
+                <tabbar-item link="/note/join" index="1">
                     <i slot="icon" class="ion-ios-pricetags-outline"></i>
                     <span slot="label">我参与的</span>
                 </tabbar-item>
-                <tabbar-item link="/msgnote" index="2">
+                <tabbar-item link="/note/msg" index="2">
                     <i slot="icon" class="ion-ios-bell"></i>
                     <span slot="label">消息提醒</span>
                 </tabbar-item>
@@ -22,19 +22,17 @@
         </div>
 
         <scroller lock-x height="-40px" :use-pulldown=true :use-pullup=true :pulldown-config="{autoRefresh: true,downContent: '下拉刷新', upContent: '释放后更新',loadingContent:''}"
-        :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" @on-pullup-loading="getNext"  ref="scrollerBottom" >
+        :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:'aaa'}" @on-pullup-loading="getNext"  ref="scrollerBottom" >
             <div class="box2">
                 <p v-for="i in bottomCount-1">
-                    <NoteContent :author="connect[i].name" :time="connect[i].time">
-                         <span slot="title">{{connect[i].title}}</span>
+                    <NotePack :author="connect[i].name" :time="connect[i].time">
+                         <span slot="title" @click="$router.push('/note/detail/'+connect[i].id)">{{connect[i].title}}</span>
                          <span slot="describe">{{connect[i].describe}}</span>
-                    </NoteContent>
+                    </NotePack>
                 </p>
             </div>
              <load-more :show-loading="pdState" v-show="pullDown" :tip="pullTitle"></load-more>
         </scroller>
-
-
 
         <Navbottom></Navbottom>
     </div>
@@ -42,14 +40,14 @@
 
 <script>
     import Navbottom from './NavBottom.vue'
-    import NoteContent from './connect/NoteContent.vue'
+    import NotePack from './connect/NotePack.vue'
     import { Tabbar,TabbarItem,Scroller,Divider,Grid,GridItem,XButton,Spinner,LoadMore,GroupTitle,Group, Cell } from 'vux'
     export default {
         components: {
             Tabbar,TabbarItem,LoadMore,
-            Group,Cell,Navbottom,NoteContent,
+            Group,Cell,Navbottom,NotePack,
             Grid,GridItem,GroupTitle,
-            Scroller,Divider,Spinner,XButton,LoadMore
+            Scroller,Divider,Spinner,XButton
         },
         data(){
             return {
@@ -62,18 +60,26 @@
             }
         },
         methods: {
+            //存在不停上拉，一直请求的问题。
             getNext() {
-                this.pullDown = true
-                setTimeout(() => {
-                    ++this.limit;
-                    this.getConnect();
-                    if(this.pdState)
-                        this.pullDown = false
-                    this.$nextTick(() => {
-                        this.$refs.scrollerBottom.reset()
-                    })
-                }, 1000)
-                this.$refs.scrollerBottom.donePullup()
+                if(!this.pullDown&&this.pdState){
+                    this.pullDown = true
+                    setTimeout(() => {
+                        ++this.limit
+                        this.getConnect()
+                        //不显示loading圆圈 => 一直显示loading
+                        if(this.pdState)
+                            this.pullDown = false
+                        this.$nextTick(() => {
+                            this.$refs.scrollerBottom.reset()
+                        })
+                    }, 1000)
+                    this.$refs.scrollerBottom.donePullup()
+                }else{
+                    if(!this.pdState)
+                        this.pullDown = true
+                    this.$refs.scrollerBottom.donePullup()
+                }
             },
             getConnect(){
                 let self = this
@@ -101,5 +107,9 @@
 .nav_top>.weui-tabbar{
     top: 0px;
     bottom: auto;
+    background-color: white;
+}
+.nav_top .weui-tabbar__icon > i:hover{
+    color: #3dbb07;
 }
 </style>

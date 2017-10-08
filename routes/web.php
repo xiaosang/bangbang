@@ -14,6 +14,7 @@ Route::get("/login", 'LoginController@index');
 Route::post("/login", 'LoginController@login');
 Route::any("/logout", 'LoginController@logout');
 Route::any("/wechat", 'Wx\WechatController@serve');
+Route::any("/menu_add",'Wx\WechatController@menu_add');
 Route::get('/test', function(){
     return view('test.index');
 });

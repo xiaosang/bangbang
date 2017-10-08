@@ -1,28 +1,11 @@
 <template>
     <div>
          <div class="nav_top">
-            <tabbar>
-                <tabbar-item link="/note/create" index="0">
-                    <i slot="icon" class="ion-edit"></i>
-                    <span slot="label">发表帖子</span>
-                </tabbar-item>
-                <tabbar-item link="/note/report" index="1">
-                    <i slot="icon" class="ion-ios-body"></i>
-                    <span slot="label">我的帖子</span>
-                </tabbar-item>
-                <tabbar-item link="/note/join" index="1">
-                    <i slot="icon" class="ion-ios-pricetags-outline"></i>
-                    <span slot="label">我参与的</span>
-                </tabbar-item>
-                <tabbar-item link="/note/msg" index="2">
-                    <i slot="icon" class="ion-ios-bell"></i>
-                    <span slot="label">消息提醒</span>
-                </tabbar-item>
-            </tabbar>
+            <HeaderBar></HeaderBar>
         </div>
 
-        <scroller lock-x height="-40px" :use-pulldown=true :use-pullup=true :pulldown-config="{autoRefresh: true,downContent: '下拉刷新', upContent: '释放后更新',loadingContent:''}"
-        :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:'aaa'}" @on-pullup-loading="getNext"  ref="scrollerBottom" >
+        <scroller lock-x  height="-40px" use-pulldown use-pullup :pulldown-config="{downContent: '下拉刷新', upContent: '正在更新',loadingContent:''}"
+        :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:'aaa'}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
             <div class="box2">
                 <p v-for="i in bottomCount-1">
                     <NotePack :author="connect[i].name" :time="connect[i].time">
@@ -41,12 +24,13 @@
 <script>
     import Navbottom from './NavBottom.vue'
     import NotePack from './connect/NotePack.vue'
+    import HeaderBar from './connect/HeaderBar.vue'
     import { Tabbar,TabbarItem,Scroller,Divider,Grid,GridItem,XButton,Spinner,LoadMore,GroupTitle,Group, Cell } from 'vux'
     export default {
         components: {
             Tabbar,TabbarItem,LoadMore,
             Group,Cell,Navbottom,NotePack,
-            Grid,GridItem,GroupTitle,
+            Grid,GridItem,GroupTitle,HeaderBar,
             Scroller,Divider,Spinner,XButton
         },
         data(){
@@ -57,6 +41,10 @@
                 bottomCount: 1,
                 connect: [],
                 limit: 0,
+                status: {
+                    pullupStatus: 'default',
+                    pulldownStatus: 'default'
+                }
             }
         },
         methods: {
@@ -66,26 +54,29 @@
                     this.pullDown = true
                     setTimeout(() => {
                         ++this.limit
-                        this.getConnect()
+                        this.getConnect(0)
                         //不显示loading圆圈 => 一直显示loading
                         if(this.pdState)
                             this.pullDown = false
                         this.$nextTick(() => {
-                            this.$refs.scrollerBottom.reset()
+                            this.$refs.scrollerObj.reset()
                         })
                     }, 1000)
-                    this.$refs.scrollerBottom.donePullup()
                 }else{
                     if(!this.pdState)
                         this.pullDown = true
-                    this.$refs.scrollerBottom.donePullup()
                 }
+                this.$refs.scrollerObj.donePullup()
             },
-            getConnect(){
+            getConnect(state){
                 let self = this
                 axios.get("wx/connect?page="+self.limit).then(function(response){
                     let num = response.data.code
                     if (num>0) {
+                        if(state==1){
+                            self.connect = []
+                            self.bottomCount = 1
+                        }
                         for(var i=0;i<num;i++)
                             self.connect[self.bottomCount+i] = response.data.msg[i]
                         self.bottomCount += num
@@ -95,15 +86,27 @@
                     }
                 });
             },
+            refresh(){
+                this.limit = 0
+                this.pdState = true
+                this.pullDown = false
+                this.pullTitle = "正在加载"
+                this.getConnect(1)
+                this.$nextTick(() => {
+                  setTimeout(() => {
+                    this.$refs.scrollerObj.donePulldown()
+                    this.pullupEnabled && this.$refs.scrollerObj.enablePullup()
+                  }, 500)
+                })
+            }
         },
         mounted() {
-            this.getConnect()
+            this.getConnect(0)
         },
     }
 </script>
 
 <style lang="less">
-.nav_top{height: 53px;}
 .nav_top>.weui-tabbar{
     top: 0px;
     bottom: auto;

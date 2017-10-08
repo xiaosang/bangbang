@@ -13,7 +13,7 @@ class Note extends Model
 	*/
 	public static function set_note($obj){
 		$id = DB::table('note')->insert(
-			['name' => $obj['title'], 'content' => $obj['content'],'describe'=>$obj['describe'],
+			['name' => $obj['title'], 'content' => $obj['content'],'label'=>$obj['type'],
 			'create_time'=>time(),'create_user_id'=>$obj['user_id']]);
 		return $id;
 	}

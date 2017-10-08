@@ -3,19 +3,34 @@
 	<div class="m-piece">
 		<div class="m-cell-media-wrap">
 			<div class="m-cell-media-top">
+				<span v-if="author" class="vux-badge">问答</span>
+				<span v-if="author" class="vux-badge">讨论</span>
+				<span v-if="author" class="vux-badge">分享</span>
+				<span v-if="time" class="top-time">{{time}}</span>
+			</div>
+			<div class="m-cell-media-middle">
 				<div class="m-cell-media">
+					<div class="m-cell-author m-ellipsis-2">
+						<img src="" alt=".">
+						<p v-if="author">{{author}}</p>
+					</div>
 					<div class="m-cell-title m-ellipsis-2">
 						<slot name="title"></slot>
 					</div>
-					<div class="m-cell-detail m-ellipsis-2">
-						<slot name='describe'></slot>
+					<div class="m-cell-media-bottom">
+						<span v-if="author">
+							<i slot="icon" class="ion-ios-glasses"></i>
+							<span>15</span>
+						</span>
+						<span v-if="time">
+							<i slot="icon" class="ion-chatbox-working"></i>
+							<span>12</span>
+						</span>
 					</div>
 				</div>
+
 			</div>
-			<div class="m-cell-media-bottom">
-				<p v-if="author">作者：{{author}}</p>
-				<p v-if="time">时间：{{time}}</p>
-			</div>
+
 		</div>
 	</div>
 </template>
@@ -26,14 +41,15 @@
 </script>
 <style lang="less">
 	.m-piece{
-		margin: 5px 0px;
 		background-color: white;
+		border-bottom: 1px solid #eff2f7;
 	}
 	a{text-decoration:none;}
 	.m-cell-media-wrap {
 		display: flex;
+		font-size: 14px;
 		flex-direction: column;
-		padding: 18px 20px;
+		padding: 15px 20px;
 		position: relative;
 		&:after {
 			content: '';
@@ -45,7 +61,12 @@
 			background: #eee;
 			transform: scaleY(0.5);
 		}
-		.m-cell-media-top {
+		.m-cell-media-top{
+			.top-icon{
+
+			}
+		}
+		.m-cell-media-middle {
 			display: flex;
 			flex-direction: row;
 			.m-cell-media {
@@ -56,12 +77,26 @@
 				line-height: 22px;
 				color: #333;
 				font-weight: bold;
+				padding: 10px 60px 10px 0;
 			}
-			.m-cell-detail {
-				font-size: 12px;
-				padding-top: 12px;
-				color: #939393;
+			//用户信息显示
+			.m-cell-author {
+			    	right: 20px;
+			    	bottom: 50%;
+			    	color: #939393;
+			    	position: absolute;
+			    	transform: translateY(50%);
+				img{
+					width: 48px;
+					height: 48px;
+					border-radius: 50%;
+					border: 1px solid #eff2f7;
+					background-color: black;
+					display: inline-block;
+				}
+				p{text-align: center}
 			}
+
 			.m-pull-right {
 				width: 94px;
 				height: 94px;
@@ -75,20 +110,15 @@
 		}
 		.m-cell-media-bottom {
 			display: flex;
-			justify-content: space-between;
-			padding-top: 20px;
-			margin-top: 12px;
+			justify-content: left;
 			color: #bfbfbf;
 			position: relative;
-			font-size: 14px;
-			&:before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 20px;
-				height: 1px;
-				background: #eee;
+			span{
+				padding: 0 5px;
+				i{
+					transform: scale(1.2);
+					display: inline-block;
+				}
 			}
 		}
 	}

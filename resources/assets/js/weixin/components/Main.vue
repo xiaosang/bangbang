@@ -25,7 +25,9 @@
 
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
             <div class="task">
-                <form-preview header-label="任务类型" header-value="有偿" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i" style="margin-bottom: 4px;" class="item"></form-preview>
+                <form-preview header-label="任务类型" header-value="有偿" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i"  class="item"></form-preview>
+                <divider style="font-size: 12px;
+    opacity: 0.4;">仅显示最新五条</divider>
             </div>
         </scroller>
 
@@ -36,7 +38,7 @@
 
 <script>
     import Navbottom from './NavBottom.vue'
-    import { Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller   } from 'vux'
+    import { Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller , Divider   } from 'vux'
     export default {
         components: {
             Navbottom,
@@ -47,7 +49,8 @@
             Grid,
             GridItem,
             FormPreview,
-            Scroller
+            Scroller,
+            Divider
         },
         data(){
             return {
@@ -71,7 +74,7 @@
                 announcementContent:'公告：桑金超早上迟到，罚吃屎两天！',
                 menu:[
                     {
-                        url: 'javascript:;',
+                        url: '/main/release',
                         img:'/img/icon-pwd.png',
                         icon:'ion-compose',
                         title:'发布'
@@ -80,13 +83,13 @@
                         url: 'javascript:;',
                         img:'/img/icon-pwd.png',
                         icon:'ion-document-text',
-                        title:'公告'
+                        title:'任务'
                     },
                     {
                         url: 'javascript:;',
                         img:'/img/icon-pwd.png',
-                        icon:'ion-person',
-                        title:'我的'
+                        icon:'ion-speakerphone',
+                        title:'公告'
                     },
                     {
                         url: 'javascript:;',
@@ -122,6 +125,7 @@
                     loadingContent: 'Loading...',
                     clsPrefix: 'xs-plugin-pulldown-'
                 },
+                swiperElement:'',
             }
         },
         methods:{
@@ -138,13 +142,21 @@
             },
             onScroll (pos) {
                 //控制轮播图显示
-                console.log(pos)
+//                console.log(pos)
                 if(pos.top > 66){
-                    document.getElementById('swiper').style.height='0px'
-                    this.announcement = true
+                    this.swiperElement.style.height='0px'
+//                    console.log(localStorage.getItem("announcement"))
+//                    console.log(!localStorage.getItem("announcement"))
+                    if(!localStorage.getItem("announcement")){
+                        this.announcement = true
+                    }
+//                    this.announcement = true
                 }else if(pos.top < -100){
-                    document.getElementById('swiper').style.height='180px'
-                    this.announcement = false
+                    this.swiperElement.style.height='180px'
+                    if(!localStorage.getItem("announcement")){
+                        this.announcement = false
+                    }
+//                    this.announcement = false
                 }
             },
             test(){
@@ -153,6 +165,7 @@
         mounted() {
             //查看公告是否显示，本地存储
             this.announcement = localStorage.getItem('announcement');
+            this.swiperElement = document.getElementById('swiper')
 
         }
     }
@@ -201,8 +214,11 @@
     .task{
         background: rgb(241,241,241);
     }
-
+    .item{
+        margin-bottom: 4px;
+    }
 </style>
+
 <style>
     /*任务item */
     .item .weui-form-preview__hd .weui-form-preview__value{

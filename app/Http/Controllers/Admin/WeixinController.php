@@ -310,9 +310,13 @@ class WeixinController extends Controller
     {
         $data = Input::get("data");
         $buttons = array();
-        foreach ($data as $item) {
+        foreach ($data as $key => $item) {
+            if($key == 0){
+                continue;
+            }
             $arr = array();
-            if (count($item["sub_button"]) > 0) {
+//            var_dump($item);
+            if (count($item["sub_button"]) > 1) {
                 foreach ($item["sub_button"] as $vv) {
                     $url = str_replace("&amp;", "&", $vv["url"]);
                     array_push($arr, array("type" => "view", "name" => $vv["name"], "url" => $url));
@@ -326,6 +330,7 @@ class WeixinController extends Controller
             }
 
         }
+        var_dump($buttons);
         $rlt = Weixin::set_menu($buttons);
         if ($rlt) {
             return responseToJson(0, "保存并发布成功！");

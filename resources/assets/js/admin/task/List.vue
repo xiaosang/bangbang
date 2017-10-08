@@ -42,7 +42,8 @@
             </el-table-column>
             <el-table-column
             prop="key"
-            label="完成秘钥">
+            label="完成秘钥"
+            width="100">
             </el-table-column>
             <el-table-column
             label="是否匿名"
@@ -50,13 +51,11 @@
             <template  scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
             </el-table-column>
             <el-table-column
-            label="预计接受时间"
-            width="130">
-            </el-table-column>
+            label="预计接受时间">
             <template  scope="scope">{{ scope.row.expected_time|date }}</template>
+            </el-table-column>
             <el-table-column
-            label="接受完成时间"
-            width="130">
+            label="接受完成时间">
             <template  scope="scope">{{ scope.row.complete_time|date }}</template>
             </el-table-column>
             <el-table-column

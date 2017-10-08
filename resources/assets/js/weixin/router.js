@@ -58,7 +58,7 @@ export default new VueRouter({
         {
             name:"发布",
             path:'/main/release',
-            component: resolve =>void(require(['./components/Release.vue'], resolve))
+            component: resolve =>void(require(['./components/main/Release.vue'], resolve))
         },
     ]
 })

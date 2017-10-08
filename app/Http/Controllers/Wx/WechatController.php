@@ -69,8 +69,8 @@ class WechatController extends Controller
         $buttons = [
             [
                 "type" => "view",
-                "name" => "进入课堂",
-//                "url" => env('APP_URL') . '/wx'
+                "name" => "首页",
+                "url" => env('APP_URL') . '/wx#/main'
             ],
 
 //            [

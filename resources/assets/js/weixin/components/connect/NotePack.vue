@@ -3,9 +3,8 @@
 	<div class="m-piece">
 		<div class="m-cell-media-wrap">
 			<div class="m-cell-media-top">
-				<span v-if="author" class="vux-badge">问答</span>
-				<span v-if="author" class="vux-badge">讨论</span>
-				<span v-if="author" class="vux-badge">分享</span>
+				<span v-if="label" class="label">{{label}}</span>
+				<span> ·</span>
 				<span v-if="time" class="top-time">{{time}}</span>
 			</div>
 			<div class="m-cell-media-middle">
@@ -18,13 +17,13 @@
 						<slot name="title"></slot>
 					</div>
 					<div class="m-cell-media-bottom">
-						<span v-if="author">
+						<span v-if="read>=0">
 							<i slot="icon" class="ion-ios-glasses"></i>
-							<span>15</span>
+							<span>{{read}}</span>
 						</span>
-						<span v-if="time">
+						<span v-if="comment>=0">
 							<i slot="icon" class="ion-chatbox-working"></i>
-							<span>12</span>
+							<span>{{comment}}</span>
 						</span>
 					</div>
 				</div>
@@ -36,7 +35,7 @@
 </template>
 <script>
 	export default {
-		props: ['author', 'time']
+		props: ['author', 'time','read','comment','label']
 	}
 </script>
 <style lang="less">
@@ -62,9 +61,8 @@
 			transform: scaleY(0.5);
 		}
 		.m-cell-media-top{
-			.top-icon{
-
-			}
+			font-size: 12px;
+			.label{color: #20a0ff}
 		}
 		.m-cell-media-middle {
 			display: flex;
@@ -77,7 +75,7 @@
 				line-height: 22px;
 				color: #333;
 				font-weight: bold;
-				padding: 10px 60px 10px 0;
+				p{padding: 10px 60px 10px 0;}
 			}
 			//用户信息显示
 			.m-cell-author {
@@ -111,7 +109,7 @@
 		.m-cell-media-bottom {
 			display: flex;
 			justify-content: left;
-			color: #bfbfbf;
+			color: #888585;
 			position: relative;
 			span{
 				padding: 0 5px;
@@ -119,6 +117,7 @@
 					transform: scale(1.2);
 					display: inline-block;
 				}
+				span{color: #3a3939};
 			}
 		}
 	}

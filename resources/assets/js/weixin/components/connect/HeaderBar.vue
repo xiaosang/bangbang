@@ -22,10 +22,12 @@ export default {
 
 <style lang="less" scoped>
   .header-bar{
-      opacity: 0.8;
+      width: 100%;
+      height: 80px;
+      z-index: 100;
+      position: fixed;
       padding-bottom: 10px;
-      background-size: cover;
-      background-image: url(http://bpic.588ku.com/back_pic/03/66/28/2857b014876d04f.jpg!ww1200);
+      background: rgba(7,17,27,.8);
       h1{
           padding-top: 10px;
           color: white;
@@ -46,7 +48,7 @@ export default {
       width: 25%;
       text-align: center;
   }
-  li>a{color: #bfbfbf}
+  li>a{color: #ececec}
   li:hover{
       cursor: pointer;
   }

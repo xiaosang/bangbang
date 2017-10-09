@@ -18,6 +18,8 @@ import router from './router'
 import VueQuillEditor from 'vue-quill-editor'
 Vue.use(VueQuillEditor)
 
+require("es6-promise").polyfill()
+
 const FastClick = require('fastclick')
 FastClick.attach(document.body)
 

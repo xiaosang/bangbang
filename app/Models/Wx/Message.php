@@ -22,6 +22,7 @@ class Message extends Model
 		foreach ($data as $key => $value) {
 			$value->time = date("Y-m-d H:i",$value->time);
 			$msg_id[] = $value->id;
+			$value->reply = [];
 		}
 		$response = DB::table('comment')->where([['is_delete',0],['reply_id','<>',0],['note_id',$id]])->whereIn('reply_id',$msg_id)
 			->select('id','reply_id', 'content','create_user_id as cid','comment.create_time as time','user_name as name','reply_name')

@@ -37,7 +37,6 @@
                         <p>{{items.content}}</p>
                         <div class="comment-btm"><span>{{items.time}}</span></div>
 
-                        <div></div>
                         <div class="sub-comment-list">
                             <div class="sub-comment" v-for="item in items.reply">
                                 <a href="">{{item.name}}</a>

@@ -1,20 +1,14 @@
 <template>
-    <div>
+    <div style="background-color: white">
         <x-header>发表帖子</x-header>
         <group>
-            <x-input title="标题"  v-model="note.title" required placeholder="文章标题" :max="20"></x-input>
+            <x-input title="标题"  v-model="note.title" required placeholder="帖子标题" :max="20"></x-input>
+            <selector placeholder="选择帖子类型" title="帖子类型" :options="list" v-model="note.type"></selector>
+            <quill-editor v-model="note.content" ref='editor' :options="editorOption"></quill-editor>
+            <input ref="input" id="upload" style="display:none" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="upload">
+            <Divider></Divider>
+            <x-button type="primary" action-type="button" @click.native="setNote">提交</x-button>
         </group>
-        <group>
-            <x-textarea :max="50" :height='50' v-model="note.describe"  title="描述" placeholder="文章描述"></x-textarea>
-        </group>
-
-        <divider></divider>
-        <quill-editor v-model="note.content" ref='editor' :options="editorOption"></quill-editor>
-        <input ref="input" id="upload" style="display:none" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="upload">
-
-        <divider></divider>
-        <x-button type="primary" action-type="button" @click.native="setNote">提交</x-button>
-
         <toast v-model="remindState" type="text">{{remind}}</toast>
     </div>
 </template>
@@ -22,16 +16,17 @@
 <script>
     import Uploader from 'vux-uploader'
     import { Toast,Divider,XTextarea,XInput,XButton,XHeader, Actionsheet,
-                    TransferDom, ButtonTab, ButtonTabItem,Group, Cell } from 'vux'
+                    TransferDom, ButtonTab, ButtonTabItem,Group, Cell,Selector } from 'vux'
     export default {
         components: {
             Group,Cell,Toast,Uploader,
             XHeader,Actionsheet,ButtonTab,ButtonTabItem,
-            XInput,XButton,XTextarea,Divider,
+            XInput,XButton,XTextarea,Divider,Selector
         },
         data(){
             return {
-                note: {'title':'','describe':'','content':''},
+                list: [{key: '1', value: '分享'}, {key: '2', value: '讨论'},{key: '3', value: '提问'}],
+                note: {'title':'','content':'','type': 1},
                 remindState: false,  //是否显示提醒
                 remind: "",   //提示的信息
                 editorOption:{
@@ -46,7 +41,7 @@
                             }
                         }
                     },
-                    placeholder: '文章内容',
+                    placeholder: '帖子内容',
                     theme: 'snow'
                 },
                 uploadUrl: '/wx/connect/noteUpld'
@@ -96,7 +91,6 @@
             }
         },
         mounted() {
-//            console.log('Component mounted.')
         }
     }
 </script>

@@ -36,10 +36,15 @@ Route::group(['middleware' => ['wechat.binding'],'prefix'=>'wx'], function () {
 
 include('admin.php');
 
+
+//任务
 Route::group(['prefix' => 'task', 'middleware' => 'login.check'], function () {
     Route::post('list', 'Admin\Task\TaskController@get_list');
     Route::post('del', 'Admin\Task\TaskController@task_delete');
+    Route::post('over', 'Admin\Task\TaskController@get_over_list');
 });
+
+//订单
 Route::group(['prefix' => 'order', 'middleware' => 'login.check'], function () {
     Route::post('uorder', 'Admin\Order\OrderController@get_uorder_list');
     Route::post('udel', 'Admin\Order\OrderController@uorder_delete');

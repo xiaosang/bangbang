@@ -41,9 +41,16 @@ export default new VueRouter({
             path: '/wx/menu',
             component: resolve =>void(require(['./wx/menu.vue'], resolve))
         },{
+
+            //任务管理
             path: '/task/list',
             component: resolve =>void(require(['./task/List.vue'], resolve))
         },{
+            path: '/task/overlist',
+            component: resolve =>void(require(['./task/OverTask.vue'], resolve))
+        },
+        {
+            //订单管理
             path: '/order/uorder',
             component: resolve =>void(require(['./order/UserOrder.vue'], resolve))
         },{

@@ -32,5 +32,9 @@ class TaskController extends Controller
 
     }
 
+    function get_over_list(Request $request){
+        $page_size = $request->page_size;
+        return responseToJson(0, 'success', Task::get_over_list($page_size,$request->status,$request->type));
+    }
 
 }

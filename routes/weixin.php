@@ -2,7 +2,9 @@
 Route::group(['prefix' => 'connect'], function () {
 	Route::get('/', 'Wx\ConnectController@index');
 });
-    Route::post('/release/task','Wx\TaskController@insert');
+Route::group(['prefix' => 'release'], function () {
+    Route::get('/task', 'Wx\TaskController@insert');
+});
 	Route::post('/setNote', 'Wx\ConnectController@set_note');
 	Route::post('/noteUpld', 'Wx\ConnectController@upload');
 	Route::get('/getImg', 'Wx\ConnectController@get_img');

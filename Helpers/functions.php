@@ -224,19 +224,19 @@ function doc2pdf($filepath,$source,$id,$ext) {
             (new App\Models\Pdf2HtmlInfo($filepath,$source,$id))->save();
             break;
     }
-        
+
 }
 
-/** 
- * 生成缩略图函数（支持图片格式：gif、jpeg、png） 
- * @author ruxing.li 
- * @param  string $src      源图片路径 
+/**
+ * 生成缩略图函数（支持图片格式：gif、jpeg、png）
+ * @author ruxing.li
+ * @param  string $src      源图片路径
  * @param  string $filename 保存名字
  * @param  string $filename 保存路径
- * @param  int    $width    缩略图宽度（只指定高度时进行等比缩放） 
- * @param  int    $height    缩略图高度（只指定宽度时进行等比缩放） 
- * @return bool 
- */  
+ * @param  int    $width    缩略图宽度（只指定高度时进行等比缩放）
+ * @param  int    $height    缩略图高度（只指定宽度时进行等比缩放）
+ * @return bool
+ */
 function thumbnail($src, $filename, $filepath, $width = 150, $height = null) {
     $path = $filepath;
     if($filename!='')
@@ -251,12 +251,12 @@ function thumbnail($src, $filename, $filepath, $width = 150, $height = null) {
         $width = $src_w * ($height / $src_h);
     if (!isset($height))
         $height = $src_h * ($width / $src_w);
- 
+
     $src_img = imagecreatefromstring(file_get_contents($src));
     if($src_type==3)
         $dest_img = imagecreate($width, $height);
     else $dest_img = imagecreatetruecolor($width, $height);
-    imagecopyresampled($dest_img, $src_img, 0, 0, 0, 0, $width, $height, $src_w, $src_h);  
+    imagecopyresampled($dest_img, $src_img, 0, 0, 0, 0, $width, $height, $src_w, $src_h);
     if(!is_dir($filepath)){
         mkdir($filepath);
     }
@@ -276,7 +276,25 @@ function thumbnail($src, $filename, $filepath, $width = 150, $height = null) {
         default :
             return false;
     }
-    imagedestroy($src_img);  
-    imagedestroy($dest_img);  
-    return true;  
+    imagedestroy($src_img);
+    imagedestroy($dest_img);
+    return true;
+}
+/**
+ * 生成缩略图函数（支持图片格式：gif、jpeg、png）
+ * @param  string $src      源图片路径
+ * @param  string $filename 保存名字
+ */
+function time_diff($big,$little){
+    $diff = ceil(($big-$little)/60000);
+    if(0<=$diff&&$diff<60)
+        return $diff."分钟前";
+    elseif(60<=$diff&&$diff<3600)
+        return (ceil($diff/60))."小时前";
+    elseif(3600<=$diff&&$diff<86400)
+        return (ceil($diff/1440))."天前";
+    elseif(86400<=$diff&&$diff<2592000)
+        return (ceil($diff/43200))."月前";
+    elseif(2592000<=$diff&&$diff<=946080000)
+        return (ceil($diff/157680000))."年前";
 }

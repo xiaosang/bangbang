@@ -31,7 +31,7 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/connect/CreateNote.vue'], resolve)),
         },
         {
-            name: "发表帖子",
+            name: "发表的帖子",
             path: "/note/report",
             component: resolve =>void(require(['./components/connect/ReportNote.vue'], resolve)),
         },

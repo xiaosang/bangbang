@@ -3,8 +3,8 @@
         <div class="gm-breadcrumb">
             <!--<i class="ion-ios-home gm-home"></i>-->
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/task/list">任务管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/task/list">全部任务</el-breadcrumb-item>
+                <el-breadcrumb-item to="/task/overlist">任务管理</el-breadcrumb-item>
+                <el-breadcrumb-item to="/task/overlist">已完成任务</el-breadcrumb-item>
                 <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
             </el-breadcrumb>
         </div>
@@ -14,6 +14,70 @@
         </div>
         
         <h3></h3>
+
+        <el-dialog title="详细信息" :visible.sync="isShow">
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true"> 
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">名称</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">详情</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">完成秘钥</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">是否匿名</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">预计接受时间</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">接受完成时间</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">支付金额</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">创建用户</span></template>
+            </el-input>
+            <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">类型</span></template>
+            </el-input>
+             <el-input
+                placeholder="请输入内容"
+                style="margin-top:10px;"
+                :disabled="true">
+                <template slot="prepend"><span style="width:100px;display: block;text-align: right;">状态</span></template>
+            </el-input>
+
+        </el-dialog>
         <el-table
             :data="taskAll"
             border
@@ -100,8 +164,8 @@
                 <template scope="scope">
                     <el-button
                     size="small"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    type="info"
+                    @click="handleShow(scope.$index, scope.row)">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -131,7 +195,8 @@
         status : -1,
         type : -1,
         tableLoading : false,
-
+        isShow : false,
+        
          // 分页
         page: 1,
         page_size: 5,
@@ -149,14 +214,13 @@
                 status : this.status,
                 type : this.type,
             };
-            axios.post("/task/list",param).then(response =>{
-                
+            axios.post("/task/over",param).then(response =>{
                 self.taskAll = response.data.result.data
                 console.log(self.taskAll)
                 self.paginate_total = response.data.result.total
                 self.tableLoading = false
             }).catch(error => {
-                this.$message("网络错误")
+                self.$message("网络错误")
             })
         },
         size_change: function (size) {
@@ -179,44 +243,16 @@
             this.type = value
             this.getList()
         },
-        handleDelete: function(index,row){
+        handleShow: function(index,row){
             // console.log(index,row)
-           
-                    
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    axios.post("/task/del",{
-                        id : row.id
-                    }).then(response =>{
-                        var data = response.data;
-                        console.log(data)
-                        if (data.code == 0) {
-                            //success
-                            this.$message({
-                                title: '提示',
-                                message: '删除成功',
-                                type: 'success'
-                            });
-                            this.getList();
-                        } else {
-                            this.$message({
-                                title: '提示',
-                                message: data.msg,
-                                type: 'warning'
-                            });
-                        }
-                    }).catch(error => {
-                        this.$message("网络错误")
-                    })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });          
-                });
+            this.isShow = true
+            // axios.post("/task/del",{
+            //     id : row.id
+            // }).then(response =>{
+                
+            // }).catch(error => {
+                
+            // })
             
             
         }

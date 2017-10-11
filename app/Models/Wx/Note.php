@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
+	static public $label = array("无","分享","讨论","提问");
 	/*
 		1、新建帖子的功能
 		2、插入的数据
@@ -13,7 +14,7 @@ class Note extends Model
 	*/
 	public static function set_note($obj){
 		$id = DB::table('note')->insert(
-			['name' => $obj['title'], 'content' => $obj['content'],'describe'=>$obj['describe'],
+			['name' => $obj['title'], 'content' => $obj['content'],'label'=>$obj['type'],
 			'create_time'=>time(),'create_user_id'=>$obj['user_id']]);
 		return $id;
 	}
@@ -24,9 +25,12 @@ class Note extends Model
 	*/
 	public static function get_note($num,$limit){
 		$data = DB::table('note')->where('is_delete',0)->leftJoin('user', 'user.id', '=', 'note.create_user_id')
-			->select('note.id', 'note.name as title','describe','note.create_time as time','user.name as name')->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
+			->select('note.id','note.name as title','user.name as author','content','read_num','comment_num',
+				'label','note.update_time')
+			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
 		foreach ($data as $key => $value) {
-			$value->time = date("Y-m-d",$value->time);
+			$value->update_time = time_diff(time(),$value->update_time);
+			$value->label = self::$label[$value->label];
 		}
 		return $data;
 	}
@@ -43,5 +47,11 @@ class Note extends Model
 		else
 			$data = [];
 		return $data;
+	}
+	public static function add_read($id){
+		$res = DB::table('note')->where([['is_delete',0],['note.id',$id]])->increment('read_num');
+	}
+	public static function add_comment($id){
+		$res = DB::table('note')->where([['is_delete',0],['note.id',$id]])->increment('comment_num');
 	}
 }

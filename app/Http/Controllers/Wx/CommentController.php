@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Wx;
 
 use Response;
+use App\Models\Wx\Note;
 use App\Models\Wx\Message;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,7 @@ class CommentController extends Controller
 		$data['time'] = time();
 		if(!empty($data['noteId'])&&!empty($data['content'])){
 			$id = Message::submit_msg($data);
+			Note::add_comment($data['noteId']);
 			$data['id'] = $id;
 			$data['reply'] = [];
 			$data['time'] = date('Y-m-d H:i');

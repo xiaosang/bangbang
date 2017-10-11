@@ -21,7 +21,7 @@ class ConnectController extends Controller
 		return responseToJson(1, "文章发表成功",'success');
 	}
 	public function index(Request $request){
-		$limit = 5;
+		$limit = 7;
 		$num = $request->page*$limit;
 		$data = Note::get_note($num,$limit);
 		return responseToJson($data->count(), $data,'success');
@@ -35,7 +35,7 @@ class ConnectController extends Controller
 			if($result){
 				return responseToJson(1, $result,'success');
 			}else{
-				return responseToJson(0, "服务器移动失败",'error');
+				return responseToJson(0, "上传服务器失败",'error');
 			}
 		}else{
 			return responseToJson(0, '非法操作','success');
@@ -45,6 +45,7 @@ class ConnectController extends Controller
 		return response()->file($request->img);
 	}
 	public function get_detail($id){
+		Note::add_read($id);//阅读量增加
 		$data = Note::get_detail($id);
 		if(!empty($data)){
 			return responseToJson(1, $data,'success');

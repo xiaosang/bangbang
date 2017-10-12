@@ -298,3 +298,17 @@ function time_diff($big,$little){
     elseif(2592000<=$diff&&$diff<=946080000)
         return (ceil($diff/157680000))."年前";
 }
+
+/*
+ * 生成n位随机字符串
+ * str 字符串
+ * num 位数
+ * */
+function str_rand($num,$str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'){
+    $key = '';
+    for ( $i = 0; $i < $num; $i++ )
+    {
+        $key .= $str[ mt_rand(0, strlen($str) - 1) ];
+    }
+    return $key;
+}

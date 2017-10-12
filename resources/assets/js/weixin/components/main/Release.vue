@@ -39,13 +39,18 @@
         <group>
             <!--<datetime v-model="complete_time" format="YYYY-MM-DD HH:mm"  title="完成时间" placeholder="设置任务完成所需时间" :start-date="startDate" :compute-hours-function="computeHoursFunction" @on-change="complete_time_change"></datetime>-->
             <x-address title="完成时间" v-model="task_finish_time" :list="task_finish_time_list" value-text-align="right" placeholder="完成任务所需时间"></x-address>
-            <datetime v-if="task_finish_time.length!=0" v-model="expected_time" format="YYYY-MM-DD HH:mm"  title="截至时间" placeholder="设置任务截至时间" :start-date="startDate" :compute-hours-function="computeHoursFunction" @on-change="expected_time_change"></datetime>
+            <datetime v-if="task_finish_time.length!=0" v-model="expected_time" format="YYYY-MM-DD HH:mm"  title="截至时间" placeholder="设置任务截至时间" :start-date="startDate" :compute-hours-function="computeHoursFunction" :minute-list="['00','10','20','30','40','50']"  @on-change="expected_time_change"></datetime>
         </group>
         <p v-if="task_finish_time.length!=0" class="prompt">截止时间：到时间没人接任务将被取消</p>
 
         <group>
+            <x-input title='雇主姓名' v-model="user_name" :show-clear="false" text-align="right"  placeholder="请输入您的姓名"></x-input>
+            <x-input title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话"></x-input>
+        </group>
+
+        <group>
             <x-input title='收货地址' v-model="address" :show-clear="false" text-align="right"  placeholder="请输入您的收货地址" disabled @click.native="addressOnOff=true"></x-input>
-            <x-switch title="开启匿名" :v-model="is_hide"></x-switch>
+            <x-switch title="开启匿名" :v-model="is_hide" @on-change="is_hide_change"></x-switch>
         </group>
         <p class="prompt">接到任务的人可以看到您的个人信息</p>
         <div v-transfer-dom>
@@ -98,7 +103,7 @@
                 pay_money:"",
                 complete_time:'',
                 expected_time:'',
-                is_hide:'true',
+                is_hide:'',
                 startDate:'',
                 computeHoursFunction (date, isToday, generateRange) {
                     if (isToday) {
@@ -112,114 +117,159 @@
                 task_finish_time:[],
                 addressOnOff:false,
                 address:'',
+                user_name:'',
+                user_phone:'',
                 address_all: [
-                    [//历史地址   个人中心希望有添加删除
-                        {
-                            name: '快速选择',
-                            value: '快速选择'
-                        },
-                        {
-                            name: '河南科技学院',
-                            value: '河南科技学院'
-                        },
-                        {
-                            name: '河南师范大学',
-                            value: '河南师范大学'
-                        }
-                    ]
+//                    [//历史地址   个人中心希望有添加删除
+//                        {
+//                            name: '快速选择',
+//                            value: '快速选择'
+//                        },
+//                        {
+//                            name: '河南科技学院',
+//                            value: '河南科技学院'
+//                        },
+//                        {
+//                            name: '河南师范大学',
+//                            value: '河南师范大学'
+//                        }
+//                    ]
                 ],
                 address_input:'',
                 address_select:[''],
             }
         },
         methods:{
-            complete_time_change (value) {
-//                this.expectedOnOff = false
-//                if(value < new Date().format('yyyy-MM-dd hh:mm')){
-//                    alert('截至时间小于当前时间将不会被显示');
-//                }else if(value == new Date().format('yyyy-MM-dd hh:mm')){
-//                    alert('截至时间等于当前时间将不会被显示');
-//                }else if(value < this.complete_time){
-//                    this.expectedOnOff = true
-//                }
-            },
             expected_time_change(value) {
-//                this.expectedOnOff = false
-//                if(value < new Date().format('yyyy-MM-dd hh:mm')){
-//                    alert('撤回时间小于当前时间将不会被显示');
-//                }else if(value == new Date().format('yyyy-MM-dd hh:mm')){
-//                    alert('撤回时间等于当前时间将不会被显示');
-//                }else if(value > this.complete_time){
-//                    this.expectedOnOff = true
-//                }
+                let expected_time = Date.parse(new Date(value))/1000
+                let now_time = Date.parse(new Date())/1000
+                if(expected_time <= now_time){
+                    alert("截止时间不能小于当前时间")
+                }
             },
             type_change(){
                 this.pay_money = ""
             },
             submit(){
+                let expected_time = Date.parse(new Date(this.expected_time))/1000
+                let now_time = Date.parse(new Date())/1000
+                if( expected_time <= now_time ){
+                    alert("截止时间不能小于当前时间")
+                    return false
+                }
                 if(this.releaseOnOff){
-                    if(this.type == 0){//有偿
-
-                    }else if(this.type == 1){//无偿
-
-                    }
+//                    if(this.type == 0){//有偿
+//
+//                    }else if(this.type == 1){//无偿
+//
+//                    }
                     let param = {
                         type:this.type,
                         name:this.name,
                         content:this.content,
-                        task_finish_time:this.task_finish_time,
-                        expected_time:this.expected_time,
+                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2])+Date.parse(new Date())/1000,
+                        expected_time:expected_time,
                         pay_money:this.pay_money,
+                        address_name:this.address,
+                        user_name:this.user_name,
+                        user_phone:this.user_phone,
                         is_hide:this.is_hide
                     }
-                    axios.post('/wx/release/task',param).then((res)=>{
-
-                    }).error((err)=>{
-
+                    axios.post('/wx/release/issue_task',param)
+                        .then((res)=>{
+                            console.log(res.data)
+                        if(res.data.code == 1){
+                            alert('发布成功');
+                        }else{
+                            alert('发布失败');
+                        }
+                    })
+                        .catch((err)=>{
+                            alert("网络异常，请重新尝试！")
                     })
                 }
             },
             select_address (value) {
-//                console.log(value)
-                this.address_input = value[0]
+                this.address_input = value[0]       //["河南师范大学"]
             },
             address_enter(){
                 this.address = this.address_input
                 this.addressOnOff = false
-                //todo 如果是新地址插入数据库
+            },
+            get_user_info(){
+                axios.get('/wx/release/get_user_info')
+                .then((res)=>{
+                    this.user_name = res.data.result.name
+                    this.user_phone = res.data.result.phone
+                    console.log(res.data)
+                })
+                .catch((err)=>{
+                    alert("网络异常，请重新尝试！")
+                })
+            },
+            get_address_list(){
+                axios.get('/wx/release/get_address_list')
+                    .then((res)=>{
+                        if(res.data.default){
+                            this.address = res.data.default
+                            this.address_select = [res.data.default]
+                        }
+                        this.address_all.push(res.data.result)
+                        console.log(res.data)
+                    })
+                    .catch((err)=>{
+                        alert("网络异常，请重新尝试！")
+                    })
+            },
+            is_hide_change(value){
+                this.is_hide = value
             }
         },
         watch:{
             name(){
-                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
                     this.releaseOnOff = true
                 }else{
                     this.releaseOnOff = false
                 }
             },
             content(){
-                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
                     this.releaseOnOff = true
                 }else{
                     this.releaseOnOff = false
                 }
             },
             complete_time(){
-                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
                     this.releaseOnOff = true
                 }else{
                     this.releaseOnOff = false
                 }
             },
             expected_time(){
-                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
                     this.releaseOnOff = true
                 }else{
                     this.releaseOnOff = false
                 }
             },
             address(){
-                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
+                    this.releaseOnOff = true
+                }else{
+                    this.releaseOnOff = false
+                }
+            },
+            user_name(){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
+                    this.releaseOnOff = true
+                }else{
+                    this.releaseOnOff = false
+                }
+            },
+            user_phone(){
+                if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
                     this.releaseOnOff = true
                 }else{
                     this.releaseOnOff = false
@@ -234,12 +284,15 @@
                     document.getElementById('release-text').style.color = 'unset'
                 }
             },
+
             task_finish_time(){
                 console.log(this.task_finish_time)
             }
         },
         mounted() {
             this.startDate = new Date().format("yyyy-MM-dd")
+            this.get_user_info()
+            this.get_address_list()
         }
     }
 </script>

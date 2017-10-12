@@ -19,8 +19,9 @@ class Message extends Model
 			->select('comment.id', 'content','create_user_id as cid','comment.create_time as time','user_name as name')
 			->orderBy('comment.create_time', 'desc')->offset($num)->limit($limit)->get();
 		$msg_id = [];
+		$time = time();
 		foreach ($data as $key => $value) {
-			$value->time = date("Y-m-d H:i",$value->time);
+			$value->time = time_diff($time,$value->time);
 			$msg_id[] = $value->id;
 			$value->reply = [];
 		}
@@ -30,7 +31,7 @@ class Message extends Model
 		foreach ($response as $key => $value) {
 			foreach ($data as $key => $val) {
 				if($val->id==$value->reply_id){
-					$value->time = date("Y-m-d H:i:s",$value->time);
+					$value->time = time_diff($time,$value->time);
 					$val->reply[] = $value;
 				}
 			}

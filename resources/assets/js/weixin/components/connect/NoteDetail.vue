@@ -231,7 +231,7 @@ span>i{
 //评论样式
 .comment-btm{
     margin: 5px 0 0 44px;
-    font-size: 14px;
+    font-size: 12px;
     color: #969696;
 }
 //top
@@ -246,7 +246,7 @@ span>i{
     background-color: black;
 }
 .comment{
-    padding: 15px 18px;
+    padding: 5px 18px;
     margin: auto -18px;
 }
 .comment p{
@@ -277,12 +277,12 @@ a{
 .sub-comment{
     font-size: 14px;
     line-height: 1.5;
-    padding-top: 10px;
-    margin: 10px 0 0 44px;
+    padding-top: 5px;
+    margin: 0 0 0 44px;
     border-top: 1px solid #E6E6E6;
 }
 .sub-comment>.comment-btm{
-    margin: 10px 0;
+    margin: 5px 0 0 0;
 }
 .sub-comment-list{
     max-height: 225px;

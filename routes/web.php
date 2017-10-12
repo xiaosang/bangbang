@@ -42,6 +42,7 @@ Route::group(['prefix' => 'task', 'middleware' => 'login.check'], function () {
     Route::post('list', 'Admin\Task\TaskController@get_list');
     Route::post('del', 'Admin\Task\TaskController@task_delete');
     Route::post('over', 'Admin\Task\TaskController@get_over_list');
+    Route::post('evaluate', 'Admin\Task\TaskController@get_evaluate');
 });
 
 //订单

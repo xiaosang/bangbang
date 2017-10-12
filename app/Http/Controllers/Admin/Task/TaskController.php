@@ -37,4 +37,9 @@ class TaskController extends Controller
         return responseToJson(0, 'success', Task::get_over_list($page_size,$request->status,$request->type));
     }
 
+    function get_evaluate(Request $request){
+        return responseToJson(0, 'success', Task::get_evaluate($request->task_id));
+
+    }
+
 }

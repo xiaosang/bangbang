@@ -158,6 +158,15 @@
 //                    this.announcement = false
                 }
             },
+            get_task_list(){
+                axios.get('/wx/main/get_task_list')
+                    .then((res)=>{
+                        console.log(res)
+                    })
+                    .catch((err)=>{
+
+                    })
+            },
             test(){
             }
         },
@@ -165,7 +174,7 @@
             //查看公告是否显示，本地存储
             this.announcement = localStorage.getItem('announcement');
             this.swiperElement = document.getElementById('swiper')
-
+            this.get_task_list()
         }
     }
 </script>

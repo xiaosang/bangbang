@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Wx;
 
 use App\Models\Wx\Task;
 use App\Http\Controllers\Controller;
-//use http\Env\Request;
-//use Illuminate\Http\Request;
 use Illuminate\Http\Request;
+use Log;
 
 class TaskController extends Controller
 {
@@ -33,6 +32,7 @@ class TaskController extends Controller
     }
 
     public function issue_task(Request $request){
+//        Log::info($request->all());
         $name = trim($request->name);
         $content = trim($request->content);
         $type = (int)$request->type;
@@ -55,6 +55,10 @@ class TaskController extends Controller
         }
     }
 
+    public function get_task_list(){
+        $result = Task::get_task_list(5);
+        return $result;
+    }
 
 
 

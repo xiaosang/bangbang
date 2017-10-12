@@ -104,7 +104,7 @@
                 pay_money:"",
                 complete_time:'',
                 expected_time:'',
-                is_hide:'',
+                is_hide:false,
                 startDate:'',
                 computeHoursFunction (date, isToday, generateRange) {
                     if (isToday) {
@@ -152,10 +152,9 @@
                 this.pay_money = ""
             },
             submit(){
+                this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
-                console.log(this.pay_money*100)
-                console.log(Math.ceil(this.pay_money*100))
                 if((this.pay_money*100).toFixed(2) != Math.ceil(this.pay_money*100)){
                     alert("请输入正确的金额")
                     return false
@@ -184,12 +183,10 @@
                     }
                     axios.post('/wx/release/issue_task',param)
                         .then((res)=>{
-//                            console.log(res.data)
                         if(res.data.code == 1){
                             this.$router.push({ path: '/main/IssueSuccess/' + res.data.result })
-//                            alert('发布成功');
                         }else{
-//                            alert('发布失败');
+                            alert('发布失败');
                         }
                     })
                         .catch((err)=>{

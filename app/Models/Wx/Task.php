@@ -3,6 +3,7 @@
 namespace App\Models\Wx;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Log;
 
 class Task extends Model
 {
@@ -32,7 +33,8 @@ class Task extends Model
     $create_user_id 创建任务ID
     $key 密钥
     */
-    static public function issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key){
+    static public function issue_task($name,$content,$type,$pay_money=0,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key){
+
         $data = [
             'type'=>$type,
             'name'=>$name,
@@ -48,8 +50,23 @@ class Task extends Model
             'key'=>$key,
             'address_name'=>$address_name
         ];
+
         $result = DB::table('task')
             ->insert($data);
+
+        return $result;
+    }
+    /*得到最新num条任务信息
+    $num 条数
+    */
+    static public function get_task_list($num){
+        $result = DB::table('task')
+            ->where('is_delete',0)
+            ->where('status',0)
+            ->orderby('create_time','desc')
+            ->offset(0)
+            ->limit(5)
+            ->get();
         return $result;
     }
 }

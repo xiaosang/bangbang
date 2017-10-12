@@ -25,9 +25,8 @@
 
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
             <div class="task">
-                <form-preview header-label="任务类型" header-value="有偿" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i"  class="item"></form-preview>
-                <divider style="font-size: 12px;
-    opacity: 0.4;">仅显示最新五条</divider>
+                <form-preview header-label="任务类型" :header-value="i" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i"  class="item"></form-preview>
+                <divider style="font-size: 12px;opacity: 0.4;">仅显示最新五条</divider>
             </div>
         </scroller>
 

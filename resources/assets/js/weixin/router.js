@@ -60,5 +60,10 @@ export default new VueRouter({
             path:'/main/release',
             component: resolve =>void(require(['./components/main/Release.vue'], resolve))
         },
+        {
+            name:"发布成功",
+            path:'/main/IssueSuccess/:key',
+            component: resolve =>void(require(['./components/main/IssueSuccess.vue'], resolve))
+        },
     ]
 })

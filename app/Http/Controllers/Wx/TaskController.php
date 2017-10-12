@@ -49,7 +49,7 @@ class TaskController extends Controller
         $result = Task::issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key);
 
         if($result){
-            return responseToJson(1,'发布成功！');
+            return responseToJson(1,'发布成功！', $key);
         }else{
             return responseToJson(0,'发布失败！');
         }

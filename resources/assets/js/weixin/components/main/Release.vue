@@ -3,7 +3,8 @@
         <x-header :left-options="{ showBack:false,backText:'' }">
             <span slot="left">
                 <!--<a href="back(-1)" class="ion-arrow-left-c"></a>-->
-                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
+                <!--<a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>-->
+                <router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>
                 <span style="font-size: 18px;">新建任务</span>
             </span>
             <span slot="right" id="release-text" @click="submit">发布</span>
@@ -31,7 +32,7 @@
                     <checker-item value="0">有偿</checker-item>
                 </checker>
             </x-input>
-            <x-input v-if="type==0" title='支付金额' type="number" v-model="pay_money" :show-clear="false" text-align="right"  placeholder="0">
+            <x-input v-if="type==0" title='支付金额' type="number" v-model="pay_money" :show-clear="false" text-align="right"  placeholder="0.00">
                 <span slot="right" style="margin-left: 6px;font-size: 12px;"> 元 </span>
             </x-input>
         </group>
@@ -153,6 +154,12 @@
             submit(){
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
+                console.log(this.pay_money*100)
+                console.log(Math.ceil(this.pay_money*100))
+                if((this.pay_money*100).toFixed(2) != Math.ceil(this.pay_money*100)){
+                    alert("请输入正确的金额")
+                    return false
+                }
                 if( expected_time <= now_time ){
                     alert("截止时间不能小于当前时间")
                     return false
@@ -177,11 +184,12 @@
                     }
                     axios.post('/wx/release/issue_task',param)
                         .then((res)=>{
-                            console.log(res.data)
+//                            console.log(res.data)
                         if(res.data.code == 1){
-                            alert('发布成功');
+                            this.$router.push({ path: '/main/IssueSuccess/' + res.data.result })
+//                            alert('发布成功');
                         }else{
-                            alert('发布失败');
+//                            alert('发布失败');
                         }
                     })
                         .catch((err)=>{
@@ -223,7 +231,7 @@
             },
             is_hide_change(value){
                 this.is_hide = value
-            }
+            },
         },
         watch:{
             name(){
@@ -284,7 +292,6 @@
                     document.getElementById('release-text').style.color = 'unset'
                 }
             },
-
             task_finish_time(){
                 console.log(this.task_finish_time)
             }

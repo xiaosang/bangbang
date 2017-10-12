@@ -155,10 +155,10 @@
                 this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
-                if((this.pay_money*100).toFixed(2) != Math.ceil(this.pay_money*100)){
-                    alert("请输入正确的金额")
-                    return false
-                }
+//                if((this.pay_money*100).toFixed(2) != Math.ceil(this.pay_money*100)){
+//                    alert("请输入正确的金额")
+//                    return false
+//                }
                 if( expected_time <= now_time ){
                     alert("截止时间不能小于当前时间")
                     return false

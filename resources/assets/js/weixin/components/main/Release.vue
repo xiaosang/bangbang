@@ -32,7 +32,7 @@
                     <checker-item value="0">有偿</checker-item>
                 </checker>
             </x-input>
-            <x-input v-if="type==0" title='支付金额' type="number" v-model="pay_money" :show-clear="false" text-align="right"  placeholder="0.00">
+            <x-input id="money" v-if="type==0" title='支付金额' type="number" v-model="pay_money"  :show-clear="false" text-align="right"  placeholder="0.00">
                 <span slot="right" style="margin-left: 6px;font-size: 12px;"> 元 </span>
             </x-input>
         </group>
@@ -102,6 +102,7 @@
                 content:'',
                 type:'1',
                 pay_money:"",
+                temp_pay_money:"",
                 complete_time:'',
                 expected_time:'',
                 is_hide:false,
@@ -150,6 +151,7 @@
             },
             type_change(){
                 this.pay_money = ""
+                this.temp_pay_money = ""
             },
             submit(){
                 this.expected_time = this.expected_time.replace(/\-/g, "/")
@@ -288,6 +290,23 @@
                     document.getElementById('release-text').style.backgroundColor = 'rgb(241,241,241)'
                     document.getElementById('release-text').style.color = 'unset'
                 }
+            },
+            pay_money(){
+                let money_input = document.getElementById('money').getElementsByTagName('input')[0];
+                console.log(money_input)
+//                setTimeout(function(){
+//                    console.log("1")
+                    money_input.value = '1'
+//                },1000)
+
+
+//                console.log(this.pay_money)
+//                console.log(this.temp_pay_money)
+//                if(/^(\d+(.\d{1,2})?)$/g.test( this.pay_money )){
+//                    this.temp_pay_money = this.pay_money
+//                }else{
+//                    this.pay_money = this.temp_pay_money
+//                }
             },
             task_finish_time(){
                 console.log(this.task_finish_time)

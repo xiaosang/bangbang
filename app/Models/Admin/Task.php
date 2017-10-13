@@ -43,4 +43,10 @@ class Task extends Model
         }
         return $sql->paginate($page_size);
     }
+
+    public static function get_evaluate($task_id){
+
+        return DB::table('evaluate')->where('task_id',$task_id)->orderBy('status')->get();
+
+    }
 }

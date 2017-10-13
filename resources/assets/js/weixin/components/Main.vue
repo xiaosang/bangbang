@@ -25,12 +25,10 @@
 
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
             <div class="task">
-                <form-preview header-label="任务类型" header-value="有偿" :body-items="list" :footer-buttons="buttons1" v-for="i in 5" :key="i"  class="item"></form-preview>
-                <divider style="font-size: 12px;
-    opacity: 0.4;">仅显示最新五条</divider>
+                <form-preview header-label="任务类型" :header-value="item[3]?'无偿':'有偿'" :body-items="item" :footer-buttons="item[4]" v-for="item in list" :key="item"  class="item"></form-preview>
+                <divider style="font-size: 12px;opacity: 0.4;">仅显示最新五条</divider>
             </div>
         </scroller>
-
 
         <Navbottom></Navbottom>
     </div>
@@ -98,16 +96,29 @@
                         title:'更多'
                     }
                 ],
-                list: [{
-                    label: '标题',
-                    value: '买饭'
-                }, {
-                    label: '时间',
-                    value: '十分钟'
-                }, {
-                    label: '发布时间',
-                    value: '2017-10-01 17:43'
-                }],
+                list: [
+//                    [
+//                        {
+//                            label: '标题',
+//                            value: '买饭'
+//                        }, {
+//                            label: '时间',
+//                            value: '十分钟'
+//                        }, {
+//                            label: '发布时间',
+//                            value: '2017-10-01 17:43'
+//                        },
+//                        0,
+//                        [{
+//                            style: 'default',
+//                            text: '接受任务'
+//                        }, {
+//                            style: 'default',
+//                            text: '查看详情',
+//                            link: '/main/1'
+//                        }],
+//                    ]
+                ],
                 buttons1: [{
                     style: 'default',
                     text: '接受任务'
@@ -159,6 +170,16 @@
 //                    this.announcement = false
                 }
             },
+            get_task_list(){
+                axios.get('/wx/main/get_task_list')
+                    .then((res)=>{
+                        console.log(res)
+                        this.list = res.data
+                    })
+                    .catch((err)=>{
+
+                    })
+            },
             test(){
             }
         },
@@ -166,7 +187,7 @@
             //查看公告是否显示，本地存储
             this.announcement = localStorage.getItem('announcement');
             this.swiperElement = document.getElementById('swiper')
-
+            this.get_task_list()
         }
     }
 </script>

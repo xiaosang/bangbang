@@ -6,6 +6,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/menu/get', 'Admin\MenuController@get_menu');
     Route::group(['prefix' => 'user'], function () {
     	Route::post("/list", 'Admin\UserController@get_list');
+        Route::post("/status", 'Admin\UserController@edit_status');
     });
     Route::group(['prefix' => 'weixin'], function () {
         Route::post("/config/set", 'Admin\WeixinController@set_config');

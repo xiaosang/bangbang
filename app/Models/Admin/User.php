@@ -15,9 +15,25 @@ use Excel;
  */
 class User extends Model
 {
-    public static function get_list($page_size = 50)
-    {
-        $sql = DB::table('user');
+    //用户列表
+    public static function get_list($page_size = 50,$status = -1,$input = '') {
+
+        $sql = DB::table('user')->where('is_audit',1);
+        if($status != -1)
+            $sql->where('status',$status);
+        if($input != '')
+            $sql->where(function ($q) use ($input) {
+                $q->where('name_quanpin', 'like', '%' . $input . '%')
+                    ->orWhere('name_jianpin', 'like', '%' . $input . '%')
+                    ->orWhere('code', 'like', '%' . $input . '%')
+                    ->orWhere('name', 'like', '%' . $input . '%');
+            });
+        $sql->orderBy('student_code');
         return $sql->paginate($page_size);
+    }
+
+    //修改用户状态
+    public static function edit_status ( $id, $status ) {
+        return DB::table('user')->where('id',$id)->update(['status' => $status]);
     }
 }

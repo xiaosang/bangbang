@@ -9,6 +9,11 @@ export default new VueRouter({
             path: '/super/password',
             component: resolve =>void(require(['./super/password.vue'], resolve))
         },
+        //首页
+        {
+            path: '/',
+            component: resolve =>void(require(['./layout/index.vue'], resolve))
+        },
         //用户
         {
             path: '/user/list',

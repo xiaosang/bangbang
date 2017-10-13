@@ -157,7 +157,7 @@
                 this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
-                if(parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){
+                if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){
                     alert("请输入正确的金额")
                     return false
                 }
@@ -175,7 +175,8 @@
                         type:this.type,
                         name:this.name,
                         content:this.content,
-                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2])+Date.parse(new Date())/1000,
+//                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2])+Date.parse(new Date())/1000,
+                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2]),
                         expected_time:expected_time,
                         pay_money:this.pay_money,
                         address_name:this.address,

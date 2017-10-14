@@ -25,7 +25,7 @@
 
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
             <div class="task">
-                <form-preview header-label="任务类型" :header-value="item[3]?'无偿':'有偿'" :body-items="item" :footer-buttons="item[4]" v-for="item in list" :key="item"  class="item"></form-preview>
+                <form-preview header-label="任务类型" :header-value=" item[item.length-2] ? '无偿' : '有偿' " :body-items="item" :footer-buttons="item[item.length-1]" v-for="item,index in list" :key="index"  class="item"></form-preview>
                 <divider style="font-size: 12px;opacity: 0.4;">仅显示最新五条</divider>
             </div>
         </scroller>
@@ -78,7 +78,7 @@
                         title:'发布'
                     },
                     {
-                        url: 'javascript:;',
+                        url: '/main/task/list',
                         img:'/img/icon-pwd.png',
                         icon:'ion-document-text',
                         title:'任务'
@@ -147,9 +147,10 @@
             },
             updateTask(){
                 //下拉更新
-                setTimeout(()=>{
-                    this.$refs.scroller.donePulldown()
-                },1000)
+                this.get_task_list(()=>{this.$refs.scroller.donePulldown()})
+//                setTimeout(()=>{
+//
+//                },1000)
             },
             onScroll (pos) {
                 //控制轮播图显示
@@ -170,14 +171,15 @@
 //                    this.announcement = false
                 }
             },
-            get_task_list(){
+            get_task_list(callback){
                 axios.get('/wx/main/get_task_list')
                     .then((res)=>{
                         console.log(res)
                         this.list = res.data
+                        if(callback)callback();
                     })
                     .catch((err)=>{
-
+                        alert("网络异常，请稍后重试！")
                     })
             },
             test(){

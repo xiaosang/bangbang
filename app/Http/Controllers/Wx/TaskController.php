@@ -81,24 +81,19 @@ class TaskController extends Controller
         $result = Task::get_task_list(5);
         $data = [];
         foreach ($result as $v){
-            // todo
             $temp = [];
             $row = (Object)[];
             $row->label = "标题";
             $row->value = $v->name;
             array_push($temp,json_decode(json_encode($row)));
             $row->label = "限定时间";
-//            $D = floor(($v->task_finish_time-$v->create_time)/86400);
-//            dd($D);
-
-//            $H = ($v->task_finish_time-$v->create_time%86400)/3600;
-//            $M = (($v->task_finish_time-$v->create_time%86400)%3600)/60;
-//            $row->value = $D.'天';
-//            $row->value = $D.'天'.$H.'小时'.$M.'分钟';
-            $row->value = date('Y-m-d H:i:s',$v->task_finish_time);
+            $row->value = secsToStr($v->task_finish_time);
             array_push($temp,json_decode(json_encode($row)));
             $row->label = "发布时间";
             $row->value =  date('Y-m-d H:i:s',$v->create_time);
+            array_push($temp,json_decode(json_encode($row)));
+            $row->label = "收货地址";
+            $row->value =  $v->address_name;
             array_push($temp,json_decode(json_encode($row)));
             array_push($temp,$v->type);
             $btn_arr = [];

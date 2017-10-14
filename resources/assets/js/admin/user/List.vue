@@ -71,7 +71,7 @@
             prop="credit_score"
             label="信誉度">
             </el-table-column>
-            
+
             <el-table-column
             label="操作">
             <template  scope="scope">

@@ -4,7 +4,9 @@
             <span slot="left">
                 <!--<a href="back(-1)" class="ion-arrow-left-c"></a>-->
                 <!--<a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>-->
-                <router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>
+                <!--<router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>-->
+                <!--返回到首页-->
+                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
                 <span style="font-size: 18px;">新建任务</span>
             </span>
             <span slot="right" id="release-text" @click="submit">发布</span>

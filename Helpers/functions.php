@@ -312,3 +312,28 @@ function str_rand($num,$str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
     }
     return $key;
 }
+/*
+ * 把秒转换成天数，小时数，分钟
+ * $secs 秒
+ * */
+function secsToStr($secs) {
+    if($secs>=86400){
+        $days=floor($secs/86400);
+        $secs=$secs%86400;
+        $r=$days.' 天 ';
+    }
+    if($secs>=3600){
+        $hours=floor($secs/3600);
+        $secs=$secs%3600;
+        $r.=$hours.' 小时 ';
+    }
+    if($secs>=60){
+        $minutes=floor($secs/60);
+        $secs=$secs%60;
+        $r.=$minutes.' 分钟 ';
+    }
+//    $r.=$secs.' second';
+//    if($secs<>1){$r.='s';
+//    }
+    return $r;
+}

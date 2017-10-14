@@ -52,3 +52,9 @@ Route::group(['prefix' => 'order', 'middleware' => 'login.check'], function () {
     Route::post('payorder', 'Admin\Order\OrderController@get_pay_order_list');
     Route::post('paydel', 'Admin\Order\OrderController@pay_order_delete');
 });
+
+//首页统计信息
+Route::group(['prefix' => 'index', 'middleware' => 'login.check'], function () {
+    Route::post('task', 'Admin\Index\IndexController@get_task');
+   
+});

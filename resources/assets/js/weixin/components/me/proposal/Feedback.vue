@@ -115,6 +115,9 @@
                     return;
                 }
                 if(this.can_submit){
+                    this.$vux.loading.show({
+                        text: '努力提交中...'
+                    })
                     this.can_submit = false;
                     let formdata = new FormData()
                     formdata.append('feedback_content',this.feedback_content)
@@ -129,6 +132,7 @@
                         }else{
                             self.toast_message(response.data.msg,'warn');
                         }
+                        self.$vux.loading.hide();
                         self.can_submit = true;
                     },formdata)
 

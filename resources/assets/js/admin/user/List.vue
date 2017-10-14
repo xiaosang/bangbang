@@ -41,9 +41,9 @@
             label="信誉度"
             width="100">
             </el-table-column>
-            
+
             <el-table-column
-            label="操作" 
+            label="操作"
             width="100">
             <template  scope="scope">
                 <el-button
@@ -91,7 +91,7 @@
                 this.tableLoading = true
                 var self = this
                 var param = {
-                    page_size: this.pagination.pagesize, 
+                    page_size: this.pagination.pagesize,
                     page: this.pagination.current,
                 };
                 axios.post("/admin/user/list",param).then(response =>{

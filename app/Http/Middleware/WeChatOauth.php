@@ -84,6 +84,9 @@ class WechatOauth
             'subscribe_time' => isset($userInfo["subscribe_time"]) ? strval(intval($userInfo["subscribe_time"])) : 0,
             'unionid' => isset($userInfo["unionid"]) ? $userInfo["unionid"] : ''];
         if ($query) {
+            if(empty($data['avatar'])){
+                $data['avatar'] = $query->avatar;
+            }
             DB::table('wx_user')->where('openid', $userInfo["openid"])->update($data);
         } else {
             $data['openid'] = $userInfo["openid"];

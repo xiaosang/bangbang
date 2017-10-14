@@ -62,7 +62,7 @@
             <el-table-column
                     label="身份证"
                     prop="code">
-                <template scope="scope">
+                <template slot-scope="scope">
                     {{ scope.row.code | hide_code(4,14) }}
                 </template>
             </el-table-column>
@@ -74,7 +74,7 @@
 
             <el-table-column
             label="操作">
-            <template  scope="scope">
+            <template  slot-scope="scope">
                 <el-button
                     size="small"
                     type="danger" v-if="scope.row.status==0"

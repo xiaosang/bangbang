@@ -41,16 +41,16 @@
             <el-table-column
             label="是否支付"
             width="100">
-            <template  scope="scope"><span v-if="scope.row.is_pay">是</span><span v-if="!scope.row.is_pay">否</span></template>
+            <template  slot-scope="scope"><span v-if="scope.row.is_pay">是</span><span v-if="!scope.row.is_pay">否</span></template>
             </el-table-column>
             <el-table-column
             label="支付时间">
-            <template  scope="scope">{{ scope.row.create_time|date}}</template>
+            <template  slot-scope="scope">{{ scope.row.create_time|date}}</template>
             </el-table-column>
             <el-table-column
             label="支付金额"
             width="100">
-            <template  scope="scope">{{ scope.row.pay_money/100 }}</template>
+            <template  slot-scope="scope">{{ scope.row.pay_money/100 }}</template>
             </el-table-column>
             <el-table-column
             prop="release_user_name"
@@ -70,7 +70,7 @@
             <el-table-column
             label="详情"
             width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-popover trigger="click" placement="right">
                     <p style="max-width:200px"> {{ scope.row.task_content }}</p>
                     <div slot="reference" class="name-wrapper">
@@ -82,7 +82,7 @@
             <el-table-column
             label="状态" 
             width="100">
-            <template  scope="scope">
+            <template  slot-scope="scope">
                 <span v-if="scope.row.status==0">
                     <el-tag type="danger">未接受</el-tag>
                 </span>
@@ -103,7 +103,7 @@
             <el-table-column 
              label="操作"
              width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-button
                     size="small"
                     type="danger"

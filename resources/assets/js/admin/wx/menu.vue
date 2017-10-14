@@ -45,7 +45,7 @@
                                     <el-button v-show="but > 2" class="button_text" style="float:left;margin-left:0px;" :id="2" :class="classBut(2)" @click="setMenu(2)" v-popover:popover3>{{name3}}</el-button>
                                     <el-button v-show="add" style="float:right;margin-left:0px;" :class="classObject()" icon="plus" @click="addMenu"></el-button>
                                 </div>
-                                <div style="position: absolute;bottom: -50px;z-index: 999;background: #FFF;display: block;width: 100%;height: 50px;border-top: 1px solid #ddd;"></div>
+                                <!--<div style="position: absolute;bottom: -50px;z-index: 999;background: #FFF;display: block;width: 100%;height: 50px;border-top: 1px solid #ddd;"></div>-->
                             </div>
                         </div>
                     </div>

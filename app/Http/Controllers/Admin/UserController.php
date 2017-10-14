@@ -15,8 +15,9 @@ class UserController extends Controller
         $page_size = $request->page_size;
         $status = $request->status;
         $input = $request->input;
+        $score = $request->score;
 
-        return responseToJson(0, 'success', User::get_list($page_size,$status,$input));
+        return responseToJson(0, 'success', User::get_list($page_size,$status,$input,$score));
     }
 
     function edit_status (Request $request) {

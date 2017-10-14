@@ -3,14 +3,14 @@
         <div class="gm-breadcrumb">
             <i class="ion-ios-home gm-home"></i>
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/task/list">任务管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/task/list">全部任务</el-breadcrumb-item>
+                <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+                <el-breadcrumb-item>用户列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <el-form :inline="true">
             <el-form-item>
-                <el-select v-model="status" placeholder="请选择状态" @change="getList">
+                <el-select v-model="status" @change="getList">
                     <el-option
                             v-for="item in options" :key="item.value"
                             :label="item.label"
@@ -18,6 +18,17 @@
                     </el-option>
                 </el-select>
             </el-form-item>
+
+            <el-form-item>
+                <el-select v-model="score" @change="getList">
+                    <el-option
+                            v-for="item in credit_score" :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+
             <el-form-item>
                 <el-input v-model="input" placeholder="学号、姓名"
                           icon="search" :on-icon-click="getList"
@@ -51,6 +62,9 @@
             <el-table-column
                     label="身份证"
                     prop="code">
+                <template scope="scope">
+                    {{ scope.row.code | hide_code(4,14) }}
+                </template>
             </el-table-column>
 
             <el-table-column
@@ -111,6 +125,17 @@
                 },
                 userList: [],
                 tableLoading: false,
+                credit_score: [{
+                    value: 0,
+                    label: '信誉度'
+                },{
+                    value: 1,
+                    label: '60分以上'
+                },{
+                    value: 2,
+                    label: '60分一下'
+                }],
+                score: 0,
             }
         },
         methods:{
@@ -122,6 +147,7 @@
                     page: this.pagination.current,
                     status: this.status,
                     input: this.input,
+                    score: this.score,
                 };
                 axios.post("/admin/user/list",param).then(response =>{
                     self.userList = response.data.result.data

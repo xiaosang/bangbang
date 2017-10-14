@@ -311,9 +311,9 @@ class WeixinController extends Controller
         $data = Input::get("data");
         $buttons = array();
         foreach ($data as $key => $item) {
-            if($key == 0){
-                continue;
-            }
+//            if($key == 0){
+//                continue;
+//            }
             $arr = array();
 //            var_dump($item);
             if (count($item["sub_button"]) > 1) {
@@ -330,7 +330,7 @@ class WeixinController extends Controller
             }
 
         }
-        var_dump($buttons);
+//        var_dump($buttons);
         $rlt = Weixin::set_menu($buttons);
         if ($rlt) {
             return responseToJson(0, "保存并发布成功！");

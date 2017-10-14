@@ -1,8 +1,6 @@
 <template>
-    <div class="container">
-        <group>
-            <cell title="title" value="value"></cell>
-        </group>
+    <div>
+        <h1>测试</h1>
     </div>
 </template>
 
@@ -16,8 +14,14 @@
         data(){
             return {}
         },
+        methods:{
+
+        },
+        watch:{
+
+        },
         mounted() {
-            console.log('Component mounted.')
+
         }
     }
 </script>

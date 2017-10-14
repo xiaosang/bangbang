@@ -4,7 +4,9 @@
             <span slot="left">
                 <!--<a href="back(-1)" class="ion-arrow-left-c"></a>-->
                 <!--<a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>-->
-                <router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>
+                <!--<router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>-->
+                <!--返回到首页-->
+                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
                 <span style="font-size: 18px;">新建任务</span>
             </span>
             <span slot="right" id="release-text" @click="submit">发布</span>
@@ -32,7 +34,7 @@
                     <checker-item value="0">有偿</checker-item>
                 </checker>
             </x-input>
-            <x-input id="money" v-if="type==0" title='支付金额' type="number" v-model="pay_money"  :show-clear="false" text-align="right"  placeholder="0.00">
+            <x-input id="money" v-if="type==0" title='支付金额' type="text" v-model="pay_money"  :show-clear="false" text-align="right"  placeholder="0.00">
                 <span slot="right" style="margin-left: 6px;font-size: 12px;"> 元 </span>
             </x-input>
         </group>
@@ -157,10 +159,10 @@
                 this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
-//                if((this.pay_money*100).toFixed(2) != Math.ceil(this.pay_money*100)){
-//                    alert("请输入正确的金额")
-//                    return false
-//                }
+                if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){
+                    alert("请输入正确的金额")
+                    return false
+                }
                 if( expected_time <= now_time ){
                     alert("截止时间不能小于当前时间")
                     return false
@@ -175,7 +177,8 @@
                         type:this.type,
                         name:this.name,
                         content:this.content,
-                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2])+Date.parse(new Date())/1000,
+//                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2])+Date.parse(new Date())/1000,
+                        task_finish_time:parseInt(this.task_finish_time[0])+parseInt(this.task_finish_time[1])+parseInt(this.task_finish_time[2]),
                         expected_time:expected_time,
                         pay_money:this.pay_money,
                         address_name:this.address,
@@ -197,7 +200,7 @@
                 }
             },
             select_address (value) {
-                this.address_input = value[0]       //["河南师范大学"]
+                this.address_input = value[0]       //["河南科技学院"]
             },
             address_enter(){
                 this.address = this.address_input
@@ -230,7 +233,7 @@
             },
             is_hide_change(value){
                 this.is_hide = value
-            },
+            }
         },
         watch:{
             name(){
@@ -291,26 +294,6 @@
                     document.getElementById('release-text').style.color = 'unset'
                 }
             },
-            pay_money(){
-                let money_input = document.getElementById('money').getElementsByTagName('input')[0];
-                console.log(money_input)
-//                setTimeout(function(){
-//                    console.log("1")
-                    money_input.value = '1'
-//                },1000)
-
-
-//                console.log(this.pay_money)
-//                console.log(this.temp_pay_money)
-//                if(/^(\d+(.\d{1,2})?)$/g.test( this.pay_money )){
-//                    this.temp_pay_money = this.pay_money
-//                }else{
-//                    this.pay_money = this.temp_pay_money
-//                }
-            },
-            task_finish_time(){
-                console.log(this.task_finish_time)
-            }
         },
         mounted() {
             this.startDate = new Date().format("yyyy-MM-dd")

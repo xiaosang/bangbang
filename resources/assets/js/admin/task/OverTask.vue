@@ -175,7 +175,7 @@
     },
 
     methods:{
-        getList(){
+        getList: function(){
             this.tableLoading = true
             var self = this
             var param = {

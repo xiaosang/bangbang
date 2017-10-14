@@ -27,7 +27,9 @@ const filters = {
             }
         }
         return pattern;
+    },
+    hide_code: function(code,start,end) {
+      return code.substr(0, start) + '****' + code.substr(end);//18
     }
-
 }
 export { filters }

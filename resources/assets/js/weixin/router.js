@@ -65,5 +65,10 @@ export default new VueRouter({
             path:'/main/IssueSuccess/:key',
             component: resolve =>void(require(['./components/main/IssueSuccess.vue'], resolve))
         },
+        {
+            name:"任务列表",
+            path:'/main/task/list',
+            component: resolve =>void(require(['./components/main/TaskList.vue'], resolve))
+        },
     ]
 })

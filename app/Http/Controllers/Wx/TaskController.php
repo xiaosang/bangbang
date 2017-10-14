@@ -54,10 +54,62 @@ class TaskController extends Controller
             return responseToJson(0,'发布失败！');
         }
     }
-
+    /*
+     *              [
+                        {
+                            label: '标题',
+                            value: '买饭'
+                        }, {
+                            label: '时间',
+                            value: '十分钟'
+                        }, {
+                            label: '发布时间',
+                            value: '2017-10-01 17:43'
+                        },
+                        0,
+                        [{
+                            style: 'default',
+                            text: '接受任务'
+                        }, {
+                            style: 'default',
+                            text: '查看详情',
+                            link: '/main/1'
+                        }],
+                    ]
+    */
     public function get_task_list(){
         $result = Task::get_task_list(5);
-        return $result;
+        $data = [];
+        foreach ($result as $v){
+            $temp = [];
+            $row = (Object)[];
+            $row->label = "标题";
+            $row->value = $v->name;
+            array_push($temp,json_decode(json_encode($row)));
+            $row->label = "限定时间";
+            $row->value = secsToStr($v->task_finish_time);
+            array_push($temp,json_decode(json_encode($row)));
+            $row->label = "发布时间";
+            $row->value =  date('Y-m-d H:i:s',$v->create_time);
+            array_push($temp,json_decode(json_encode($row)));
+            $row->label = "收货地址";
+            $row->value =  $v->address_name;
+            array_push($temp,json_decode(json_encode($row)));
+            array_push($temp,$v->type);
+            $btn_arr = [];
+            $btn = (Object)[];
+            $btn->style =  'default';
+            $btn->text =  '接受任务';
+            array_push($btn_arr,json_decode(json_encode($btn)));
+            $btn->style =  'default';
+            $btn->text =  '查看详情';
+            $btn->link =  '/main/'.$v->id;
+            array_push($btn_arr,json_decode(json_encode($btn)));
+            array_push($temp,$btn_arr);
+            array_push($data,$temp);
+        }
+//        dd($data);
+        return $data;
     }
 
 

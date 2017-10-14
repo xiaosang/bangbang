@@ -9,21 +9,26 @@ export default new VueRouter({
             path: '/super/password',
             component: resolve =>void(require(['./super/password.vue'], resolve))
         },
+        //首页
+        {
+            path: '/',
+            component: resolve =>void(require(['./layout/index.vue'], resolve))
+        },
         //用户
         {
             path: '/user/list',
             component: resolve =>void(require(['./user/List.vue'], resolve))
         },
-        {
-            name: 'user_edit',
-            path: '/user/edit',
-            component: resolve =>void(require(['./user/Edit.vue'], resolve))
-        },
-        {
-            name: 'user_import',
-            path: '/user/import',
-            component: resolve =>void(require(['./user/Import.vue'], resolve))
-        },
+        // {
+        //     name: 'user_edit',
+        //     path: '/user/edit',
+        //     component: resolve =>void(require(['./user/Edit.vue'], resolve))
+        // },
+        // {
+        //     name: 'user_import',
+        //     path: '/user/import',
+        //     component: resolve =>void(require(['./user/Import.vue'], resolve))
+        // },
     	{
             path: '/wx/reply',
             component: resolve =>void(require(['./wx/reply.vue'], resolve))

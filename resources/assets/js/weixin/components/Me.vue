@@ -38,7 +38,7 @@
                 <cell-box is-link link="">
                     投诉
                 </cell-box>
-                <cell-box is-link link="">
+                <cell-box is-link link="/feedback">
                     反馈
                 </cell-box>
             </group>

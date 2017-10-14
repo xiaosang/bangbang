@@ -15,8 +15,18 @@ window.Vue = require('vue');
  */
 import App from "./App.vue"
 import router from './router'
+import {filters} from './filter'
 import VueQuillEditor from 'vue-quill-editor'
+import  { AlertPlugin } from 'vux'
+import  { ConfirmPlugin } from 'vux'
+import  { LoadingPlugin } from 'vux'
+import  { ToastPlugin } from 'vux'
+
 Vue.use(VueQuillEditor)
+Vue.use(AlertPlugin)
+Vue.use(ConfirmPlugin)
+Vue.use(LoadingPlugin)
+Vue.use(ToastPlugin)
 
 Vue.prototype.toast_message = function (message,type='success',time=2000) {
     this.$vux.toast.show({
@@ -38,7 +48,6 @@ Vue.prototype.send_request = function (meth,url,callback,data=null) {
 }
 
 require("es6-promise").polyfill()
-import { filters } from './filter'
 
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])

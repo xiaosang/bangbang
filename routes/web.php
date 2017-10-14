@@ -22,6 +22,9 @@ Route::get('/test', function(){
 //    return view('index');
 //});
 
+//测试专用
+Route::get('/test', 'IndexController@test');
+
 Route::group(['middleware' => ['login.check']], function () {
 	Route::get('/', 'IndexController@index');
 	 include('admin.php');

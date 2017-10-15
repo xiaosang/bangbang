@@ -137,6 +137,7 @@
                     clsPrefix: 'xs-plugin-pulldown-'
                 },
                 swiperElement:'',
+                num:5,//任务显示条数
             }
         },
         methods:{
@@ -172,7 +173,11 @@
                 }
             },
             get_task_list(callback){
-                axios.get('/wx/main/get_task_list')
+                axios.get('/wx/main/get_task_list',{
+                    params:{
+                        num:this.num,
+                    }
+                })
                     .then((res)=>{
                         console.log(res)
                         this.list = res.data

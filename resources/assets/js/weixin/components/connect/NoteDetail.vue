@@ -2,8 +2,8 @@
     <div>
         <x-header>{{content['title']}}</x-header>
         <div class="content">
+            <p class="content-title">{{content['title']}}</p>
             <div class="connect-mid" v-html = "content['content']"></div>
-
             <blockquote class="connect-foot">
                 <span class="author">
                     <i slot="icon" class="ion-person"></i>
@@ -150,7 +150,6 @@
             getMsg(){
                 let self = this
                 axios.get('wx/connect/getMsg/'+self.note+"?page="+self.limit).then((response) => {
-                    console.log(response.data.msg)
                     let num = response.data.code
                     if(num>0){
                         for(var i=0;i<num;i++)
@@ -195,6 +194,13 @@
 <style  lang="less">
 .content{
     background-color: white;
+}
+.content-title{
+    font-size: 21px;
+    font-family: SimHei, "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+    color: rgb(5, 27, 40);
+    font-weight: 500;
+    padding: 5px 12px;
 }
 .connect-mid>p{
     line-height: 2.2em;

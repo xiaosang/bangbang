@@ -7,6 +7,7 @@ use Log;
 
 class Task extends Model
 {
+
     static public function index(){}
 
     /*  得到用户收货地址列表
@@ -57,15 +58,27 @@ class Task extends Model
         return $result;
     }
     /*得到最新num条任务信息
+    $start 开始条数
     $num 条数
+    $type 任务类型 -1全部 0有偿 1无偿
+    $time 创建时间
     */
-    static public function get_task_list($num){
+    static public function get_task_list($start,$num,$type,$time='-1'){
+        if($type == -1){
+            $type = [0,1];
+        }else if($type == 0){
+            $type = [0];
+        }else if($type == 1){
+            $type = [1];
+        }
         $result = DB::table('task')
             ->where('is_delete',0)
             ->where('status',0)
+            ->wherein('type',$type)
+            ->where('create_time','<=',$time=='-1'?time():$time)
             ->orderby('create_time','desc')
-            ->offset(0)
-            ->limit(5)
+            ->offset($start)
+            ->limit($num)
             ->get();
         return $result;
     }

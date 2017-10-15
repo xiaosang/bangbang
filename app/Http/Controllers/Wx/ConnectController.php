@@ -22,8 +22,9 @@ class ConnectController extends Controller
 	}
 	public function index(Request $request){
 		$limit = 7;
+		$type = $request->type;
 		$num = $request->page*$limit;
-		$data = Note::get_note($num,$limit);
+		$data = Note::get_note($num,$limit,$type);
 		return responseToJson($data->count(), $data,'success');
 	}
 	public function upload(Request $request){

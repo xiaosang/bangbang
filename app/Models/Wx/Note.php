@@ -13,23 +13,29 @@ class Note extends Model
 		3、帖子ID
 	*/
 	public static function set_note($obj){
+		$time = time();
 		$id = DB::table('note')->insert(
 			['name' => $obj['title'], 'content' => $obj['content'],'label'=>$obj['type'],
-			'create_time'=>time(),'create_user_id'=>$obj['user_id']]);
+			'create_time'=>$time,'create_user_id'=>$obj['user_id'],'update_time'=>$time]);
 		return $id;
 	}
 	/*
 		1、首页得到数据
-		2、跳过的数据条数，得到几条
+		2、跳过的数据条数，得到几条,帖子的类型
 		3、返回文章数据
 	*/
-	public static function get_note($num,$limit){
-		$data = DB::table('note')->where('is_delete',0)->leftJoin('user', 'user.id', '=', 'note.create_user_id')
+	public static function get_note($num,$limit,$type){
+		if($type>0)
+			$serch = ['label',$type];
+		else
+			$serch = ['label','>',$type];
+		$data = DB::table('note')->where([['is_delete',0],$serch])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
 			->select('note.id','note.name as title','user.name as author','content','read_num','comment_num',
 				'label','note.update_time')
 			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
+		$time = time();
 		foreach ($data as $key => $value) {
-			$value->update_time = time_diff(time(),$value->update_time);
+			$value->update_time = time_diff($time,$value->update_time);
 			$value->label = self::$label[$value->label];
 		}
 		return $data;

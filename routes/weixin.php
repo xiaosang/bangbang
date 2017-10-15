@@ -16,10 +16,21 @@ Route::group(['prefix' => 'release'], function () {
 Route::group(['prefix' => 'main'], function () {
     Route::get('/get_task_list','Wx\TaskController@get_task_list');
 });
+Route::group(['prefix' => 'task'], function () {
+    Route::get('/get_task','Wx\TaskController@get_task');
+});
 
 Route::group(['prefix' => 'me'], function () {
     Route::post('/user/info','ProfileController@get_user_info');        //获取用户信息
-    Route::post('/feedback/submit','Wx\ProposalController@submit_feedback');
+
+    Route::post('/feedback/submit','Wx\ProposalController@submit_feedback');    //提交反馈
+
+    Route::post('/complaint/list','Wx\ProposalController@get_complaint_list');   //获取投诉列表
+    Route::post('/user_list','Wx\ProposalController@get_user_list');       //获取除自己以外的所有用户
+    Route::post('/complaint/submit','Wx\ProposalController@submit_complaint');
+    Route::post('/complaint/single','Wx\ProposalController@single_complaint');
+
+
 });
 
 //账号设置

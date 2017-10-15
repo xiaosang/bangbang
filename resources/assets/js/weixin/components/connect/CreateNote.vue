@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: white">
+    <div class="creat-note">
         <x-header>发表帖子</x-header>
         <group>
             <x-input title="标题"  v-model="note.title" required placeholder="帖子标题" :max="20"></x-input>
@@ -10,21 +10,23 @@
             <x-button type="primary" action-type="button" @click.native="setNote">提交</x-button>
         </group>
         <toast v-model="remindState" type="text">{{remind}}</toast>
+         <loading :show="showLoad" :text="'正在加载'"></loading>
     </div>
 </template>
 
 <script>
     import Uploader from 'vux-uploader'
-    import { Toast,Divider,XTextarea,XInput,XButton,XHeader, Actionsheet,
+    import { Toast,Divider,XTextarea,XInput,XButton,XHeader, Actionsheet,Loading,
                     TransferDom, ButtonTab, ButtonTabItem,Group, Cell,Selector } from 'vux'
     export default {
         components: {
-            Group,Cell,Toast,Uploader,
+            Group,Cell,Toast,Uploader,Loading,
             XHeader,Actionsheet,ButtonTab,ButtonTabItem,
             XInput,XButton,XTextarea,Divider,Selector
         },
         data(){
             return {
+                showLoad: false,
                 list: [{key: '1', value: '分享'}, {key: '2', value: '讨论'},{key: '3', value: '提问'}],
                 note: {'title':'','content':'','type': 1},
                 remindState: false,  //是否显示提醒
@@ -53,6 +55,9 @@
                 let self = this
                 let formData = new window.FormData()
                 formData.append('img', self.$refs.input.files[0])
+                self.$vux.loading.show({
+                        text: '努力上传中'
+                })
                 axios.post(self.uploadUrl, formData).then((response) => {
                     if(response.data.code==1){
                         var value = response.data.msg
@@ -63,6 +68,7 @@
                         self.remind = response.data.msg
                         self.remindState = true;
                     }
+                    self.$vux.loading.hide()
                 })
             },
             //新建帖子
@@ -81,7 +87,7 @@
                     if(response.data.code == 0||response.data.code == 1){
                         self.remind = response.data.msg
                         self.remindState = true;
-                        return;
+                        self.$router.push('/connect')
                     }else if(response.data.code == 1){
                         self.remind = "系统错误"
                         self.remindState = true;
@@ -95,6 +101,10 @@
     }
 </script>
 <style lang="less">
+.creat-note{
+    background-color: white;
+    padding-bottom: 20px;
+}
 .ql-container {
     height: 120px;
  }

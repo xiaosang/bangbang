@@ -59,5 +59,5 @@ Route::group(['prefix' => 'order', 'middleware' => 'login.check'], function () {
 //首页统计信息
 Route::group(['prefix' => 'index', 'middleware' => 'login.check'], function () {
     Route::post('task', 'Admin\Index\IndexController@get_task');
-   
+    Route::post('user', 'Admin\Index\IndexController@get_new_add_user');
 });

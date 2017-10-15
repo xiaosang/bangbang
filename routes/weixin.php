@@ -16,6 +16,9 @@ Route::group(['prefix' => 'release'], function () {
 Route::group(['prefix' => 'main'], function () {
     Route::get('/get_task_list','Wx\TaskController@get_task_list');
 });
+Route::group(['prefix' => 'task'], function () {
+    Route::get('/get_task','Wx\TaskController@get_task');
+});
 
 Route::group(['prefix' => 'me'], function () {
     Route::post('/user/info','ProfileController@get_user_info');        //获取用户信息

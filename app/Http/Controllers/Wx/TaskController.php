@@ -77,8 +77,11 @@ class TaskController extends Controller
                         }],
                     ]
     */
-    public function get_task_list(){
-        $result = Task::get_task_list(5);
+    public function get_task_list(Request $request){//首页列表
+        $start = 0;
+        $num = $request->num;
+        $type = -1;
+        $result = Task::get_task_list($start,$num,$type);
         $data = [];
         foreach ($result as $v){
             $temp = [];
@@ -110,6 +113,15 @@ class TaskController extends Controller
         }
 //        dd($data);
         return $data;
+    }
+
+    public function get_task(Request $request){//任务列表
+        $time = $request->time;
+        $start = $request->start;
+        $num = $request->num;
+        $type = $request->type;
+        $result = Task::get_task_list($start,$num,$type,$time);
+        return responseToJson(1,"获取成功",$result);
     }
 
 

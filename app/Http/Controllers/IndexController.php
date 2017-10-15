@@ -22,8 +22,14 @@ class IndexController extends Controller
     }
     //测试专用
     public function test () {
-        (new MonitorTask(35,10))->end();
-        (new MonitorTask(36,30))->end();
-        echo '12341';
+//        (new MonitorTask(35,10))->end();
+//        (new MonitorTask(36,30))->end();
+//        echo '12341';
+        //连接本地的 Redis 服务
+        $redis = new \Redis();
+        $redis->connect('127.0.0.1', 6379);
+        echo "Connection to server sucessfully";
+        //查看服务是否运行
+        echo "Server is running: " . $redis->ping();
     }
 }

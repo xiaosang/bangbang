@@ -6,6 +6,7 @@ use App\Models\Wx\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Log;
+use App\Models\MonitorTask;
 
 class TaskController extends Controller
 {
@@ -46,7 +47,10 @@ class TaskController extends Controller
         $create_user_id = get_session_user_id();
         $key = str_rand(4);
 
+
         $result = Task::issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key);
+        $temp = $expected_time-time();//截至时间-当前时间
+        (new MonitorTask($result,$temp))->end();
 
         if($result){
             return responseToJson(1,'发布成功！', $key);

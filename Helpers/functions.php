@@ -317,6 +317,7 @@ function str_rand($num,$str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
  * $secs 秒
  * */
 function secsToStr($secs) {
+    $r = '';
     if($secs>=86400){
         $days=floor($secs/86400);
         $secs=$secs%86400;
@@ -325,6 +326,7 @@ function secsToStr($secs) {
     if($secs>=3600){
         $hours=floor($secs/3600);
         $secs=$secs%3600;
+
         $r.=$hours.' 小时 ';
     }
     if($secs>=60){

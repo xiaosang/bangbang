@@ -53,7 +53,7 @@ class Task extends Model
         ];
 
         $result = DB::table('task')
-            ->insert($data);
+            ->insertGetId($data);
 
         return $result;
     }

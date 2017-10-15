@@ -31,7 +31,7 @@
             <el-table-column
             label="详情"
             width="100">
-                <template scope="scope">
+                <template slot-scope="scope">
                     <el-popover trigger="click" placement="right">
                     <p style="max-width:200px"> {{ scope.row.content }}</p>
                     <div slot="reference" class="name-wrapper">
@@ -48,20 +48,20 @@
             <el-table-column
             label="是否匿名"
             width="100">
-            <template  scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
+            <template  slot-scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
             </el-table-column>
             <el-table-column
             label="预计接受时间">
-            <template  scope="scope">{{ scope.row.expected_time|date }}</template>
+            <template  slot-scope="scope">{{ scope.row.expected_time|date }}</template>
             </el-table-column>
             <el-table-column
             label="接受完成时间">
-            <template  scope="scope">{{ scope.row.complete_time|date }}</template>
+            <template  slot-scope="scope">{{ scope.row.complete_time|date }}</template>
             </el-table-column>
             <el-table-column
             label="支付金额"
             width="100">
-            <template  scope="scope">{{ scope.row.pay_money/100 }}</template>
+            <template  slot-scope="scope">{{ scope.row.pay_money/100 }}</template>
             </el-table-column>
             <el-table-column
             prop="user_name"
@@ -71,12 +71,12 @@
             <el-table-column
             label="类型"
             width="100">
-            <template  scope="scope"><span v-if="!scope.row.type">有偿</span><span v-if="scope.row.type">无偿</span></template>    
+            <template  slot-scope="scope"><span v-if="!scope.row.type">有偿</span><span v-if="scope.row.type">无偿</span></template>    
             </el-table-column>
             <el-table-column
             label="状态" 
             width="100">
-            <template  scope="scope">
+            <template  slot-scope="scope">
                 <span v-if="scope.row.status==0">
                     <el-tag type="danger">未接受</el-tag>
                 </span>
@@ -95,7 +95,7 @@
             </template>
             </el-table-column>
             <el-table-column type="expand">
-                <template scope="props">
+                <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand" v-if="exLoading">
                         <!-- <span v-if="scope.row.evaluate">{{ scope.row.evaluate }}fsdhgsdfgsdf</span> -->
                         <!-- <span v-if="scope[0].evaluate.length!=0">{{ scope.evaluate[0].id }}fsdhgsddfgsdf</span> -->

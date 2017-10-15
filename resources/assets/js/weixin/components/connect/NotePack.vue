@@ -88,9 +88,8 @@
 					width: 48px;
 					height: 48px;
 					border-radius: 50%;
-					border: 1px solid #eff2f7;
-					background-color: black;
 					display: inline-block;
+					background-color: black;
 				}
 				p{text-align: center}
 			}

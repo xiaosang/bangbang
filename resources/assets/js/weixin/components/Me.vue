@@ -35,7 +35,7 @@
                 </cell-box>
             </group>
             <group title="反馈与投诉">
-                <cell-box is-link link="">
+                <cell-box is-link link="/complaint/list">
                     投诉
                 </cell-box>
                 <cell-box is-link link="/feedback">

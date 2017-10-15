@@ -24,7 +24,7 @@
             <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1',0,'task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
                 <div style="padding-bottom: 10px;">
                     <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id">
-                        <masker style="border-radius: 5px;box-shadow: 0px 0px 5px #ef0404;">
+                        <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
                             <div slot="content" class="m-title">
@@ -54,7 +54,7 @@
             <scroller v-else-if="tabbar_val==1" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('1',0,'task_n')" @on-pullup-loading="up_updateTask('1','start_n','task_n')" ref="scroller" @on-scroll="onScroll('1')" height="-99">
                 <div style="padding-bottom: 10px;">
                     <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_n" :key="item.id">
-                        <masker style="border-radius: 5px;box-shadow: 0px 0px 5px #ef0404;">
+                        <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
                             <div slot="content" class="m-title">
@@ -83,7 +83,7 @@
             <scroller v-else-if="tabbar_val==2" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('0',0,'task_y')" @on-pullup-loading="up_updateTask('0','start_y','task_y')" ref="scroller" @on-scroll="onScroll('0')" height="-99">
                 <div style="padding-bottom: 10px;">
                     <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_y" :key="item.id">
-                        <masker style="border-radius: 5px;box-shadow: 0px 0px 5px #ef0404;">
+                        <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
                             <div slot="content" class="m-title">

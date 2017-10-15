@@ -21,5 +21,9 @@ Route::group(['prefix' => 'task'], function () {
 });
 
 Route::group(['prefix' => 'me'], function () {
-    Route::post('/user/info','ProfileController@get_user_info');
+    Route::post('/user/info','ProfileController@get_user_info');        //获取用户信息
+    Route::post('/feedback/submit','Wx\ProposalController@submit_feedback');
+
+
+
 });

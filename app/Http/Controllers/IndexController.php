@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MonitorTask;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Log;
@@ -19,5 +20,10 @@ class IndexController extends Controller
         return view("login");
 
     }
-
+    //测试专用
+    public function test () {
+        (new MonitorTask(35,10))->end();
+        (new MonitorTask(36,30))->end();
+        echo '12341';
+    }
 }

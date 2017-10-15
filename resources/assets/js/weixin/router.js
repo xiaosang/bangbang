@@ -75,5 +75,10 @@ export default new VueRouter({
             path:'/main/task/list',
             component: resolve =>void(require(['./components/main/TaskList.vue'], resolve))
         },
+        {
+            name:"账号设置",
+            path:'/accountset',
+            component: resolve =>void(require(['./components/me/proposal/Setting.vue'], resolve))
+        },
     ]
 })

@@ -21,9 +21,9 @@
         </x-header>
 
 
-            <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1',0,'task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
+            <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1','start_all','task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id">
+                    <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id" v-if="setInterval_time<item.expected_time">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
@@ -51,9 +51,9 @@
             </scroller>
 
 
-            <scroller v-else-if="tabbar_val==1" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('1',0,'task_n')" @on-pullup-loading="up_updateTask('1','start_n','task_n')" ref="scroller" @on-scroll="onScroll('1')" height="-99">
+            <scroller v-else-if="tabbar_val==1" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('1','start_n','task_n')" @on-pullup-loading="up_updateTask('1','start_n','task_n')" ref="scroller" @on-scroll="onScroll('1')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_n" :key="item.id">
+                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_n" :key="item.id" v-if="setInterval_time<item.expected_time">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
@@ -80,9 +80,9 @@
                 </div>
             </scroller>
 
-            <scroller v-else-if="tabbar_val==2" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('0',0,'task_y')" @on-pullup-loading="up_updateTask('0','start_y','task_y')" ref="scroller" @on-scroll="onScroll('0')" height="-99">
+            <scroller v-else-if="tabbar_val==2" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('0','start_y','task_y')" @on-pullup-loading="up_updateTask('0','start_y','task_y')" ref="scroller" @on-scroll="onScroll('0')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_y" :key="item.id">
+                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_y" :key="item.id" v-if="setInterval_time<item.expected_time">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
@@ -160,6 +160,7 @@
                 },
                 tabbar_val:0,//全部  有偿  无偿
                 time:'',//进入时间
+                setInterval_time:'',//每秒更新一次
                 start_all:0,//从第0条开始
                 start_y:0,//从第0条开始
                 start_n:0,//从第0条开始
@@ -173,12 +174,14 @@
             tabbar_change(value){
                 this.tabbar_val = value
                 try {
+                    if(!this.$refs.scroller.disablePullup()){
+                        this.$refs.scroller.enablePullup()
+                    }
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({
                             top: 0
                         })
                     })
-                    this.$refs.scroller.enablePullup()
                 }catch(e){
                     //第一次进由于上拉刷新还在 所以this.$refs.scroller.enablePullup()会报错
                 }
@@ -186,10 +189,11 @@
             down_updateTask(type,start,arr){
                 //下拉更新
                 this.time = Date.parse(new Date())/1000
-                this.get_task_list(type,start,(res)=>{
+                this[start] = this.num
+                this.get_task_list(type,this[start],(res)=>{
                     this[arr] = res.data.result
-                    this.start = this.num
                     this.$refs.scroller.donePulldown()
+                    this.$refs.scroller.enablePullup()
                 })
             },
             up_updateTask(type,start,arr){
@@ -197,6 +201,9 @@
                 this.get_task_list(type,start,(res)=>{
                     if(res.data.result.length == 0){
                         this.$refs.scroller.disablePullup()
+                        this.$nextTick(() => {
+                            this.$refs.scroller.reset()
+                        })
                     }else{
                         this[start]+=this.num
                         this[arr] = this[arr].concat(res.data.result)
@@ -231,6 +238,9 @@
 
         },
         mounted() {
+            setInterval(()=>{
+                this.setInterval_time = Date.parse(new Date())/1000
+            },1000)
             this.time = Date.parse(new Date())/1000
             this.get_task_list('-1',this.start,(res)=>{
                 this.task_all = this.task_all.concat(res.data.result)
@@ -244,6 +254,7 @@
                 this.task_n = this.task_n.concat(res.data.result)
                 this.start_n+=this.num
             })
+
         }
     }
 </script>

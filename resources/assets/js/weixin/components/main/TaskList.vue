@@ -23,7 +23,7 @@
 
             <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1',0,'task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id">
+                    <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
@@ -172,12 +172,16 @@
         methods:{
             tabbar_change(value){
                 this.tabbar_val = value
-                this.$nextTick(() => {
-                    this.$refs.scroller.reset({
-                        top: 0
+                try {
+                    this.$nextTick(() => {
+                        this.$refs.scroller.reset({
+                            top: 0
+                        })
                     })
-                })
-                this.$refs.scroller.enablePullup()
+                    this.$refs.scroller.enablePullup()
+                }catch(e){
+                    //第一次进由于上拉刷新还在 所以this.$refs.scroller.enablePullup()会报错
+                }
             },
             down_updateTask(type,start,arr){
                 //下拉更新

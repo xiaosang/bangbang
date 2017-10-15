@@ -61,6 +61,21 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/me/proposal/Feedback.vue'], resolve))
         },
         {
+            name:"complaint",
+            path:'/complaint',
+            component: resolve =>void(require(['./components/me/proposal/Complaint.vue'], resolve))
+        },
+        {
+            name:"complaint/list",
+            path:'/complaint/list',
+            component: resolve =>void(require(['./components/me/proposal/ComplaintList.vue'], resolve))
+        },
+        {
+            name:"complaint/detail",
+            path:'/complaint/detail/:complaint_id',
+            component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
+        },
+        {
             name:"发布",
             path:'/main/release',
             component: resolve =>void(require(['./components/main/Release.vue'], resolve))

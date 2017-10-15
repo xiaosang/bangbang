@@ -21,7 +21,7 @@ class CommentController extends Controller
 			Note::add_comment($data['noteId']);
 			$data['id'] = $id;
 			$data['reply'] = [];
-			$data['time'] = date('Y-m-d H:i');
+			$data['time'] = '2秒前';
 			return responseToJson($id, $data,'success');
 		}else{
 			return responseToJson(0, "非法操作",'error');

@@ -42,7 +42,7 @@
         <group>
             <!--<datetime v-model="complete_time" format="YYYY-MM-DD HH:mm"  title="完成时间" placeholder="设置任务完成所需时间" :start-date="startDate" :compute-hours-function="computeHoursFunction" @on-change="complete_time_change"></datetime>-->
             <x-address title="完成时间" v-model="task_finish_time" :list="task_finish_time_list" value-text-align="right" placeholder="完成任务所需时间"></x-address>
-            <datetime v-if="task_finish_time.length!=0" v-model="expected_time" format="YYYY-MM-DD HH:mm"  title="截至时间" placeholder="设置任务截至时间" :start-date="startDate" :compute-hours-function="computeHoursFunction" :minute-list="['00','10','20','30','40','50']"  @on-change="expected_time_change"></datetime>
+            <datetime v-if="task_finish_time.length!=0" v-model="expected_time" format="YYYY/MM/DD HH:mm"  title="截至时间" placeholder="设置任务截至时间" :start-date="startDate" :compute-hours-function="computeHoursFunction" :minute-list="['00','10','20','30','40','50']"  @on-change="expected_time_change"></datetime>
         </group>
         <p v-if="task_finish_time.length!=0" class="prompt">截止时间：到时间没人接任务将被取消</p>
 
@@ -156,7 +156,7 @@
                 this.temp_pay_money = ""
             },
             submit(){
-                this.expected_time = this.expected_time.replace(/\-/g, "/")
+//                this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
                 if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){

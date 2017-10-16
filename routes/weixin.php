@@ -26,6 +26,7 @@ Route::group(['prefix' => 'task'], function () {
 
 Route::group(['prefix' => 'me'], function () {
     Route::post('/user/info','ProfileController@get_user_info');        //获取用户信息
+
     Route::post('/feedback/submit','Wx\ProposalController@submit_feedback');    //提交反馈
 
     Route::post('/complaint/list','Wx\ProposalController@get_complaint_list');   //获取投诉列表
@@ -33,4 +34,10 @@ Route::group(['prefix' => 'me'], function () {
     Route::post('/complaint/submit','Wx\ProposalController@submit_complaint');
     Route::post('/complaint/single','Wx\ProposalController@single_complaint');
 
+
+});
+
+//账号设置
+Route::group(['prefix' => 'set'], function () {
+    Route::post('/school','Wx\FollowController@get_school');
 });

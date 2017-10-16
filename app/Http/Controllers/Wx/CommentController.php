@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 class CommentController extends Controller
 {
+	public $limit = 6;
 	public function submit_msg(Request $request){
 		$data = $request->all();
 		$user = get_session_user();
@@ -28,9 +29,30 @@ class CommentController extends Controller
 		}
 	}
 	public function get_msg(Request $request,$id){
-		$limit = 6;
+		$limit = $this->limit;
 		$num = $limit*$request->page;
 		$data = Message::get_msg($id,$num,$limit);
+		return responseToJson($data->count(), $data,'success');
+	}
+	public function msg_record(Request $request){
+		$limit = $this->limit;
+		$user = get_session_user();
+		$num = $limit*$request->page;
+		$data = Message::msg_record($num,$limit,$user->id);
+		return responseToJson($data->count(), $data,'success');
+	}
+	public function msg_remind(Request $request){
+		$limit = $this->limit;
+		$user = get_session_user();
+		$num = $limit*$request->page;
+		$data = Message::msg_remind($user->id);
+		return responseToJson($data->count(), $data,'success');
+	}
+	public function msg_remind_scorll(Request $request){
+		$limit = $this->limit;
+		$user = get_session_user();
+		$num = $limit*$request->page;
+		$data = Message::msg_remind_scorll($num,$limit,$user->id);
 		return responseToJson($data->count(), $data,'success');
 	}
 }

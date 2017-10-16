@@ -1,14 +1,12 @@
+<!-- 帖子的回复记录 -->
 <template>
     <div>
-        <x-header>帖子记录</x-header>
+        <x-header>回复记录</x-header>
         <scroller lock-x  height="-40px" use-pulldown use-pullup :pulldown-config="{downContent: '下拉刷新', upContent: '正在更新',loadingContent:''}"
             :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
                 <div>
                     <p v-for="i in bottomCount-1">
-                        <NoteRecord :author="connect[i].author" :time="connect[i].update_time" :label="connect[i].label"
-                        :read="connect[i].read_num" :comment="connect[i].comment_num" :createTime="connect[i].create_time">
-                             <p slot="title" @click="$router.push('/note/detail/'+connect[i].id)">{{connect[i].title}}</p>
-                        </NoteRecord>
+                        <MsgPack :item="connect[i]"></MsgPack>
                     </p>
                 </div>
                  <load-more :show-loading="pdState" v-show="pullDown" :tip="pullTitle"></load-more>
@@ -17,11 +15,11 @@
 </template>
 
 <script>
-    import NoteRecord from './NoteRecord.vue'
     import { Group, Cell,XHeader,Scroller,LoadMore } from 'vux'
+    import MsgPack from './MsgPack.vue'
     export default {
         components: {
-            Group,XHeader,Scroller,NoteRecord,LoadMore,
+            Group,XHeader,Scroller,MsgPack,LoadMore,
             Cell
         },
         data(){
@@ -41,7 +39,7 @@
         methods:{
             getConnect(state){
                 let self = this
-                axios.get("wx/connect/noteRecord?page="+self.limit).then(function(response){
+                axios.get("wx/connect/msgRecord?page="+self.limit).then(function(response){
                     let num = response.data.code
                     if (num>0) {
                         if(state==1){

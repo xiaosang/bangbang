@@ -1,6 +1,10 @@
 <?php
 Route::group(['prefix' => 'connect'], function () {
 	Route::get('/', 'Wx\ConnectController@index');
+               Route::get('/noteRecord', 'Wx\ConnectController@note_record');
+               Route::get('/msgRecord', 'Wx\CommentController@msg_record');
+               Route::get('/msgRemind', 'Wx\CommentController@msg_remind');
+               Route::get('/msgRemindScorll', 'Wx\CommentController@msg_remind_scorll');
 	Route::post('/setNote', 'Wx\ConnectController@set_note');
 	Route::post('/noteUpld', 'Wx\ConnectController@upload');
 	Route::get('/getImg', 'Wx\ConnectController@get_img');

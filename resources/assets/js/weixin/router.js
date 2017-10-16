@@ -43,12 +43,12 @@ export default new VueRouter({
         {
             name: "参与帖子",
             path: "/note/join",
-            component: resolve =>void(require(['./components/connect/JoinNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/ReplyRecode.vue'], resolve)),
         },
         {
             name: "社交消息",
             path: "/note/msg",
-            component: resolve =>void(require(['./components/connect/MsgNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/MsgRemind.vue'], resolve)),
         },
         {
             name:"我的",

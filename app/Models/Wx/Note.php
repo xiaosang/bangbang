@@ -54,6 +54,20 @@ class Note extends Model
 			$data = [];
 		return $data;
 	}
+	//得到用户发表帖子的记录
+	public static function note_record($num,$limit,$id){
+		$data = DB::table('note')->where([['is_delete',0],['create_user_id',$id]])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
+			->select('note.id','note.name as title','user.name as author','content','read_num','comment_num',
+				'label','note.update_time','note.create_time')
+			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
+		$time = time();
+		foreach ($data as $key => $value) {
+			$value->update_time = time_diff($time,$value->update_time);
+			$value->create_time = date("Y-m-d",$value->create_time);
+			$value->label = self::$label[$value->label];
+		}
+		return $data;
+	}
 	public static function add_read($id){
 		$res = DB::table('note')->where([['is_delete',0],['note.id',$id]])->increment('read_num');
 	}

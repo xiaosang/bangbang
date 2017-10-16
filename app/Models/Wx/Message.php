@@ -38,4 +38,38 @@ class Message extends Model
 		}
 		return $data;
 	}
+
+	public static function msg_record($num,$limit,$id){
+		$data = DB::table('comment')->where([['comment.is_delete',0],['comment.create_user_id',$id]])->leftJoin('note', 'note.id', '=', 'comment.note_id')->leftJoin('user', 'user.id', '=', 'note.create_user_id')
+			->select('comment.id', 'comment.content','comment.create_user_id as cid','comment.create_time as time','create_user_name as name','note.name as title','note.id as note_id','user.name as author')
+			->orderBy('comment.create_time', 'desc')->offset($num)->limit($limit)->get();
+		$time = time();
+		foreach ($data as $key => $value) {
+			$value->time = time_diff($time,$value->time);
+		}
+		return $data;
+	}
+
+	//得到消息记录
+	public static function msg_remind($id){
+		$data = DB::table('comment')->where([['comment.is_delete',0],['comment.reply_user_id',$id],['is_view',0]])->leftJoin('note', 'note.id', '=', 'comment.note_id')->leftJoin('user', 'user.id', '=', 'comment.create_user_id')
+			->select('comment.id', 'comment.content','comment.create_user_id as cid','comment.create_time as time','create_user_name as name','note.name as title','note.id as note_id','user.name as author')
+			->orderBy('comment.create_time', 'desc')->get();
+		//$res =   DB::table('comment')->where([['comment.is_delete',0],['comment.reply_user_id',$id],['is_view',0]])->update(['is_view' => 1]);
+		$time = time();
+		foreach ($data as $key => $value) {
+			$value->time = time_diff($time,$value->time);
+		}
+		return $data;
+	}
+	public static function msg_remind_scorll($num,$limit,$id){
+		$data = DB::table('comment')->where([['comment.is_delete',0],['comment.reply_user_id',$id],['is_view',1]])->leftJoin('note', 'note.id', '=', 'comment.note_id')->leftJoin('user', 'user.id', '=', 'comment.create_user_id')
+			->select('comment.id', 'comment.content','comment.create_user_id as cid','comment.create_time as time','create_user_name as name','note.name as title','note.id as note_id','user.name as author')
+			->orderBy('comment.create_time', 'desc')->offset($num)->limit($limit)->get();
+		$time = time();
+		foreach ($data as $key => $value) {
+			$value->time = time_diff($time,$value->time);
+		}
+		return $data;
+	}
 }

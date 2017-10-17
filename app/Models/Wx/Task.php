@@ -53,7 +53,7 @@ class Task extends Model
         ];
 
         $result = DB::table('task')
-            ->insert($data);
+            ->insertGetId($data);
 
         return $result;
     }
@@ -80,6 +80,30 @@ class Task extends Model
             ->offset($start)
             ->limit($num)
             ->get();
+        return $result;
+    }
+    /*
+     * 创建任务时候生成订单和任务完成时生成订单
+     * $order_code 订单编号
+     * $type  入账  出账
+     * $status 任务状态(0：未接受，1：已接受，2：已完成，3：已结束,4：已取消，5：到时间未接收)
+     * $pay_money 支付金额
+     * $task_id 任务ID
+     *
+     * */
+    static public function create_pay_order($order_code,$type,$status,$user_id,$user_name,$pay_money,$task_id){
+        $data = [
+            'order_code'=>$order_code,
+            'type'=>$type,
+            'create_time'=>time(),
+            'status'=>$status,
+            'user_id'=>$user_id,
+            'user_name'=>$user_name,
+            'pay_money'=>$pay_money,
+            'task_id'=>$task_id
+        ];
+        $result = DB::table('pay_order')
+            ->insert($data);
         return $result;
     }
 }

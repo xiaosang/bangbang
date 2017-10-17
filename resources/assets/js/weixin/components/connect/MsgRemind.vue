@@ -1,14 +1,19 @@
+<!-- 帖子的回复记录 -->
 <template>
     <div>
-        <x-header>帖子记录</x-header>
+        <x-header>消息记录</x-header>
+        <div>
+            <div class="label_title">未读消息</div>
+            <p v-for="i in remind.length">
+                <MsgPack :item="remind[i-1]"></MsgPack>
+            </p>
+            <div class="label_title">已读消息</div>
+        </div>
         <scroller lock-x  height="-40px" use-pulldown use-pullup :pulldown-config="{downContent: '下拉刷新', upContent: '正在更新',loadingContent:''}"
             :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
                 <div>
                     <p v-for="i in bottomCount-1">
-                        <NoteRecord :author="connect[i].author" :time="connect[i].update_time" :label="connect[i].label"
-                        :read="connect[i].read_num" :comment="connect[i].comment_num" :createTime="connect[i].create_time">
-                             <p slot="title" @click="$router.push('/note/detail/'+connect[i].id)">{{connect[i].title}}</p>
-                        </NoteRecord>
+                        <MsgPack :item="connect[i]"></MsgPack>
                     </p>
                 </div>
                  <load-more :show-loading="pdState" v-show="pullDown" :tip="pullTitle"></load-more>
@@ -17,11 +22,11 @@
 </template>
 
 <script>
-    import NoteRecord from './NoteRecord.vue'
     import { Group, Cell,XHeader,Scroller,LoadMore } from 'vux'
+    import MsgPack from './MsgPack.vue'
     export default {
         components: {
-            Group,XHeader,Scroller,NoteRecord,LoadMore,
+            Group,XHeader,Scroller,MsgPack,LoadMore,
             Cell
         },
         data(){
@@ -31,6 +36,7 @@
                 pdState: true,  //是否显示Loading的圆圈
                 bottomCount: 1,
                 connect: [],
+                remind: [],
                 limit: 0,
                 status: {
                     pullupStatus: 'default',
@@ -39,9 +45,21 @@
             }
         },
         methods:{
+            getRemind(){
+                let self = this
+                axios.get("wx/connect/msgRemind").then(function(response){
+                    let num = response.data.code
+                    if (num>=0) {
+                        self.remind = []
+                        for(var i=0;i<num;i++)
+                            self.remind[i] = response.data.msg[i]
+                        console.log(self.remind.length)
+                    }
+                });
+            },
             getConnect(state){
                 let self = this
-                axios.get("wx/connect/noteRecord?page="+self.limit).then(function(response){
+                axios.get("wx/connect/msgRemindScorll?page="+self.limit).then(function(response){
                     let num = response.data.code
                     if (num>0) {
                         if(state==1){
@@ -51,7 +69,7 @@
                         for(var i=0;i<num;i++)
                             self.connect[self.bottomCount+i] = response.data.msg[i]
                         self.bottomCount += num
-                        if(num<7){
+                        if(num<6){
                             self.pdState = false
                             self.pullDown = true
                             self.pullTitle = "没有更多数据"
@@ -99,6 +117,17 @@
         },
         mounted() {
             this.getConnect()
+            this.getRemind()
         }
     }
 </script>
+
+<style lang="less" scoped>
+.label_title{
+    padding: 7px;
+    background-color: white;
+    border-bottom: 2px solid #e8dede;
+    color: #827f7f;
+    font-weight: bold;
+}
+</style>

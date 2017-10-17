@@ -35,6 +35,10 @@ const filters = {
         var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = (mss % (1000 * 60)) / 1000;
         return days + " 天 " + hours + " 小时 " + minutes + " 分钟 ";
+    },
+    //去掉html标签
+    delHtmlTag:function(str){
+        return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
     }
 
 }

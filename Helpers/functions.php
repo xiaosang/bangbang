@@ -151,7 +151,7 @@ function get_pinyin_all($str)
 
 function millisecond()
 {
-     return ceil(microtime(true) * 1000);
+     return floor(microtime(true) * 1000);
 }
 
 /**
@@ -281,22 +281,24 @@ function thumbnail($src, $filename, $filepath, $width = 150, $height = null) {
     return true;
 }
 /**
- * 生成缩略图函数（支持图片格式：gif、jpeg、png）
- * @param  string $src      源图片路径
- * @param  string $filename 保存名字
+ * 得到记录的时间距离当前时间的长度
+ * @param  string $big      现在时间
+ * @param  string $little   记录更新时间
  */
 function time_diff($big,$little){
-    $diff = ceil(($big-$little)/60000);
-    if(0<=$diff&&$diff<60)
-        return $diff."分钟前";
-    elseif(60<=$diff&&$diff<3600)
-        return (ceil($diff/60))."小时前";
+    $diff = $big-$little;
+    if(0<=$diff&&$diff<60){
+        return $diff."秒前";
+    }elseif(60<=$diff&&$diff<3600)
+        return (floor($diff/60))."分钟前";
     elseif(3600<=$diff&&$diff<86400)
-        return (ceil($diff/1440))."天前";
+        return (floor($diff/3600))."小时前";
     elseif(86400<=$diff&&$diff<2592000)
-        return (ceil($diff/43200))."月前";
-    elseif(2592000<=$diff&&$diff<=946080000)
-        return (ceil($diff/157680000))."年前";
+        return (floor($diff/86400))."天前";
+    elseif(2592000<=$diff&&$diff<62208000)
+        return (floor($diff/43200*2592000))."月前";
+    elseif(62208000<=$diff)
+        return (floor($diff/518400*60))."年前";
 }
 
 /*
@@ -317,6 +319,7 @@ function str_rand($num,$str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvw
  * $secs 秒
  * */
 function secsToStr($secs) {
+    $r = '';
     if($secs>=86400){
         $days=floor($secs/86400);
         $secs=$secs%86400;
@@ -325,6 +328,7 @@ function secsToStr($secs) {
     if($secs>=3600){
         $hours=floor($secs/3600);
         $secs=$secs%3600;
+
         $r.=$hours.' 小时 ';
     }
     if($secs>=60){

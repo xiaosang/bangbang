@@ -6,6 +6,7 @@ use App\Models\Wx\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Log;
+use App\Models\MonitorTask;
 
 class TaskController extends Controller
 {
@@ -46,12 +47,39 @@ class TaskController extends Controller
         $create_user_id = get_session_user_id();
         $key = str_rand(4);
 
-        $result = Task::issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key);
 
-        if($result){
-            return responseToJson(1,'发布成功！', $key);
+        $task_id = Task::issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key);
+        $temp = $expected_time-time();//截至时间-当前时间
+//        (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
+
+        if($task_id){
+            return responseToJson(1,'发布成功！', [$key , $task_id]);
         }else{
             return responseToJson(0,'发布失败！');
+        }
+    }
+
+    /*
+     * 创建任务时候生成订单和任务完成时生成订单
+     * $type  入账  出账
+     * $status 任务状态(0：未接受，1：已接受，2：已完成，3：已结束,4：已取消，5：到时间未接收)
+     * $pay_money 支付金额
+     * $task_id 任务ID
+     *
+     * */
+    public function create_pay_order(Request $request){
+        $pay_money = $request->pay_money*100;
+        $task_id = $request->task_id;
+        $user_id = get_wx_user()->id;
+        $user_name = get_wx_user()->name;
+        $type = 0;//0入账   1出账
+        $status = 0;
+        $order_code = time().'_'.uniqid();
+        $create_pay_order = Task::create_pay_order($order_code,$type,$status,$user_id,$user_name,$pay_money,$task_id);
+        if($create_pay_order){
+            return responseToJson(1,'订单创建成功！');
+        }else{
+            return responseToJson(0,'订单创建失败！');
         }
     }
     /*
@@ -111,8 +139,7 @@ class TaskController extends Controller
             array_push($temp,$btn_arr);
             array_push($data,$temp);
         }
-//        dd($data);
-        return $data;
+        return responseToJson(1,'获取数据成功！', $data);
     }
 
     public function get_task(Request $request){//任务列表

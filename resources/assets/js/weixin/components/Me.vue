@@ -18,7 +18,10 @@
                 <!--<div class="detail"><i class="fa fa-angle-right"></i></div>-->
                 <div class="main_info"></div>
                 <cell-box is-link link="">
-                    <i class="fa fa-cog cell_i"></i>账号设置
+                    <i class="fa fa-cog cell_i"></i>
+                    <cell-box is-link link="/accountset">
+                        账号设置
+                    </cell-box>
                 </cell-box>
             </group>
             <group title="任务">
@@ -35,7 +38,7 @@
                 </cell-box>
             </group>
             <group title="反馈与投诉">
-                <cell-box is-link link="">
+                <cell-box is-link link="/complaint/list">
                     投诉
                 </cell-box>
                 <cell-box is-link link="/feedback">

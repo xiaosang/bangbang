@@ -1,18 +1,14 @@
-<!-- 帖子的显示块 -->
+<!-- 发表帖子记录的显示块 -->
 <template>
 	<div class="m-piece">
 		<div class="m-cell-media-wrap">
 			<div class="m-cell-media-top">
 				<span v-if="label" class="label">{{label}}</span>
-				<span> ·</span>
+				<span> ·最新动态</span>
 				<span v-if="time" class="top-time">{{time}}</span>
 			</div>
 			<div class="m-cell-media-middle">
 				<div class="m-cell-media">
-					<div class="m-cell-author m-ellipsis-2">
-						<img src="" alt=".">
-						<p v-if="author">{{author}}</p>
-					</div>
 					<div class="m-cell-title m-ellipsis-2">
 						<slot name="title"></slot>
 					</div>
@@ -25,6 +21,10 @@
 							<i slot="icon" class="ion-chatbox-working"></i>
 							<span>{{comment}}</span>
 						</span>
+						<span v-if="createTime">
+							<i slot="icon" class="ion-calendar"></i>
+							<span>{{createTime}}</span>
+						</span>
 					</div>
 				</div>
 
@@ -33,9 +33,10 @@
 		</div>
 	</div>
 </template>
+
 <script>
 	export default {
-		props: ['author', 'time','read','comment','label']
+		props: ['author', 'time','read','comment','label','createTime']
 	}
 </script>
 <style lang="less">
@@ -77,23 +78,6 @@
 				font-weight: bold;
 				p{padding: 10px 60px 10px 0;}
 			}
-			//用户信息显示
-			.m-cell-author {
-			    	right: 20px;
-			    	bottom: 50%;
-			    	color: #939393;
-			    	position: absolute;
-			    	transform: translateY(50%);
-				img{
-					width: 48px;
-					height: 48px;
-					border-radius: 50%;
-					display: inline-block;
-					background-color: black;
-				}
-				p{text-align: center}
-			}
-
 			.m-pull-right {
 				width: 94px;
 				height: 94px;

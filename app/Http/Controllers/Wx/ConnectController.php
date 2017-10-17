@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ConnectController extends Controller
 {
+	public $limit = 7;	//得到帖子的记录数
 	public function set_note(Request $request){
 		$obj = $request->all();
 		$user = get_session_user();
@@ -21,9 +22,10 @@ class ConnectController extends Controller
 		return responseToJson(1, "文章发表成功",'success');
 	}
 	public function index(Request $request){
-		$limit = 7;
+		$limit = $this->limit;
+		$type = $request->type;
 		$num = $request->page*$limit;
-		$data = Note::get_note($num,$limit);
+		$data = Note::get_note($num,$limit,$type);
 		return responseToJson($data->count(), $data,'success');
 	}
 	public function upload(Request $request){
@@ -52,5 +54,13 @@ class ConnectController extends Controller
 		}else{
 			return responseToJson(0, "不存在此文章",'error');
 		}
+	}
+
+	public function note_record(Request $request){
+		$limit = $this->limit;
+		$user = get_session_user();
+		$num = $request->page*$limit;
+		$data = Note::note_record($num,$limit,$user->id);
+		return responseToJson($data->count(), $data,'success');
 	}
 }

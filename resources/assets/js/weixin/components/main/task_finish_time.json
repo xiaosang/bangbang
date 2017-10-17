@@ -774,7 +774,7 @@
   {"name":"21小时","value":"75600H","parent":"2592000T"},
   {"name":"22小时","value":"79200H","parent":"2592000T"},
   {"name":"23小时","value":"82800H","parent":"2592000T"},
-  {"name":"0分钟","value":"0M","parent":"0H"},
+
   {"name":"1分钟","value":"60M","parent":"0H"},
   {"name":"2分钟","value":"120M","parent":"0H"},
   {"name":"3分钟","value":"180M","parent":"0H"},

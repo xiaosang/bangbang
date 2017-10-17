@@ -43,12 +43,12 @@ export default new VueRouter({
         {
             name: "参与帖子",
             path: "/note/join",
-            component: resolve =>void(require(['./components/connect/JoinNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/ReplyRecode.vue'], resolve)),
         },
         {
             name: "社交消息",
             path: "/note/msg",
-            component: resolve =>void(require(['./components/connect/MsgNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/MsgRemind.vue'], resolve)),
         },
         {
             name:"我的",
@@ -59,6 +59,21 @@ export default new VueRouter({
             name:"feedback",
             path:'/feedback',
             component: resolve =>void(require(['./components/me/proposal/Feedback.vue'], resolve))
+        },
+        {
+            name:"complaint",
+            path:'/complaint',
+            component: resolve =>void(require(['./components/me/proposal/Complaint.vue'], resolve))
+        },
+        {
+            name:"complaint/list",
+            path:'/complaint/list',
+            component: resolve =>void(require(['./components/me/proposal/ComplaintList.vue'], resolve))
+        },
+        {
+            name:"complaint/detail",
+            path:'/complaint/detail/:complaint_id',
+            component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
         },
         {
             name:"发布",
@@ -76,9 +91,15 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/main/TaskList.vue'], resolve))
         },
         {
+            name:"账号设置",
+            path:'/accountset',
+            component: resolve =>void(require(['./components/me/proposal/Setting.vue'], resolve))
+        },
+        {
             name:"任务详情",
             path:'/main/task/info/:id',
             component: resolve =>void(require(['./components/main/TaskInfo.vue'], resolve))
+
         },
     ]
 })

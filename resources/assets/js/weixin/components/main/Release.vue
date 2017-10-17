@@ -150,7 +150,7 @@
                 let expected_time = Date.parse(new Date(value))/1000
                 let now_time = Date.parse(new Date())/1000
                 if(expected_time <= now_time){
-                    alert("截止时间不能小于当前时间")
+                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
                 }
             },
             type_change(){
@@ -162,11 +162,11 @@
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
                 if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){
-                    alert("请输入正确的金额")
+                    this.$vux.toast.text('请输入正确的金额!', 'top')
                     return false
                 }
                 if( expected_time <= now_time ){
-                    alert("截止时间不能小于当前时间")
+                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
                     return false
                 }
                 if(this.releaseOnOff){
@@ -210,11 +210,11 @@
                                         this.$router.push({ path: '/main/IssueSuccess/' + res.data.result[0] })//0->key
                                     }
                                 }else{
-                                    alert('发布失败');
+                                    this.$vux.toast.text('发布失败!', 'top')
                                 }
                         })
                             .catch((err)=>{
-                                alert("网络异常，请重新尝试！2")
+                                this.$vux.toast.text('网络异常!', 'top')
                         })
                     })
                         .then( ( param ) => {
@@ -227,7 +227,7 @@
                                         resolve("支付成功！")
                                     })
                                     .catch((error)=>{
-                                        alert("网络异常，请重新尝试！1")
+                                        this.$vux.toast.text('网络异常!', 'top')
                                     })
                             })
 
@@ -291,7 +291,7 @@
                     console.log(res.data)
                 })
                 .catch((err)=>{
-                    alert("网络异常，请重新尝试！")
+                    this.$vux.toast.text('网络异常!', 'top')
                 })
             },
             get_address_list(){
@@ -305,7 +305,7 @@
                         console.log(res.data)
                     })
                     .catch((err)=>{
-                        alert("网络异常，请重新尝试！")
+                        this.$vux.toast.text('网络异常!', 'top')
                     })
             },
             is_hide_change(value){

@@ -39,7 +39,8 @@
 
 <script>
     import Navbottom from './NavBottom.vue'
-    import { Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller , Divider   } from 'vux'
+    import { Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller , Divider , ToastPlugin  } from 'vux'
+    Vue.use(ToastPlugin)
     export default {
         components: {
             Navbottom,
@@ -51,7 +52,8 @@
             GridItem,
             FormPreview,
             Scroller,
-            Divider
+            Divider,
+            ToastPlugin
         },
         data(){
             return {
@@ -192,7 +194,7 @@
                         this.$vux.loading.hide()
                     })
                     .catch((err)=>{
-                        alert("网络异常，请稍后重试！")
+                        this.$vux.toast.text('网络异常!', 'top')
                     })
             },
             test(){

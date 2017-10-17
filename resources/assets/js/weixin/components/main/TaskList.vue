@@ -131,14 +131,16 @@
 </template>
 
 <script>
-    import { XHeader , Tabbar, TabbarItem , Scroller , Masker  } from 'vux'
+    import { XHeader , Tabbar, TabbarItem , Scroller , Masker , ToastPlugin } from 'vux'
+    Vue.use(ToastPlugin)
     export default {
         components: {
             XHeader,
             Tabbar,
             TabbarItem,
             Scroller,
-            Masker
+            Masker,
+            ToastPlugin
         },
         data(){
             return {
@@ -233,7 +235,7 @@
                         if(callback)callback(res);
                     })
                     .catch((err)=>{
-                        alert("网络异常，请稍后重试！")
+                        this.$vux.toast.text('网络异常!', 'top')
                     })
             },
             onScroll (type) {

@@ -169,7 +169,7 @@
                 start_all:0,//从第0条开始
                 start_y:0,//从第0条开始
                 start_n:0,//从第0条开始
-                num:20,//显示/更新 数量
+                num:10,//显示/更新 数量
                 task_all:[],
                 task_y:[],
                 task_n:[],
@@ -182,7 +182,7 @@
                     if(!this.$refs.scroller.disablePullup()){
                         this.$refs.scroller.enablePullup()
                     }
-                    this.$refs.scroller.disablePullup()
+//                    this.$refs.scroller.disablePullup()
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({
                             top: 0
@@ -229,7 +229,9 @@
                     }
                 })
                     .then((res)=>{
-                        if(res.data.result.length <= this.num){
+                    console.log(res.data.result.length)
+                    console.log(this.num)
+                        if(res.data.result.length < this.num){
                             this.$refs.scroller.disablePullup()
                         }
                         if(callback)callback(res);

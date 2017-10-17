@@ -77,8 +77,9 @@
 </template>
 
 <script>
-    import { XHeader ,XInput,Group , XTextarea , Checker , CheckerItem , Datetime , XSwitch ,XAddress , TransferDom , Popup ,XButton , Picker } from 'vux'
+    import { XHeader ,XInput,Group , XTextarea , Checker , CheckerItem , Datetime , XSwitch ,XAddress , TransferDom , Popup ,XButton , Picker , ToastPlugin  } from 'vux'
     const task_finish_time = require('./task_finish_time.json')
+    Vue.use(ToastPlugin)
 
     export default {
         directives: {
@@ -96,7 +97,8 @@
             XAddress,
             Popup,
             XButton,
-            Picker
+            Picker,
+            ToastPlugin
         },
         data(){
             return {
@@ -168,11 +170,9 @@
                     return false
                 }
                 if(this.releaseOnOff){
-//                    if(this.type == 0){//有偿
-//
-//                    }else if(this.type == 1){//无偿
-//
-//                    }
+                    this.$vux.loading.show({
+                        text: '正在发布...'
+                    })
                     let param = {
                         type:this.type,
                         name:this.name,
@@ -186,17 +186,94 @@
                         user_phone:this.user_phone,
                         is_hide:this.is_hide
                     }
-                    axios.post('/wx/release/issue_task',param)
+
+                    new Promise( ( resolve , reject ) => {
+                        axios.post('/wx/release/issue_task',param)
+                            .then((res)=>{
+                            var aaa =false;
+                                this.$vux.loading.hide()
+                                if(res.data.code == 1){//发布成功
+
+                                    if(this.type == 0){//有偿
+                                        this.$vux.loading.show({
+                                            text: '生成订单...'
+                                        })
+                                        //生成订单  $task_id  res.data.result[1]  1->id
+                                        let param = {
+                                            pay_money : this.pay_money,
+                                            task_id : res.data.result[1]
+                                        }
+
+                                        resolve(param)
+
+                                    }else if(this.type == 1){//无偿
+                                        this.$router.push({ path: '/main/IssueSuccess/' + res.data.result[0] })//0->key
+                                    }
+                                }else{
+                                    alert('发布失败');
+                                }
+                        })
+                            .catch((err)=>{
+                                alert("网络异常，请重新尝试！2")
+                        })
+                    })
+                        .then( ( param ) => {
+                            console.log(param)
+                            return new Promise( ( resolve , reject ) => {
+                                axios.post('/wx/release/create_pay_order',param)
+                                    .then((result)=>{
+                                        this.$vux.loading.hide()
+                                        //调用支付接口
+                                        resolve("支付成功！")
+                                    })
+                                    .catch((error)=>{
+                                        alert("网络异常，请重新尝试！1")
+                                    })
+                            })
+
+                        } )
+                        .then( ( res )=>{
+                            this.$vux.toast.show({
+                                text: res
+                            })
+                            setTimeout(()=>{
+                                this.$vux.toast.hide()
+                            },3000)
+                        })
+
+                    /*axios.post('/wx/release/issue_task',param)
                         .then((res)=>{
-                        if(res.data.code == 1){
-                            this.$router.push({ path: '/main/IssueSuccess/' + res.data.result })
-                        }else{
-                            alert('发布失败');
-                        }
+                            this.$vux.loading.hide()
+                            if(res.data.code == 1){//发布成功
+                                if(this.type == 0){//有偿
+                                    alert('有偿')
+                                    this.$vux.loading.show({
+                                        text: '生成订单...'
+                                    })
+                                    //生成订单  $task_id  res.data.result[1]  1->id
+                                    let param = {
+                                        pay_money : this.pay_money,
+                                        task_id : res.data.result[1]
+                                    }
+                                    axios.post('/wx/release/create_pay_order',param)
+                                        .then((result)=>{
+                                            this.$vux.loading.hide()
+                                            //调用支付接口
+                                            console.log(result.data.msg)
+                                        })
+                                        .catch((error)=>{
+                                            alert("网络异常，请重新尝试！")
+                                        })
+                                }else if(this.type == 1){//无偿
+                                    this.$router.push({ path: '/main/IssueSuccess/' + res.data.result[0] })//0->key
+                                }
+                            }else{
+                                alert('发布失败');
+                            }
                     })
                         .catch((err)=>{
                             alert("网络异常，请重新尝试！")
-                    })
+                    })*/
                 }
             },
             select_address (value) {

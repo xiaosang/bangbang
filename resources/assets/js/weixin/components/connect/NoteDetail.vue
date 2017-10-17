@@ -203,10 +203,8 @@
     padding: 5px 12px;
 }
 .connect-mid>p{
-    line-height: 2.2em;
-    text-indent: 2em;
     font-size: 14px;
-    padding: 10px 5px;
+    padding: 5px 12px;
     color: #999999;
 }
 .comment-res{float: right;}

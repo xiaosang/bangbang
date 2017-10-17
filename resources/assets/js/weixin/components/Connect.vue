@@ -26,10 +26,10 @@
               </div>
         </div>
 
-        <div>
+        <div class="note-scroller">
             <scroller lock-x  height="-40px" use-pulldown use-pullup :pulldown-config="{downContent: '下拉刷新', upContent: '正在更新',loadingContent:''}"
             :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
-                <div class="box2">
+                <div>
                     <p v-for="i in bottomCount-1">
                         <NotePack :author="connect[i].author" :time="connect[i].update_time" :label="connect[i].label"
                         :read="connect[i].read_num" :comment="connect[i].comment_num">
@@ -171,7 +171,7 @@
     }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .nav_top>.weui-tabbar{
     top: 0px;
     bottom: auto;
@@ -263,7 +263,9 @@
           font-size: 24px;
         }
 }
-//scroller容器
-.xs-container{padding-top: 45px;}
-.xs-plugin-pulldown-container{top: -15px!important;}
+</style>
+<style type="text/css">
+    .note-scroller .xs-container{padding-top: 45px;}
+    .note-scroller .xs-plugin-pulldown-container{top: -15px!important;}
+
 </style>

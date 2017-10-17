@@ -19,16 +19,11 @@ export default new VueRouter({
             path: '/user/list',
             component: resolve =>void(require(['./user/List.vue'], resolve))
         },
-        // {
-        //     name: 'user_edit',
-        //     path: '/user/edit',
-        //     component: resolve =>void(require(['./user/Edit.vue'], resolve))
-        // },
-        // {
-        //     name: 'user_import',
-        //     path: '/user/import',
-        //     component: resolve =>void(require(['./user/Import.vue'], resolve))
-        // },
+        //论坛
+        {
+            path: '/forum/note',
+            component: resolve =>void(require(['./forum/NoteList.vue'], resolve))
+        },
     	{
             path: '/wx/reply',
             component: resolve =>void(require(['./wx/reply.vue'], resolve))

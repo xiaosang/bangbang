@@ -115,8 +115,7 @@ class TaskController extends Controller
             array_push($temp,$btn_arr);
             array_push($data,$temp);
         }
-//        dd($data);
-        return $data;
+        return responseToJson(1,'获取数据成功！', $data);
     }
 
     public function get_task(Request $request){//任务列表

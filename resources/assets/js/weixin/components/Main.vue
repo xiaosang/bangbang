@@ -24,9 +24,12 @@
         </grid>
 
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
-            <div class="task">
-                <form-preview header-label="任务类型" :header-value=" item[item.length-2] ? '无偿' : '有偿' " :body-items="item" :footer-buttons="item[item.length-1]" v-for="item,index in list" :key="index"  class="item"></form-preview>
-                <divider style="font-size: 12px;opacity: 0.4;">仅显示最新五条</divider>
+            <div>
+                <div class="task" v-if="list.length">
+                    <form-preview header-label="任务类型" :header-value=" item[item.length-2] ? '无偿' : '有偿' " :body-items="item" :footer-buttons="item[item.length-1]" v-for="item,index in list" :key="index"  class="item"></form-preview>
+                    <divider style="font-size: 12px;opacity: 0.4;">仅显示最新五条</divider>
+                </div>
+                <divider style="font-size: 12px;opacity: 0.4;" v-else>暂时没有任务</divider>
             </div>
         </scroller>
 
@@ -179,9 +182,10 @@
                     }
                 })
                     .then((res)=>{
-                        console.log(res)
-                        this.list = res.data
+                        console.log(res.data)
+                        this.list = res.data.result
                         if(callback)callback();
+                        this.$vux.loading.hide()
                     })
                     .catch((err)=>{
                         alert("网络异常，请稍后重试！")
@@ -191,10 +195,14 @@
             }
         },
         mounted() {
+            this.$vux.loading.show({
+                text: 'Loading'
+            })
             //查看公告是否显示，本地存储
             this.announcement = localStorage.getItem('announcement');
             this.swiperElement = document.getElementById('swiper')
             this.get_task_list()
+
         }
     }
 </script>

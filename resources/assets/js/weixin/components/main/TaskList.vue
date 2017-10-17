@@ -21,7 +21,7 @@
         </x-header>
 
 
-            <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1','start_all','task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
+            <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown"  use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1','start_all','task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
                 <div style="padding-bottom: 10px;">
                     <!--<router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id" v-if="setInterval_time<item.expected_time">-->
                     <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id">
@@ -180,6 +180,7 @@
                     if(!this.$refs.scroller.disablePullup()){
                         this.$refs.scroller.enablePullup()
                     }
+                    this.$refs.scroller.disablePullup()
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({
                             top: 0
@@ -196,7 +197,9 @@
                 this.get_task_list(type,this[start],(res)=>{
                     this[arr] = res.data.result
                     this.$refs.scroller.donePulldown()
-                    this.$refs.scroller.enablePullup()
+                    if(res.data.result.length >= this.num){
+                        this.$refs.scroller.enablePullup()
+                    }
                 })
             },
             up_updateTask(type,start,arr){
@@ -224,6 +227,9 @@
                     }
                 })
                     .then((res)=>{
+                        if(res.data.result.length <= this.num){
+                            this.$refs.scroller.disablePullup()
+                        }
                         if(callback)callback(res);
                     })
                     .catch((err)=>{
@@ -235,19 +241,23 @@
                     this.$refs.scroller.reset()
                 })
             },
-
         },
         watch:{
 
         },
         mounted() {
+            this.$vux.loading.show({
+                text: 'Loading'
+            })
             setInterval(()=>{
                 this.setInterval_time = Date.parse(new Date())/1000
             },1000)
             this.time = Date.parse(new Date())/1000
+
             this.get_task_list('-1',this.start,(res)=>{
                 this.task_all = this.task_all.concat(res.data.result)
                 this.start_all+=this.num
+                this.$vux.loading.hide()
             })
             this.get_task_list('0',this.start,(res)=>{
                 this.task_y = this.task_y.concat(res.data.result)

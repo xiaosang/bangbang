@@ -27,9 +27,9 @@
             <div>
                 <div class="task" v-if="list.length">
                     <form-preview header-label="任务类型" :header-value=" item[item.length-2] ? '无偿' : '有偿' " :body-items="item" :footer-buttons="item[item.length-1]" v-for="item,index in list" :key="index"  class="item"></form-preview>
-                    <divider style="font-size: 12px;opacity: 0.4;">仅显示最新五条</divider>
+                    <divider style="font-size: 12px;opacity: 0.4;">仅显示最新{{ show_num }}条任务</divider>
                 </div>
-                <divider style="font-size: 12px;opacity: 0.4;" v-else>暂时没有任务</divider>
+                <divider style="font-size: 12px;opacity: 0.4;" v-if="show_result">暂时没有任务</divider>
             </div>
         </scroller>
 
@@ -141,6 +141,8 @@
                 },
                 swiperElement:'',
                 num:5,//任务显示条数
+                show_num:'',//仅显示最近show_num条数据
+                show_result:false,//暂时没有任务
             }
         },
         methods:{
@@ -182,7 +184,9 @@
                     }
                 })
                     .then((res)=>{
+                        if(res.data.result.length == 0)this.show_result = true
                         console.log(res.data)
+                        this.show_num = res.data.result.length
                         this.list = res.data.result
                         if(callback)callback();
                         this.$vux.loading.hide()

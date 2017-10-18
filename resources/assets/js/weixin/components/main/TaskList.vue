@@ -223,8 +223,8 @@
                     }
                 })
                     .then((res)=>{
-                    console.log(res.data.result.length)
-                    console.log(this.num)
+//                    console.log(res.data.result.length)
+//                    console.log(this.num)
                         if(res.data.result.length < this.num){
                             this.$refs.scroller.disablePullup()
                         }

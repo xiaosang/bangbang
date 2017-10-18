@@ -10,11 +10,11 @@ export default new VueRouter({
             path:'/test',
             component: resolve =>void(require(['./components/Example.vue'], resolve))
         },
-        {
-            name:"首页",
-            path:'/',
-            component: resolve =>void(require(['./components/Index.vue'], resolve))
-        },
+        // {
+        //     name:"首页",
+        //     path:'/',
+        //     component: resolve =>void(require(['./components/Index.vue'], resolve))
+        // },
         {
             name:"首页",
             path:'/main',
@@ -76,7 +76,7 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
         },
         {
-            name:"发布",
+            name:"发布任务",
             path:'/main/release',
             component: resolve =>void(require(['./components/main/Release.vue'], resolve))
         },

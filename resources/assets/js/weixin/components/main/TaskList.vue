@@ -169,7 +169,7 @@
                 start_all:0,//从第0条开始
                 start_y:0,//从第0条开始
                 start_n:0,//从第0条开始
-                num:10,//显示/更新 数量
+                num:30,//显示/更新 数量
                 task_all:[],
                 task_y:[],
                 task_n:[],
@@ -179,10 +179,7 @@
             tabbar_change(value){
                 this.tabbar_val = value
                 try {
-                    if(!this.$refs.scroller.disablePullup()){
-                        this.$refs.scroller.enablePullup()
-                    }
-//                    this.$refs.scroller.disablePullup()
+                    this.$refs.scroller.enablePullup()
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({
                             top: 0

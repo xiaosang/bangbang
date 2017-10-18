@@ -9,20 +9,45 @@
             </div>
         </blur>
 
-        
+        <group title="任务标题">
+            <cell-box >帮我买饭帮我买饭帮我买饭帮我买饭</cell-box>
+        </group>
+
+        <group title="任务描述">
+            <cell-box>我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我我</cell-box>
+        </group>
+
+        <group title="限定时间">
+            <cell-box>88 天 88 小时 88 分钟</cell-box>
+        </group>
+
+        <group title="收货地址">
+            <cell-box>河南科技学院科研楼B段505</cell-box>
+        </group>
+
+        <group title="联系方式">
+            <cell-box>周旭 15937368751</cell-box>
+        </group>
+
+        <group>
+            <x-button type="primary" >接受任务</x-button>
+        </group>
 
 
-        <h1>{{ id }}</h1>
+
+        <!--<h1>{{ id }}</h1>-->
     </div>
 </template>
 
 <script>
-    import { Group, Cell , Blur  } from 'vux'
+    import { Group, Cell , Blur , CellBox , XButton  } from 'vux'
     export default {
         components: {
             Group,
             Cell,
-            Blur
+            Blur,
+            CellBox,
+            XButton
         },
         data(){
             return {

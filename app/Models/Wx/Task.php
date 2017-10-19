@@ -106,4 +106,15 @@ class Task extends Model
             ->insert($data);
         return $result;
     }
+
+    /*
+     * 得到任务详情
+     * $id 任务id
+     * */
+    static public function get_task_info($id){
+        $result = DB::table('task')
+            ->where('id',$id)
+            ->first();
+        return $result;
+    }
 }

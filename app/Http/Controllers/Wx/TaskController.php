@@ -151,6 +151,23 @@ class TaskController extends Controller
         return responseToJson(1,"获取成功",$result);
     }
 
+    public function get_task_info(Request $request){
+        $id = $request->id;
+        $task_info = Task::get_task_info($id);
+        if( $task_info && $task_info->is_delete == 0 && $task_info->status == 0 ){
+            $task_info->credit_score = session('user')->credit_score;
+            $task_info->wx_name = session('user')->name;
+            $task_info->avatar = session('user')->avatar?session('user')->avatar:'/img/wx/wx_avatar.jpg';
+            if($task_info->is_hide == 1){
+                $task_info->user_name = '';
+                $task_info->user_phone = '';
+            }
+            return responseToJson(1,'任务详情获取成功！',$task_info);
+        }else{
+            return responseToJson(0,'您老手慢了！');
+        }
+    }
+
 
 
 

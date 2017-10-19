@@ -252,19 +252,44 @@
             },1000)
             this.time = Date.parse(new Date())/1000
 
-            this.get_task_list('-1',this.start,(res)=>{
-                this.task_all = this.task_all.concat(res.data.result)
-                this.start_all+=this.num
-                this.$vux.loading.hide()
-            })
-            this.get_task_list('0',this.start,(res)=>{
-                this.task_y = this.task_y.concat(res.data.result)
-                this.start_y+=this.num
-            })
-            this.get_task_list('1',this.start,(res)=>{
-                this.task_n = this.task_n.concat(res.data.result)
-                this.start_n+=this.num
-            })
+            new Promise((resolve , reject)=>{
+                this.get_task_list('-1',this.start,(res)=>{
+                    this.task_all = this.task_all.concat(res.data.result)
+                    this.start_all+=this.num
+                    resolve()
+                })}
+            ).then(()=>{
+                return new Promise((resolve , reject)=>{
+                    this.get_task_list('0',this.start,(res)=>{
+                        this.task_y = this.task_y.concat(res.data.result)
+                        this.start_y+=this.num
+                        resolve()
+                    })
+                })}
+            ).then(()=>{
+                return new Promise((resolve , reject)=>{
+                    this.get_task_list('1',this.start,(res)=>{
+                        this.task_n = this.task_n.concat(res.data.result)
+                        this.start_n+=this.num
+                        this.$vux.loading.hide()
+                    })
+                })}
+            )
+//            this.get_task_list('-1',this.start,(res)=>{
+//                this.task_all = this.task_all.concat(res.data.result)
+//                this.start_all+=this.num
+//                this.$vux.loading.hide()
+//            })
+//
+//            this.get_task_list('0',this.start,(res)=>{
+//                this.task_y = this.task_y.concat(res.data.result)
+//                this.start_y+=this.num
+//            })
+//
+//            this.get_task_list('1',this.start,(res)=>{
+//                this.task_n = this.task_n.concat(res.data.result)
+//                this.start_n+=this.num
+//            })
 
         }
     }

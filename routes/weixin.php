@@ -36,4 +36,6 @@ Route::group(['prefix' => 'me'], function () {
 //账号设置
 Route::group(['prefix' => 'set'], function () {
     Route::post('/school','Wx\FollowController@get_school');
+    Route::get('/test','Wx\FollowController@test');
 });
+

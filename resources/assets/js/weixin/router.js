@@ -10,11 +10,11 @@ export default new VueRouter({
             path:'/test',
             component: resolve =>void(require(['./components/Example.vue'], resolve))
         },
-        {
-            name:"首页",
-            path:'/',
-            component: resolve =>void(require(['./components/Index.vue'], resolve))
-        },
+        // {
+        //     name:"首页",
+        //     path:'/',
+        //     component: resolve =>void(require(['./components/Index.vue'], resolve))
+        // },
         {
             name:"首页",
             path:'/main',
@@ -43,12 +43,12 @@ export default new VueRouter({
         {
             name: "参与帖子",
             path: "/note/join",
-            component: resolve =>void(require(['./components/connect/JoinNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/ReplyRecode.vue'], resolve)),
         },
         {
             name: "社交消息",
             path: "/note/msg",
-            component: resolve =>void(require(['./components/connect/MsgNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/MsgRemind.vue'], resolve)),
         },
         {
             name:"我的",
@@ -76,7 +76,7 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
         },
         {
-            name:"发布",
+            name:"发布任务",
             path:'/main/release',
             component: resolve =>void(require(['./components/main/Release.vue'], resolve))
         },

@@ -1,6 +1,10 @@
 <?php
 Route::group(['prefix' => 'connect'], function () {
 	Route::get('/', 'Wx\ConnectController@index');
+               Route::get('/noteRecord', 'Wx\ConnectController@note_record');
+               Route::get('/msgRecord', 'Wx\CommentController@msg_record');
+               Route::get('/msgRemind', 'Wx\CommentController@msg_remind');
+               Route::get('/msgRemindScorll', 'Wx\CommentController@msg_remind_scorll');
 	Route::post('/setNote', 'Wx\ConnectController@set_note');
 	Route::post('/noteUpld', 'Wx\ConnectController@upload');
 	Route::get('/getImg', 'Wx\ConnectController@get_img');
@@ -12,6 +16,7 @@ Route::group(['prefix' => 'release'], function () {
     Route::post('/issue_task', 'Wx\TaskController@issue_task');
     Route::get('/get_user_info','Wx\TaskController@get_user_info');
     Route::get('/get_address_list','Wx\TaskController@get_address_list');
+    Route::post('/create_pay_order', 'Wx\TaskController@create_pay_order');//创建订单
 });
 Route::group(['prefix' => 'main'], function () {
     Route::get('/get_task_list','Wx\TaskController@get_task_list');

@@ -71,13 +71,13 @@
                 }
             },
             change_index(){
-                var self = this
-                self.$vux.loading.show({
-                    text: 'Loading'
-                })
-                setTimeout(function () {
-                    self.$vux.loading.hide()
-                },666)
+//                var self = this
+//                self.$vux.loading.show({
+//                    text: 'Loading'
+//                })
+//                setTimeout(function () {
+//                    self.$vux.loading.hide()
+//                },666)
             }
         },
         mounted(){

@@ -150,7 +150,13 @@
                 let expected_time = Date.parse(new Date(value))/1000
                 let now_time = Date.parse(new Date())/1000
                 if(expected_time <= now_time){
-                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
+                    this.$vux.toast.show({
+                        width:'16em',
+                        text: '截止时间不能小于当前时间!',
+                        type:'text',
+                        position:'top'
+                    })
+//                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top','20em')
                 }
             },
             type_change(){
@@ -166,7 +172,13 @@
                     return false
                 }
                 if( expected_time <= now_time ){
-                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
+                    this.$vux.toast.show({
+                        width:'16em',
+                        text: '截止时间不能小于当前时间!',
+                        type:'text',
+                        position:'top'
+                    })
+//                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
                     return false
                 }
                 if(this.releaseOnOff){
@@ -224,6 +236,7 @@
                                     .then((result)=>{
                                         this.$vux.loading.hide()
                                         //调用支付接口
+
                                         resolve("支付成功！")
                                     })
                                     .catch((error)=>{

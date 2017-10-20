@@ -24,6 +24,7 @@ Route::group(['prefix' => 'main'], function () {
 });
 Route::group(['prefix' => 'task'], function () {
     Route::get('/get_task','Wx\TaskController@get_task');
+    Route::post('/accept_task','Wx\TaskController@accept_task');
 });
 
 Route::group(['prefix' => 'me'], function () {

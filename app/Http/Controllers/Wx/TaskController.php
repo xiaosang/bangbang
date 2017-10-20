@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Wx;
 
 use App\Models\Wx\Task;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Log;
+use DB;
 use App\Models\MonitorTask;
+use Exception;
 
 class TaskController extends Controller
 {
@@ -44,19 +47,42 @@ class TaskController extends Controller
         $user_phone = trim($request->user_phone);
         $address_name = trim($request->address_name);
         $is_hide = $request->is_hide ? 1 : 0 ;
-        $create_user_id = get_session_user_id();
+        $create_user_id = get_wx_user()->id;
+        $create_user_name = get_wx_user()->name;
         $key = str_rand(4);
 
 
-        $task_id = Task::issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key);
-        $temp = $expected_time-time();//截至时间-当前时间
-//        (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
+        DB::beginTransaction();
+        try{
+            $task_id = Task::issue_task($name,$content,$type,$pay_money,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$create_user_name,$key);
 
-        if($task_id){
-            return responseToJson(1,'发布成功！', [$key , $task_id]);
-        }else{
-            return responseToJson(0,'发布失败！');
+            if($task_id){
+                $temp = $expected_time-time();//截至时间-当前时间
+//        (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
+                //todo 操作transaction_order
+
+                $insert_transaction_order = 1;
+                if(!$insert_transaction_order){
+                    throw new exception('发布失败');
+                }
+            }else{
+                throw new exception('发布失败');
+            }
+            DB::commit();
+            return responseToJson(1,'发布成功！',[$key , $task_id]);
+        }catch(\Exception $e){
+            DB::rollBack();
+//            dd($e->getMessage());
+            return responseToJson(0,$e->getMessage());
+
         }
+
+
+//        if($task_id){
+//            return responseToJson(1,'发布成功！', [$key , $task_id]);
+//        }else{
+//            return responseToJson(0,'发布失败！');
+//        }
     }
 
     /*
@@ -129,12 +155,12 @@ class TaskController extends Controller
             array_push($temp,$v->type);
             $btn_arr = [];
             $btn = (Object)[];
-            $btn->style =  'default';
-            $btn->text =  '接受任务';
-            array_push($btn_arr,json_decode(json_encode($btn)));
+//            $btn->style =  'default';
+//            $btn->text =  '接受任务';
+//            array_push($btn_arr,json_decode(json_encode($btn)));
             $btn->style =  'default';
             $btn->text =  '查看详情';
-            $btn->link =  '/main/'.$v->id;
+            $btn->link =  '/main/task/info/'.$v->id;
             array_push($btn_arr,json_decode(json_encode($btn)));
             array_push($temp,$btn_arr);
             array_push($data,$temp);
@@ -154,17 +180,69 @@ class TaskController extends Controller
     public function get_task_info(Request $request){
         $id = $request->id;
         $task_info = Task::get_task_info($id);
-        if( $task_info && $task_info->is_delete == 0 && $task_info->status == 0 ){
-            $task_info->credit_score = session('user')->credit_score;
-            $task_info->wx_name = session('user')->name;
-            $task_info->avatar = session('user')->avatar?session('user')->avatar:'/img/wx/wx_avatar.jpg';
+        $create_user_info = User::get_info($task_info->create_user_id);
+        if( $task_info && $task_info->is_delete == 0 && $task_info->status != 5 ){
+            $task_info->credit_score = $create_user_info->credit_score;
+            $task_info->avatar = $create_user_info->avatar? $create_user_info->avatar:'/img/wx/wx_avatar.jpg';
+
+            if($task_info->status == 0){
+                if($task_info->is_hide == 1){
+                    $task_info->create_user_name = '匿名';
+                    $task_info->user_name = '';
+                    $task_info->user_phone = '';
+                    $task_info->avatar = '/img/wx/wx_avatar.jpg';
+                }
+                return responseToJson(1,'任务详情获取成功！',$task_info);
+            }else{
+                $transaction_order = Task::get_transaction_order($id);
+                if( $transaction_order->accept_user_id == get_wx_user()->id || $transaction_order->release_user_id == get_wx_user()->id){
+                    $task_info->is_hide = 0;
+                    return responseToJson(1,'任务详情获取成功！',$task_info);
+                }else{
+                    return responseToJson(0,'您老手慢了！');
+                }
+            }
+
+        }else{
+            return responseToJson(0,'任务不存在！');
+        }
+
+        /*if( $task_info && $task_info->is_delete == 0 && $task_info->status == 0 ){
+            $task_info->credit_score = get_wx_user()->credit_score;
+            $task_info->avatar = get_wx_user()->avatar?get_wx_user()->avatar:'/img/wx/wx_avatar.jpg';
             if($task_info->is_hide == 1){
+                $task_info->create_user_name = '匿名';
                 $task_info->user_name = '';
                 $task_info->user_phone = '';
             }
             return responseToJson(1,'任务详情获取成功！',$task_info);
         }else{
             return responseToJson(0,'您老手慢了！');
+        }*/
+    }
+
+    public function accept_task(Request $request){
+        DB::beginTransaction();
+        try{
+            $id = $request->id;
+            $status = 1;
+            $is_pay = 0;
+            $task_info = Task::get_task_info($id);
+            if($task_info->create_user_id == get_wx_user()->id){
+                throw new exception('不允许接自己发布的任务');
+            }
+            $update_task = Task::accept_task($id,$status);
+            if($update_task == 0){
+                throw new exception('您老手慢了');
+            }
+            $task_info = Task::get_task_info($id);
+            $insert_transaction_order = Task::insert_transaction_order($task_info->id,$task_info->type,$task_info->pay_money,'fdsfs45f64s56f45s64f6',$is_pay,$task_info->status,$task_info->create_user_id,$task_info->create_user_name,get_wx_user()->id,get_wx_user()->name);
+            DB::commit();
+            return responseToJson(1,'接受任务成功！');
+        }catch(\Exception $e){
+            DB::rollBack();
+//            dd($e->getMessage());
+            return responseToJson(0,$e->getMessage());
         }
     }
 

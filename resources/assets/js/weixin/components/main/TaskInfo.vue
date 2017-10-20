@@ -6,7 +6,7 @@
                     <img :src="url">
                 </div>
                 <div style="float: left;">
-                    <span>昵称 : {{ wx_name }}</span><br>
+                    <span>昵称 : {{ create_user_name }}</span><br>
                     <span>信誉积分 : {{ credit_score }}</span><br>
                     <span>任务发布时间 : <br><span v-if="task_create_time">{{ task_create_time | date }}</span></span>
                 </div>
@@ -45,8 +45,11 @@
 
         <p class="prompt" v-else>对方开启了匿名，接受任务后方可查看</p>
 
-        <group>
-            <x-button type="primary" @click.native="test" >接受任务</x-button>
+        <group v-if="status==0">
+            <x-button type="primary" @click.native="submit" >接受任务</x-button>
+        </group>
+        <group v-else-if="status!=-1">
+            <x-button type="primary" @click.native="$router.push({ path: '/main/task/list' })" >返回任务</x-button>
         </group>
 
 
@@ -72,7 +75,7 @@
             return {
                 id:'',
                 url: '/img/wx/wx_avatar.jpg',
-                wx_name:'...',
+                create_user_name:'...',
                 credit_score:'...',
                 task_create_time:'',
                 task_name:'',
@@ -83,7 +86,8 @@
                 address_name:'',
                 user_name:' ',
                 user_phone:'',
-                is_hide:'0'
+                is_hide:'0',
+                status:'-1',
             }
         },
         methods:{
@@ -98,7 +102,7 @@
                         this.$router.push({ path: '/main/task/list' })
                     }else if( res.data.code == 1 ){
                         this.url = res.data.result.avatar
-                        this.wx_name = res.data.result.wx_name
+                        this.create_user_name = res.data.result.create_user_name
                         this.credit_score = res.data.result.credit_score
                         this.task_create_time = res.data.result.create_time
                         this.task_name = res.data.result.name
@@ -110,6 +114,7 @@
                         this.user_name = res.data.result.user_name
                         this.user_phone = res.data.result.user_phone
                         this.is_hide = res.data.result.is_hide
+                        this.status = res.data.result.status
                     }else{
                         this.$vux.toast.text("网络异常！", 'top')
                     }
@@ -117,6 +122,33 @@
                 }).catch((err)=>{
                     this.$vux.toast.text("网络异常！", 'top')
                 })
+            },
+            submit(){
+                this.$vux.loading.show({
+                    text: 'Loading'
+                })
+                let params = {
+                    id:this.id
+                }
+                axios.post('/wx/task/accept_task',params)
+                    .then((res)=>{
+                        this.$vux.loading.hide()
+                        if(res.data.code == 1){
+                            this.$router.push({ path: '/main/AcceptSuccess/' + this.id })//0->key
+                        }else if(res.data.code == 2 ){//自己不能接自己的任务
+                            this.$vux.toast.show({
+                                type:'warn',
+                                text: res.data.msg,
+                                time:2000
+                            })
+                        }else{
+                            this.$vux.toast.show({
+                                type:'warn',
+                                text: res.data.msg,
+                                time:2000
+                            })
+                        }
+                    })
             },
             test(){
                 alert(1)

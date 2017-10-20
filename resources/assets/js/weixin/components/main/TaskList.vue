@@ -112,15 +112,15 @@
 
         <tabbar @on-index-change="tabbar_change">
             <tabbar-item selected>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-ios-medical"></i>
                 <span slot="label">全部</span>
             </tabbar-item>
             <tabbar-item>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-social-yen-outline"></i>
                 <span slot="label">无偿</span>
             </tabbar-item>
             <tabbar-item>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-social-yen"></i>
                 <span slot="label">有偿</span>
             </tabbar-item>
         </tabbar>

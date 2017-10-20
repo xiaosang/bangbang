@@ -88,6 +88,7 @@ export default new VueRouter({
         {
             name:"任务列表",
             path:'/main/task/list',
+            meta:{keepAlive: true},
             component: resolve =>void(require(['./components/main/TaskList.vue'], resolve))
         },
         {

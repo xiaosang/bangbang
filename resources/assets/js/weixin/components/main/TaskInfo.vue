@@ -1,6 +1,6 @@
 <template>
     <div>
-        <blur :blur-amount=40 :url="url" :height="120">
+        <blur :blur-amount=40 url="https://o3e85j0cv.qnssl.com/waterway-107810__340.jpg" :height="120">
             <div class="header" style="overflow: hidden;position: relative;">
                 <div style="float: left;overflow: hidden;">
                     <img :src="url">
@@ -13,15 +13,20 @@
             </div>
         </blur>
 
-        <group title="任务标题">
+        <group>
+            <div slot="title" class="weui-cells__title">
+                <span>悬赏金额</span>
+                <span style="color: red;float: right;font-size: 20px;" v-if="task_type == 0">￥{{ task_pay_money/100 }}</span>
+                <div style="clear: both;"></div>
+            </div>
             <cell-box>{{ task_name }}</cell-box>
         </group>
 
         <group>
             <div slot="title" class="weui-cells__title">
                 <span>任务描述</span>
-                <span style="color: red;float: right;font-size: 20px;" v-if="task_type == 0">￥{{ task_pay_money/100 }}</span>
-                <div style="clear: both;"></div>
+                <!--<span style="color: red;float: right;font-size: 20px;" v-if="task_type == 0">￥{{ task_pay_money/100 }}</span>-->
+                <!--<div style="clear: both;"></div>-->
             </div>
             <cell-box> {{ task_content }} </cell-box>
         </group>
@@ -35,13 +40,13 @@
         </group>
 
         <group title="联系方式" v-if="is_hide == 0">
-            <cell-box> {{ user_name }}  {{ user_phone }} </cell-box>
+            <cell-box><a :href="'tel:'+user_phone" style="color: #000;">{{ user_name }}  {{ user_phone }} </a></cell-box>
         </group>
 
         <p class="prompt" v-else>对方开启了匿名，接受任务后方可查看</p>
 
         <group>
-            <x-button type="primary" >接受任务</x-button>
+            <x-button type="primary" @click.native="test" >接受任务</x-button>
         </group>
 
 
@@ -113,6 +118,9 @@
                     this.$vux.toast.text("网络异常！", 'top')
                 })
             },
+            test(){
+                alert(1)
+            }
 
         },
         watch:{

@@ -213,7 +213,8 @@
                                         //生成订单  $task_id  res.data.result[1]  1->id
                                         let param = {
                                             pay_money : this.pay_money,
-                                            task_id : res.data.result[1]
+                                            task_id : res.data.result[1],
+                                            yzm:res.data.result[0]
                                         }
 
                                         resolve(param)
@@ -229,29 +230,32 @@
                                 this.$vux.toast.text('网络异常!', 'top')
                         })
                     })
-                        .then( ( param ) => {
-                            console.log(param)
+                        .then( ( res ) => {
                             return new Promise( ( resolve , reject ) => {
-                                axios.post('/wx/release/create_pay_order',param)
+                                axios.post('/wx/release/create_pay_order',res)
                                     .then((result)=>{
                                         this.$vux.loading.hide()
                                         //调用支付接口
-
-                                        resolve("支付成功！")
+                                        let param = {
+                                            yzm:res.yzm,
+                                            msg:'支付成功！'
+                                        }
+                                        resolve(param)
                                     })
                                     .catch((error)=>{
                                         this.$vux.toast.text('网络异常!', 'top')
                                     })
                             })
-
                         } )
                         .then( ( res )=>{
                             this.$vux.toast.show({
-                                text: res
+                                text: res.msg,
+                                time:1000
                             })
                             setTimeout(()=>{
-                                this.$vux.toast.hide()
-                            },3000)
+                                this.$router.push({ path: '/main/IssueSuccess/' + res.yzm }) // 0->key
+//                                this.$vux.toast.hide()
+                            },800)
                         })
 
                     /*axios.post('/wx/release/issue_task',param)

@@ -16,7 +16,7 @@ class CommentController extends Controller
 		$data = $request->all();
 		$user = get_session_user();
 		if($data['userId']>0){
-			event(new PusherEvent($user,['userId'=>$data['userId']]));
+			event(new PusherEvent(['userId'=>$data['userId']]));
 		}
 		$data['cid'] = $user->id;
 		$data['name'] = $user->name;

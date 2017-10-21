@@ -18,7 +18,7 @@ export default new VueRouter({
         {
             name:"首页",
             path:'/main',
-            meta:{keepAlive: true},
+            // meta:{keepAlive: true},
             component: resolve =>void(require(['./components/Main.vue'], resolve))
         },
         {

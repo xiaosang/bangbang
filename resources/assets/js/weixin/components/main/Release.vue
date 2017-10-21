@@ -150,7 +150,13 @@
                 let expected_time = Date.parse(new Date(value))/1000
                 let now_time = Date.parse(new Date())/1000
                 if(expected_time <= now_time){
-                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
+                    this.$vux.toast.show({
+                        width:'16em',
+                        text: '截止时间不能小于当前时间!',
+                        type:'text',
+                        position:'top'
+                    })
+//                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top','20em')
                 }
             },
             type_change(){
@@ -166,7 +172,13 @@
                     return false
                 }
                 if( expected_time <= now_time ){
-                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
+                    this.$vux.toast.show({
+                        width:'16em',
+                        text: '截止时间不能小于当前时间!',
+                        type:'text',
+                        position:'top'
+                    })
+//                    this.$vux.toast.text('截止时间不能小于当前时间!', 'top')
                     return false
                 }
                 if(this.releaseOnOff){
@@ -201,7 +213,8 @@
                                         //生成订单  $task_id  res.data.result[1]  1->id
                                         let param = {
                                             pay_money : this.pay_money,
-                                            task_id : res.data.result[1]
+                                            task_id : res.data.result[1],
+                                            yzm:res.data.result[0]
                                         }
 
                                         resolve(param)
@@ -217,28 +230,32 @@
                                 this.$vux.toast.text('网络异常!', 'top')
                         })
                     })
-                        .then( ( param ) => {
-                            console.log(param)
+                        .then( ( res ) => {
                             return new Promise( ( resolve , reject ) => {
-                                axios.post('/wx/release/create_pay_order',param)
+                                axios.post('/wx/release/create_pay_order',res)
                                     .then((result)=>{
                                         this.$vux.loading.hide()
                                         //调用支付接口
-                                        resolve("支付成功！")
+                                        let param = {
+                                            yzm:res.yzm,
+                                            msg:'支付成功！'
+                                        }
+                                        resolve(param)
                                     })
                                     .catch((error)=>{
                                         this.$vux.toast.text('网络异常!', 'top')
                                     })
                             })
-
                         } )
                         .then( ( res )=>{
                             this.$vux.toast.show({
-                                text: res
+                                text: res.msg,
+                                time:1000
                             })
                             setTimeout(()=>{
-                                this.$vux.toast.hide()
-                            },3000)
+                                this.$router.push({ path: '/main/IssueSuccess/' + res.yzm }) // 0->key
+//                                this.$vux.toast.hide()
+                            },800)
                         })
 
                     /*axios.post('/wx/release/issue_task',param)
@@ -301,7 +318,9 @@
                             this.address = res.data.default
                             this.address_select = [res.data.default]
                         }
-                        this.address_all.push(res.data.result)
+                        if(res.data.result.length != 0){
+                            this.address_all.push(res.data.result)
+                        }
                         console.log(res.data)
                     })
                     .catch((err)=>{

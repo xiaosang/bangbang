@@ -112,15 +112,15 @@
 
         <tabbar @on-index-change="tabbar_change">
             <tabbar-item selected>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-ios-medical"></i>
                 <span slot="label">全部</span>
             </tabbar-item>
             <tabbar-item>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-social-yen-outline"></i>
                 <span slot="label">无偿</span>
             </tabbar-item>
             <tabbar-item>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-social-yen"></i>
                 <span slot="label">有偿</span>
             </tabbar-item>
         </tabbar>
@@ -176,6 +176,7 @@
             tabbar_change(value){
                 this.tabbar_val = value
                 try {
+                    this.$refs.scroller.disablePullup()
                     this.$refs.scroller.enablePullup()
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({
@@ -252,19 +253,44 @@
             },1000)
             this.time = Date.parse(new Date())/1000
 
-            this.get_task_list('-1',this.start,(res)=>{
-                this.task_all = this.task_all.concat(res.data.result)
-                this.start_all+=this.num
-                this.$vux.loading.hide()
-            })
-            this.get_task_list('0',this.start,(res)=>{
-                this.task_y = this.task_y.concat(res.data.result)
-                this.start_y+=this.num
-            })
-            this.get_task_list('1',this.start,(res)=>{
-                this.task_n = this.task_n.concat(res.data.result)
-                this.start_n+=this.num
-            })
+            new Promise((resolve , reject)=>{
+                this.get_task_list('-1',this.start,(res)=>{
+                    this.task_all = this.task_all.concat(res.data.result)
+                    this.start_all+=this.num
+                    resolve()
+                })}
+            ).then(()=>{
+                return new Promise((resolve , reject)=>{
+                    this.get_task_list('0',this.start,(res)=>{
+                        this.task_y = this.task_y.concat(res.data.result)
+                        this.start_y+=this.num
+                        resolve()
+                    })
+                })}
+            ).then(()=>{
+                return new Promise((resolve , reject)=>{
+                    this.get_task_list('1',this.start,(res)=>{
+                        this.task_n = this.task_n.concat(res.data.result)
+                        this.start_n+=this.num
+                        this.$vux.loading.hide()
+                    })
+                })}
+            )
+//            this.get_task_list('-1',this.start,(res)=>{
+//                this.task_all = this.task_all.concat(res.data.result)
+//                this.start_all+=this.num
+//                this.$vux.loading.hide()
+//            })
+//
+//            this.get_task_list('0',this.start,(res)=>{
+//                this.task_y = this.task_y.concat(res.data.result)
+//                this.start_y+=this.num
+//            })
+//
+//            this.get_task_list('1',this.start,(res)=>{
+//                this.task_n = this.task_n.concat(res.data.result)
+//                this.start_n+=this.num
+//            })
 
         }
     }

@@ -34,7 +34,7 @@ class Task extends Model
     $create_user_id 创建任务ID
     $key 密钥
     */
-    static public function issue_task($name,$content,$type,$pay_money=0,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$key){
+    static public function issue_task($name,$content,$type,$pay_money=0,$task_finish_time,$expected_time,$user_name,$user_phone,$address_name,$is_hide,$create_user_id,$create_user_name,$key){
 
         $data = [
             'type'=>$type,
@@ -44,6 +44,7 @@ class Task extends Model
             'expected_time'=>$expected_time,
             'task_finish_time'=>$task_finish_time,
             'create_user_id'=>$create_user_id,
+            'create_user_name'=>$create_user_name,
             'user_name'=>$user_name,
             'user_phone'=>$user_phone,
             'pay_money'=>$pay_money,
@@ -104,6 +105,116 @@ class Task extends Model
         ];
         $result = DB::table('pay_order')
             ->insert($data);
+        return $result;
+    }
+
+    /*
+     * 得到任务详情
+     * $id 任务id
+     * */
+    static public function get_task_info($id){
+        $result = DB::table('task')
+            ->where('id',$id)
+            ->first();
+        return $result;
+    }
+
+    /*
+     * 接受任务
+     * $id
+     * $status  任务状态(0：未接受，1：已接受，2：已完成，3：已结束,4：已取消)
+     * */
+    static public function accept_task($id,$status){
+        $data = [
+            'status'=>$status,
+            'update_time'=>time()
+        ];
+        $result = DB::table('task')
+            ->where('id',$id)
+            ->where('status',0)
+            ->update($data);
+        return $result;
+    }
+
+    /*
+     * 发布任务时，将任务添加到transaction_order表
+     * $task_id,任务id
+     * $type,任务类型
+     * $pay_money,支付金额
+     * $order_code,任务订单编号
+     * $is_pay,是否支付
+     * $status,任务状态
+     * $release_user_id,发布任务者id
+     * $release_user_name,发布任务者名字
+     * $accept_user_id,接受任务者id
+     * $accept_user_name接受任务者名字
+     * */
+    static public function insert_transaction_order($task_id,$type,$pay_money,$order_code,$is_pay,$status,$release_user_id,$release_user_name,$accept_user_id=0,$accept_user_name=''){
+        $data = [
+            'task_id' => $task_id,
+            'type' => $type,
+            'pay_money' => $pay_money,
+            'order_code'=>$order_code,
+            'is_pay' => $is_pay,
+            'status'=>$status,
+            'create_time'=>time(),
+            'release_user_id' => $release_user_id,
+            'release_user_name' => $release_user_name,
+            'accept_user_id' => $accept_user_id,
+            'accept_user_name' => $accept_user_name
+        ];
+        $result = DB::table('transaction_order')
+            ->insert($data);
+        return $result;
+    }
+
+    /*
+     * 接受任务时，更新transaction_order
+     * $data = [
+                'status'=>$status,
+                'accept_user_id'=>$accept_user_id,
+                'accept_user_name'=>$accept_user_name
+            ]
+     * */
+    static public function update_transaction_order($task_id,$data){
+        $result = DB::table('transaction_order')
+            ->where('task_id',$task_id)
+            ->where('is_delete',0)
+            ->update($data);
+        return $result;
+    }
+
+    /*
+     * 得到任务接受信息
+     * $task_id
+     * */
+    static public function get_transaction_order($task_id){
+        $result = DB::table('transaction_order')
+            ->where('task_id',$task_id)
+            ->where('is_delete',0)
+            ->first();
+        return $result;
+    }
+
+    /*
+     * 获取公告列表
+     * */
+    static public function get_announcement_list(){
+        $result = DB::table('announcement')
+            ->where('is_delete',0)
+            ->orderBy('create_time','desc')
+            ->get();
+        return $result;
+    }
+
+    /*
+     * (首页)获取公告列表
+     * */
+    static public function get_announcementContent(){
+        $result = DB::table('announcement')
+            ->where('is_delete',0)
+            ->orderBy('create_time','desc')
+            ->first();
         return $result;
     }
 }

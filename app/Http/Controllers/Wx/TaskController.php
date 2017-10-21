@@ -59,9 +59,10 @@ class TaskController extends Controller
             if($task_id){
                 $temp = $expected_time-time();//截至时间-当前时间
 //        (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
-                //todo 操作transaction_order
-
-                $insert_transaction_order = 1;
+                $is_pay = 0;
+                $status = 0;
+                $order_code = time().'_'.uniqid();
+                $insert_transaction_order = Task::insert_transaction_order($task_id,$type,$pay_money,$order_code,$is_pay,$status,$create_user_id,$create_user_name);
                 if(!$insert_transaction_order){
                     throw new exception('发布失败');
                 }
@@ -77,12 +78,6 @@ class TaskController extends Controller
 
         }
 
-
-//        if($task_id){
-//            return responseToJson(1,'发布成功！', [$key , $task_id]);
-//        }else{
-//            return responseToJson(0,'发布失败！');
-//        }
     }
 
     /*
@@ -147,7 +142,7 @@ class TaskController extends Controller
             $row->value = secsToStr($v->task_finish_time);
             array_push($temp,json_decode(json_encode($row)));
             $row->label = "发布时间";
-            $row->value =  date('Y-m-d H:i:s',$v->create_time);
+            $row->value =  date('Y-m-d H:i:s',$v->create_time);//需要设置时区
             array_push($temp,json_decode(json_encode($row)));
             $row->label = "收货地址";
             $row->value =  $v->address_name;
@@ -236,7 +231,16 @@ class TaskController extends Controller
                 throw new exception('您老手慢了');
             }
             $task_info = Task::get_task_info($id);
-            $insert_transaction_order = Task::insert_transaction_order($task_info->id,$task_info->type,$task_info->pay_money,'fdsfs45f64s56f45s64f6',$is_pay,$task_info->status,$task_info->create_user_id,$task_info->create_user_name,get_wx_user()->id,get_wx_user()->name);
+//            $insert_transaction_order = Task::insert_transaction_order($task_info->id,$task_info->type,$task_info->pay_money,'fdsfs45f64s56f45s64f6',$is_pay,$task_info->status,$task_info->create_user_id,$task_info->create_user_name,get_wx_user()->id,get_wx_user()->name);
+            $update_transaction_order = Task::update_transaction_order($id,[
+                'status'=>$status,
+                'accept_user_id'=>get_wx_user()->id,
+                'accept_user_name'=>get_wx_user()->name
+            ]);
+            if($update_transaction_order == 0){
+                throw new exception('接受任务失败！');
+            }
+
             DB::commit();
             return responseToJson(1,'接受任务成功！');
         }catch(\Exception $e){

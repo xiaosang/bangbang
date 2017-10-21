@@ -318,7 +318,9 @@
                             this.address = res.data.default
                             this.address_select = [res.data.default]
                         }
-                        this.address_all.push(res.data.result)
+                        if(res.data.result.length != 0){
+                            this.address_all.push(res.data.result)
+                        }
                         console.log(res.data)
                     })
                     .catch((err)=>{

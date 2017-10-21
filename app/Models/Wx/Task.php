@@ -137,7 +137,7 @@ class Task extends Model
     }
 
     /*
-     * 接受任务时，将任务添加到transaction_order表，将发布者与接受者关联起来
+     * 发布任务时，将任务添加到transaction_order表
      * $task_id,任务id
      * $type,任务类型
      * $pay_money,支付金额
@@ -149,7 +149,7 @@ class Task extends Model
      * $accept_user_id,接受任务者id
      * $accept_user_name接受任务者名字
      * */
-    static public function insert_transaction_order($task_id,$type,$pay_money,$order_code,$is_pay,$status,$release_user_id,$release_user_name,$accept_user_id,$accept_user_name){
+    static public function insert_transaction_order($task_id,$type,$pay_money,$order_code,$is_pay,$status,$release_user_id,$release_user_name,$accept_user_id=0,$accept_user_name=''){
         $data = [
             'task_id' => $task_id,
             'type' => $type,
@@ -165,6 +165,22 @@ class Task extends Model
         ];
         $result = DB::table('transaction_order')
             ->insert($data);
+        return $result;
+    }
+
+    /*
+     * 接受任务时，更新transaction_order
+     * $data = [
+                'status'=>$status,
+                'accept_user_id'=>$accept_user_id,
+                'accept_user_name'=>$accept_user_name
+            ]
+     * */
+    static public function update_transaction_order($task_id,$data){
+        $result = DB::table('transaction_order')
+            ->where('task_id',$task_id)
+            ->where('is_delete',0)
+            ->update($data);
         return $result;
     }
 

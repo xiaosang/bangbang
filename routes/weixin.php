@@ -21,12 +21,19 @@ Route::group(['prefix' => 'release'], function () {
     Route::post('/issue_task', 'Wx\TaskController@issue_task');
     Route::get('/get_user_info','Wx\TaskController@get_user_info');
     Route::get('/get_address_list','Wx\TaskController@get_address_list');
+    Route::post('/create_pay_order', 'Wx\TaskController@create_pay_order');//创建订单
+    Route::get('/get_task_info', 'Wx\TaskController@get_task_info');//任务详情
 });
 Route::group(['prefix' => 'main'], function () {
     Route::get('/get_task_list','Wx\TaskController@get_task_list');
+    Route::get('/get_announcementContent','Wx\TaskController@get_announcementContent');
 });
 Route::group(['prefix' => 'task'], function () {
     Route::get('/get_task','Wx\TaskController@get_task');
+    Route::post('/accept_task','Wx\TaskController@accept_task');
+});
+Route::group(['prefix' => 'announcement'], function () {
+    Route::get('/get_announcement_list','Wx\TaskController@get_announcement_list');
 });
 
 Route::group(['prefix' => 'me'], function () {
@@ -45,4 +52,6 @@ Route::group(['prefix' => 'me'], function () {
 //账号设置
 Route::group(['prefix' => 'set'], function () {
     Route::post('/school','Wx\FollowController@get_school');
+    Route::get('/test','Wx\FollowController@test');
 });
+

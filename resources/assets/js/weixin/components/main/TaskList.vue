@@ -21,9 +21,8 @@
         </x-header>
 
 
-            <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1','start_all','task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
+            <scroller v-if="tabbar_val==0" lock-x  use-pulldown :pulldown-config="pulldown"  use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('-1','start_all','task_all')" @on-pullup-loading="up_updateTask('-1','start_all','task_all')" ref="scroller" @on-scroll="onScroll('-1')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <!--<router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id" v-if="setInterval_time<item.expected_time">-->
                     <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_all" :key="item.id">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
@@ -54,8 +53,7 @@
 
             <scroller v-else-if="tabbar_val==1" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('1','start_n','task_n')" @on-pullup-loading="up_updateTask('1','start_n','task_n')" ref="scroller" @on-scroll="onScroll('1')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_n" :key="item.id">
-                    <!--<router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_n" :key="item.id" v-if="setInterval_time<item.expected_time">-->
+                    <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_n" :key="item.id">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
@@ -84,8 +82,7 @@
 
             <scroller v-else-if="tabbar_val==2" lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask('0','start_y','task_y')" @on-pullup-loading="up_updateTask('0','start_y','task_y')" ref="scroller" @on-scroll="onScroll('0')" height="-99">
                 <div style="padding-bottom: 10px;">
-                    <router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_y" :key="item.id">
-                    <!--<router-link to="/main" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_y" :key="item.id" v-if="setInterval_time<item.expected_time">-->
+                    <router-link :to="'/main/task/info/'+item.id" style="margin: 10px;overflow: hidden;display: block;" v-for="item in task_y" :key="item.id">
                         <masker style="border-radius: 5px;">
                             <div class="m-img" style="background: yellow url('/img/wx/money.png') center no-repeat;" v-if=" item.type == 0 "></div>
                             <div class="m-img" style="" v-if=" item.type == 1 "></div>
@@ -115,15 +112,15 @@
 
         <tabbar @on-index-change="tabbar_change">
             <tabbar-item selected>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-ios-medical"></i>
                 <span slot="label">全部</span>
             </tabbar-item>
             <tabbar-item>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-social-yen-outline"></i>
                 <span slot="label">无偿</span>
             </tabbar-item>
             <tabbar-item>
-                <i slot="icon" class="ion-android-person"></i>
+                <i slot="icon" class="ion-social-yen"></i>
                 <span slot="label">有偿</span>
             </tabbar-item>
         </tabbar>
@@ -131,14 +128,16 @@
 </template>
 
 <script>
-    import { XHeader , Tabbar, TabbarItem , Scroller , Masker  } from 'vux'
+    import { XHeader , Tabbar, TabbarItem , Scroller , Masker , ToastPlugin } from 'vux'
+    Vue.use(ToastPlugin)
     export default {
         components: {
             XHeader,
             Tabbar,
             TabbarItem,
             Scroller,
-            Masker
+            Masker,
+            ToastPlugin
         },
         data(){
             return {
@@ -167,7 +166,7 @@
                 start_all:0,//从第0条开始
                 start_y:0,//从第0条开始
                 start_n:0,//从第0条开始
-                num:20,//显示/更新 数量
+                num:30,//显示/更新 数量
                 task_all:[],
                 task_y:[],
                 task_n:[],
@@ -177,9 +176,8 @@
             tabbar_change(value){
                 this.tabbar_val = value
                 try {
-                    if(!this.$refs.scroller.disablePullup()){
-                        this.$refs.scroller.enablePullup()
-                    }
+                    this.$refs.scroller.disablePullup()
+                    this.$refs.scroller.enablePullup()
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({
                             top: 0
@@ -196,7 +194,9 @@
                 this.get_task_list(type,this[start],(res)=>{
                     this[arr] = res.data.result
                     this.$refs.scroller.donePulldown()
-                    this.$refs.scroller.enablePullup()
+                    if(res.data.result.length >= this.num){
+                        this.$refs.scroller.enablePullup()
+                    }
                 })
             },
             up_updateTask(type,start,arr){
@@ -224,10 +224,15 @@
                     }
                 })
                     .then((res)=>{
+//                    console.log(res.data.result.length)
+//                    console.log(this.num)
+                        if(res.data.result.length < this.num){
+                            this.$refs.scroller.disablePullup()
+                        }
                         if(callback)callback(res);
                     })
                     .catch((err)=>{
-                        alert("网络异常，请稍后重试！")
+                        this.$vux.toast.text('网络异常!', 'top')
                     })
             },
             onScroll (type) {
@@ -235,28 +240,57 @@
                     this.$refs.scroller.reset()
                 })
             },
-
         },
         watch:{
 
         },
         mounted() {
+            this.$vux.loading.show({
+                text: 'Loading'
+            })
             setInterval(()=>{
                 this.setInterval_time = Date.parse(new Date())/1000
             },1000)
             this.time = Date.parse(new Date())/1000
-            this.get_task_list('-1',this.start,(res)=>{
-                this.task_all = this.task_all.concat(res.data.result)
-                this.start_all+=this.num
-            })
-            this.get_task_list('0',this.start,(res)=>{
-                this.task_y = this.task_y.concat(res.data.result)
-                this.start_y+=this.num
-            })
-            this.get_task_list('1',this.start,(res)=>{
-                this.task_n = this.task_n.concat(res.data.result)
-                this.start_n+=this.num
-            })
+
+            new Promise((resolve , reject)=>{
+                this.get_task_list('-1',this.start,(res)=>{
+                    this.task_all = this.task_all.concat(res.data.result)
+                    this.start_all+=this.num
+                    resolve()
+                })}
+            ).then(()=>{
+                return new Promise((resolve , reject)=>{
+                    this.get_task_list('0',this.start,(res)=>{
+                        this.task_y = this.task_y.concat(res.data.result)
+                        this.start_y+=this.num
+                        resolve()
+                    })
+                })}
+            ).then(()=>{
+                return new Promise((resolve , reject)=>{
+                    this.get_task_list('1',this.start,(res)=>{
+                        this.task_n = this.task_n.concat(res.data.result)
+                        this.start_n+=this.num
+                        this.$vux.loading.hide()
+                    })
+                })}
+            )
+//            this.get_task_list('-1',this.start,(res)=>{
+//                this.task_all = this.task_all.concat(res.data.result)
+//                this.start_all+=this.num
+//                this.$vux.loading.hide()
+//            })
+//
+//            this.get_task_list('0',this.start,(res)=>{
+//                this.task_y = this.task_y.concat(res.data.result)
+//                this.start_y+=this.num
+//            })
+//
+//            this.get_task_list('1',this.start,(res)=>{
+//                this.task_n = this.task_n.concat(res.data.result)
+//                this.start_n+=this.num
+//            })
 
         }
     }

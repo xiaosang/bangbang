@@ -10,14 +10,15 @@ export default new VueRouter({
             path:'/test',
             component: resolve =>void(require(['./components/Example.vue'], resolve))
         },
-        {
-            name:"首页",
-            path:'/',
-            component: resolve =>void(require(['./components/Index.vue'], resolve))
-        },
+        // {
+        //     name:"首页",
+        //     path:'/',
+        //     component: resolve =>void(require(['./components/Index.vue'], resolve))
+        // },
         {
             name:"首页",
             path:'/main',
+            meta:{keepAlive: true},
             component: resolve =>void(require(['./components/Main.vue'], resolve))
         },
         {
@@ -76,7 +77,7 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
         },
         {
-            name:"发布",
+            name:"发布任务",
             path:'/main/release',
             component: resolve =>void(require(['./components/main/Release.vue'], resolve))
         },
@@ -86,8 +87,14 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/main/IssueSuccess.vue'], resolve))
         },
         {
+            name:"接受任务成功",
+            path:'/main/AcceptSuccess/:id',
+            component: resolve =>void(require(['./components/main/AcceptSuccess.vue'], resolve))
+        },
+        {
             name:"任务列表",
             path:'/main/task/list',
+            meta:{keepAlive: true},
             component: resolve =>void(require(['./components/main/TaskList.vue'], resolve))
         },
         {
@@ -99,7 +106,12 @@ export default new VueRouter({
             name:"任务详情",
             path:'/main/task/info/:id',
             component: resolve =>void(require(['./components/main/TaskInfo.vue'], resolve))
-
+        },
+        {
+            name:"公告列表",
+            path:'/main/announcement',
+            meta:{keepAlive: true},
+            component: resolve =>void(require(['./components/main/Announcement.vue'], resolve))
         },
     ]
 })

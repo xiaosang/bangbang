@@ -1,36 +1,28 @@
 <template>
    <div>
         <div class="gm-breadcrumb">
-            <!--<i class="ion-ios-home gm-home"></i>-->
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/task/overlist">任务管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/task/overlist">已完成任务</el-breadcrumb-item>
-                <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
+                <el-breadcrumb-item>论坛管理</el-breadcrumb-item>
+                <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-        <div>
-            <span>任务状态</span><TaskStatus @change="myChange"></TaskStatus>
-            <span>任务类型</span><TaskType @change="myTypeChange"></TaskType>
-        </div>
-        <h3></h3>
+
         <el-table
-            :data="taskAll"
+            :data="noteList"
             border
             style="width: 100%;"
             @expand="get_evaluate"
             v-loading="tableLoading">
             <el-table-column
             type="index"
-            width="35">
+            width="50">
             </el-table-column>
             <el-table-column
             prop="name"
-            label="名称"
-            width="100">
+            label="名称">
             </el-table-column>
             <el-table-column
-            label="详情"
-            width="100">
+            label="详情">
                 <template slot-scope="scope">
                     <el-popover trigger="click" placement="right">
                     <p style="max-width:200px"> {{ scope.row.content }}</p>
@@ -42,12 +34,10 @@
             </el-table-column>
             <el-table-column
             prop="key"
-            label="完成秘钥"
-            width="100">
+            label="完成秘钥">
             </el-table-column>
             <el-table-column
-            label="是否匿名"
-            width="100">
+            label="是否匿名">
             <template  slot-scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
             </el-table-column>
             <el-table-column
@@ -59,23 +49,19 @@
             <template  slot-scope="scope">{{ scope.row.complete_time|date }}</template>
             </el-table-column>
             <el-table-column
-            label="支付金额"
-            width="100">
+            label="支付金额">
             <template  slot-scope="scope">{{ scope.row.pay_money/100 }}</template>
             </el-table-column>
             <el-table-column
             prop="user_name"
-            label="创建用户"
-            width="100">
+            label="创建用户">
             </el-table-column>
             <el-table-column
-            label="类型"
-            width="100">
+            label="类型">
             <template  slot-scope="scope"><span v-if="!scope.row.type">有偿</span><span v-if="scope.row.type">无偿</span></template>    
             </el-table-column>
             <el-table-column
-            label="状态" 
-            width="100">
+            label="状态">
             <template  slot-scope="scope">
                 <span v-if="scope.row.status==0">
                     <el-tag type="danger">未接受</el-tag>
@@ -104,7 +90,7 @@
                         </el-form-item>
                         <el-form-item label="评论">
                             <span>{{ props.row.user_content }}</span>
-                        </el-form-item><br />
+                        </el-form-item>
                         <el-form-item label="分数">
                             <el-rate
                                 v-model="props.row.score"
@@ -113,13 +99,13 @@
                                 text-color="#ff9900"
                                 text-template="{value}">
                             </el-rate>
-                        </el-form-item><br/>
+                        </el-form-item>
                         <el-form-item label="接受任务用户">
                             <span>{{ props.row.accept }}</span>
                         </el-form-item>
                         <el-form-item label="评论">
                             <span>{{ props.row.user_content1 }}</span>
-                        </el-form-item><br />
+                        </el-form-item>
                         <el-form-item label="分数">
                             <el-rate
                                 v-model="props.row.score1"
@@ -128,14 +114,12 @@
                                 text-color="#ff9900"
                                 text-template="{value}">
                             </el-rate>
-                        </el-form-item><br />
-                        <!-- <el-form-item label="订单编号">
-                            <span>{{ props.row.orderNum }}</span>
-                        </el-form-item> -->
+                        </el-form-item>
                     </el-form>
                 </template>
             </el-table-column>
         </el-table>
+
         <el-pagination
                 style="padding: 1rem 0;"
                 @current-change="current_change"
@@ -158,9 +142,7 @@
         },
     data() {
       return {
-        taskAll : [],
-        status : -1,
-        type : -1,
+        noteList : [],
         tableLoading : false,
         isShow : false,
         selTask : [],
@@ -181,12 +163,10 @@
             var param = {
                 page_size: this.page_size, 
                 page: this.page,
-                status : this.status,
-                type : this.type,
             };
-            axios.post("/task/over",param).then(response =>{
-                self.taskAll = response.data.result.data
-                console.log(self.taskAll)
+            axios.post("/note/list",param).then(response =>{
+                self.noteList = response.data.result.data
+                console.log(self.noteList)
                 self.paginate_total = response.data.result.total
                 self.tableLoading = false
             }).catch(error => {
@@ -201,25 +181,13 @@
             this.page = page
             this.getList()
         },
-        handleDelete: function (index,row){
-            console.log(index,row)
-        },
-        myChange: function(value){
-            console.log(value)
-            this.status = value
-            this.getList()
-        },
-        myTypeChange: function(value){
-            this.type = value
-            this.getList()
-        },
         get_evaluate: function(row, expanded){
             if(expanded){
                 var param = {
                     task_id : row.id
                 };
-                axios.post("/task/evaluate",param).then(response =>{
-                    // this.taskAll[0].evaluate = response.data.result
+                axios.post("/note/evaluate",param).then(response =>{
+                    // this.noteList[0].evaluate = response.data.result
                     
                     row.score = response.data.result[0].score
                     row.score1 = response.data.result[1].score
@@ -231,39 +199,14 @@
                     // row.orderNum = response.data.result[0].transaction_order_id
                     this.exLoading = true
                 // row.accept = response.data.result[1]
-                // console.log( this.taskAll.evaluate)
+                // console.log( this.noteList.evaluate)
             }).catch(error =>{
                  this.$message("网络错误")
             })
 
             }
             console.log(row,expanded)
-        },
-        // conversion: function(type,status){
-        //     if(type == 0){
-        //         if(status == 0){
-        //             return '有偿'
-        //         }else{
-        //             return '无偿'
-        //         }
-        //     }else if(type == 1){
-        //         if(status == 0){
-        //             return '未接受'
-        //         }else if(status == 1){
-        //             return '已接受'
-        //         }else if(status == 2){
-        //             return '已完成'
-        //         }else if(status == 3){
-        //             return '已结束'
-        //         }
-        //     }else if(type == 2){
-        //          if(status == 0){
-        //             return '否'
-        //         }else if(status == 1){
-        //             return '是'
-        //         }
-        //     }
-        // }
+        }
     },
     mounted(){
         this.getList()

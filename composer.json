@@ -8,6 +8,10 @@
         "php": ">=5.6.4",
         "anlutro/curl": "^1.4",
         "chumper/zipper": "^1.0",
+<<<<<<< HEAD
+=======
+        "flc/dysms": "^1.0",
+>>>>>>> f55d2f43e77d013e78306370ce55bce40fb58259
         "gregwar/captcha": "1.*",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
@@ -15,7 +19,10 @@
         "overtrue/laravel-pinyin": "^3.0",
         "overtrue/laravel-wechat": "~3.0",
         "predis/predis": "^1.1",
+<<<<<<< HEAD
         "pusher/pusher-php-server": "~3.0",
+=======
+>>>>>>> f55d2f43e77d013e78306370ce55bce40fb58259
         "setasign/fpdf": "1.*",
         "setasign/fpdi": "1.*",
         "simplesoftwareio/simple-qrcode": "1.3.*"

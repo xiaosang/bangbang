@@ -100,6 +100,11 @@ export default new VueRouter({
             path:'/main/task/info/:id',
             component: resolve =>void(require(['./components/main/TaskInfo.vue'], resolve))
 
+        },{
+            name:"个人信息",
+            path:'/main/info/:id',
+            component: resolve =>void(require(['./components/me/proposal/Info.vue'], resolve))
+
         },
     ]
 })

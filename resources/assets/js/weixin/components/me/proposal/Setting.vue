@@ -1,7 +1,7 @@
 <template>
     <div class="release">
        
-        
+        <remote-script src="/js/md5.js" @load="onMD5"></remote-script>
         <group>
             <x-input title='选择学校'  v-model="school_select_one" text-align="right"  placeholder="选择学校" disabled @click.native="selSchool"></x-input>
         </group>
@@ -12,16 +12,14 @@
             <img :src='img_src' id="validateImg" v-if="imgShow">
         </group>
         <group>
-            <x-button mini type="primary" slot="right" @click.native="school_enter">登录</x-button>
+            <x-button type="primary"  @click.native="school_enter">登录</x-button>
         </group>
          
         <div v-transfer-dom>
             <popup v-model="addressOnOff">
                 <div class="popup1">
                     <group>
-                        
                         <x-input v-model="school_select_one" :show-clear="false" text-align="left"  placeholder="选择学校" readonly>
-                            
                         </x-input>
                     </group>
                     <p class="prompt">选择学校</p>
@@ -37,8 +35,9 @@
 </template>
 
 <script>
-    import { XHeader ,XImg,XInput,Group , XTextarea , Checker , CheckerItem , Datetime , XSwitch ,XAddress , TransferDom , Popup ,XButton , Picker } from 'vux'
+    import { XHeader ,XImg,XInput,Group , ToastPlugin,XTextarea , Checker , CheckerItem , Datetime , XSwitch ,XAddress , TransferDom , Popup ,XButton , Picker } from 'vux'
     
+    Vue.use(ToastPlugin)
 
     export default {
         directives: {
@@ -58,6 +57,7 @@
             XButton,
             Picker,
             XImg,
+            ToastPlugin,
         },
         data(){
             return {
@@ -73,20 +73,7 @@
                 img_src:'',
                 imgShow: false,
                 school_all: [
-                //    [//历史地址   个人中心希望有添加删除
-                //        {
-                //            name: '快速选择',
-                //            value: 1
-                //        },
-                //        {
-                //            name: '河南科技学院',
-                //            value: 2
-                //        },
-                //        {
-                //            name: '河南师范大学',
-                //            value: 3
-                //        }
-                //    ]
+               
                 ],
 
 
@@ -103,16 +90,13 @@
                     
                     // this.img_src = res;
                 }).catch(err => {
-                    this.$message('网络错误')
+                    this.$vux.toast.text('网络异常!', 'top')
                 })
             },
             select_school: function(value){
                 this.school_id = value[0]
-                // console.log(value,this.school_select)
                 for(let i=0;i<this.school_all[0].length;i++){
-                    // console.log(parseInt(this.school_all[0][i].value)==parseInt(vaule[0]),parseInt(vaule[0])==parseInt(this.school_all[0][i].value))
                     if(parseInt(this.school_all[0][i].value)==parseInt(value[0])){
-                        // console.log(this.school_all[0])
                         this.school_select_one = this.school_all[0][i].name
                         break;
                     }
@@ -120,22 +104,34 @@
                 }
                 
             },
-                
-                // axios.post('/wx/set/test').then(res => {
-                //     // this.school_all = []
-                //     // this.school_all.push(res.data.result)
-                //     // this.addressOnOff = true
-                //     var img = new Image(res)
-                //     console.log(img)
-
-                //     this.img_src = img.src;
-                // }).catch(err => {
-                //     this.$message('网络错误')
-                // })
             getFocus:function(value){
-                console.log(1231321,this.school_id)
-                this.img_src = '/wx/set/test?school_id='+this.school_id
+                var date = new Date()
+                this.img_src = '/wx/set/get_check?school_id='+this.school_id+'&current_date='+Date.parse(date)
                 this.imgShow = true
+            },
+            school_enter: function(){
+                var psd = this.student_psd
+                var ch = $('#check').value
+                var check= md5(md5(this.student_img.toUpperCase()).substring(0,30).toUpperCase()+'10467').substring(0,30).toUpperCase();
+                var password = md5(this.student_code+md5(psd).substring(0,30).toUpperCase()+'10467').substring(0,30).toUpperCase();
+                var parm = {
+                    user_id: this.student_code, 
+                    school_id: this.school_id,
+                    password: password,
+                    validate : check,
+                }
+                axios.post('/wx/set/login',parm).then(res => {
+                    this.$vux.toast.text(res.data.result)
+                    console.log(res.data.code)
+                    if(res.data.code == 0){
+                        this.$router.push('/main/info/'+this.school_id)
+                    }
+                }).catch(err => {
+                    this.$vux.toast.text('网络异常!', 'top')
+                })
+            },
+            onMD5:function(){
+                
             }
         },
         mounted() {

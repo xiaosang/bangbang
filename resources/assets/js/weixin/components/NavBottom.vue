@@ -8,7 +8,15 @@
                 </tabbar-item>
                 <tabbar-item link="/connect" index="1">
                     <i slot="icon" class="ion-person-stalker"></i>
-                    <span slot="label">社交</span>
+                    <span slot="label">社交
+                        <div v-if="msges" style="display: inline-block;">
+                            <badge v-if="msg!=msges" :text="msges" class="note-msg"></badge>
+                            <badge v-else :text="msg" class="note-msg"></badge>
+                        </div>
+                        <div v-else style="display: inline-block;">
+                            <badge v-if="msg>0" :text="msg" class="note-msg"></badge>
+                        </div>
+                    </span>
                 </tabbar-item>
                 <tabbar-item link="/me" index="2">
                     <i slot="icon" class="ion-android-person"></i>
@@ -33,21 +41,27 @@
     .weui-tabbar__icon i{
         color: #000;
     }
+    .note-msg{
+        position: absolute;
+        bottom: 35px;
+    }
 </style>
 
 <script type="text/ecmascript-6">
-    import {Grid,GridItem,Tabbar, TabbarItem , Loading  , LoadingPlugin } from 'vux'
+    import {Grid,GridItem,Tabbar, TabbarItem , Loading  , LoadingPlugin,Badge } from 'vux'
     Vue.use(LoadingPlugin)
     export default {
+        props: ['msges'],
         components:{
-            Grid,
+            Grid,Badge,
             GridItem,
             Tabbar,
             TabbarItem,
         },
         data(){
             return {
-                select_num:-1
+                select_num:-1,
+                msg : 0,
             }
         },
         computed: {
@@ -78,10 +92,16 @@
                 setTimeout(function () {
                     self.$vux.loading.hide()
                 },666)
+            },
+            get_note_msg(){
+                if(localStorage.getItem('note-msg')==null)
+                    localStorage.setItem('note-msg',0)
+                this.msg = localStorage.getItem('note-msg')
             }
         },
         mounted(){
             this.init()
+            this.get_note_msg()
         },
     }
 </script>

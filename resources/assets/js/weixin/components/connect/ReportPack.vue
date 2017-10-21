@@ -1,4 +1,4 @@
-<!-- 发表帖子记录的显示块 -->
+<!-- 帖子记录的显示 -->
 <template>
 	<div class="m-piece">
 		<div class="m-cell-media-wrap">
@@ -6,6 +6,9 @@
 				<span v-if="label" class="label">{{label}}</span>
 				<span> ·最新动态</span>
 				<span v-if="time" class="top-time">{{time}}</span>
+				<span class="comment-res" v-on:click="deleteNote">
+	                                		<i slot="icon" class="ion-ios-trash-outline"></i>
+	                        		</span>
 			</div>
 			<div class="m-cell-media-middle">
 				<div class="m-cell-media">
@@ -36,7 +39,12 @@
 
 <script>
 	export default {
-		props: ['author', 'time','read','comment','label','createTime']
+		props: ['author', 'time','read','comment','label','createTime'],
+		methods: {
+		    deleteNote: function () {
+		     	this.$emit('increment')
+		    }
+		},
 	}
 </script>
 <style lang="less">
@@ -64,6 +72,17 @@
 		.m-cell-media-top{
 			font-size: 12px;
 			.label{color: #20a0ff}
+			.comment-res{
+			    	padding-left: 10px;
+			}
+			.comment-res>i{
+				display: inline-block;
+			    	transform: scale(1.5);
+			    	cursor: pointer;
+			}
+			.comment-res>i:hover{
+			    	color: #e63030;
+			}
 		}
 		.m-cell-media-middle {
 			display: flex;
@@ -104,5 +123,4 @@
 			}
 		}
 	}
-
 </style>

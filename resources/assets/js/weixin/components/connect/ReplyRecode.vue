@@ -1,33 +1,43 @@
-<!-- 帖子的回复记录 -->
+<!-- 用户自己帖子的回复记录 -->
 <template>
     <div>
         <x-header>回复记录</x-header>
         <scroller lock-x  height="-40px" use-pulldown use-pullup :pulldown-config="{downContent: '下拉刷新', upContent: '正在更新',loadingContent:''}"
             :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
                 <div>
-                    <p v-for="i in bottomCount-1">
-                        <MsgPack :item="connect[i]"></MsgPack>
+                    <p v-for="i in bottomCount">
+                        <MsgPack :item="connect[i-1]" v-on:increment="showDelete(connect[i-1].id,connect[i-1].parent_id,connect[i-1].note_id,i-1)"></MsgPack>
                     </p>
                 </div>
                  <load-more :show-loading="pdState" v-show="pullDown" :tip="pullTitle"></load-more>
             </scroller>
+
+            <confirm
+              :title="'删除评论'"
+              theme="android"
+              v-model="showDel"
+              @on-confirm="deleteMsg">
+                <p style="text-align:center;">确认删除这条回复吗？</p>
+            </confirm>
     </div>
 </template>
 
 <script>
-    import { Group, Cell,XHeader,Scroller,LoadMore } from 'vux'
-    import MsgPack from './MsgPack.vue'
+    import { Group, Cell,XHeader,Scroller,LoadMore,Confirm } from 'vux'
+    import MsgPack from './ReplyPack.vue'
     export default {
         components: {
             Group,XHeader,Scroller,MsgPack,LoadMore,
-            Cell
+            Cell,Confirm
         },
         data(){
             return {
+                showDel: false,
+                deleted: {},
                 pullTitle: '正在加载', //Loading的文字提示
                 pullDown: false,    //显示下拉加载Loading
                 pdState: true,  //是否显示Loading的圆圈
-                bottomCount: 1,
+                bottomCount: 0,
                 connect: [],
                 limit: 0,
                 status: {
@@ -44,7 +54,7 @@
                     if (num>0) {
                         if(state==1){
                             self.connect = []
-                            self.bottomCount = 1
+                            self.bottomCount = 0
                         }
                         for(var i=0;i<num;i++)
                             self.connect[self.bottomCount+i] = response.data.msg[i]
@@ -60,6 +70,23 @@
                         self.pullTitle = "没有更多数据"
                     }
                 });
+            },
+            //id=>评论id、type=>一级评论or二级评论、note=>帖子、index=>数据下标
+            showDelete(id,type,note,index){
+                this.showDel = true
+                this.deleted = {'id':id,'type':type,'nId':note,'index':index}
+            },
+            deleteMsg(){
+                let self = this
+                axios.post("wx/connect/deleteMsg",self.deleted).then(function(response){
+                    if(response.data.code){
+                        self.connect.splice(self.deleted.index,1)
+                        self.bottomCount-=1
+                    }else{
+                        self.remind = '删除失败'
+                        self.remindState = true
+                    }
+                })
             },
             //下拉刷新（重新刷新数组数据）
             refresh(){

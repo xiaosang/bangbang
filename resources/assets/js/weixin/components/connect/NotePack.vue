@@ -38,7 +38,7 @@
 		props: ['author', 'time','read','comment','label']
 	}
 </script>
-<style lang="less">
+<style lang="less" scoped>
 	.m-piece{
 		background-color: white;
 		border-bottom: 1px solid #eff2f7;
@@ -74,7 +74,6 @@
 				font-size: 17px;
 				line-height: 22px;
 				color: #333;
-				font-weight: bold;
 				p{padding: 10px 60px 10px 0;}
 			}
 			//用户信息显示

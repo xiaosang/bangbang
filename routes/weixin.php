@@ -21,10 +21,14 @@ Route::group(['prefix' => 'release'], function () {
 });
 Route::group(['prefix' => 'main'], function () {
     Route::get('/get_task_list','Wx\TaskController@get_task_list');
+    Route::get('/get_announcementContent','Wx\TaskController@get_announcementContent');
 });
 Route::group(['prefix' => 'task'], function () {
     Route::get('/get_task','Wx\TaskController@get_task');
     Route::post('/accept_task','Wx\TaskController@accept_task');
+});
+Route::group(['prefix' => 'announcement'], function () {
+    Route::get('/get_announcement_list','Wx\TaskController@get_announcement_list');
 });
 
 Route::group(['prefix' => 'me'], function () {

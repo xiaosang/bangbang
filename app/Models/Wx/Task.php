@@ -195,4 +195,26 @@ class Task extends Model
             ->first();
         return $result;
     }
+
+    /*
+     * 获取公告列表
+     * */
+    static public function get_announcement_list(){
+        $result = DB::table('announcement')
+            ->where('is_delete',0)
+            ->orderBy('create_time','desc')
+            ->get();
+        return $result;
+    }
+
+    /*
+     * (首页)获取公告列表
+     * */
+    static public function get_announcementContent(){
+        $result = DB::table('announcement')
+            ->where('is_delete',0)
+            ->orderBy('create_time','desc')
+            ->first();
+        return $result;
+    }
 }

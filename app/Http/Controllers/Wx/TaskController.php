@@ -250,6 +250,16 @@ class TaskController extends Controller
         }
     }
 
+    public function get_announcement_list(){
+        $result = Task::get_announcement_list()->toarray();
+        return responseToJson(1,'获取公告！',$result);
+    }
+
+    public function get_announcementContent(){
+        $result = Task::get_announcementContent();
+        return responseToJson(1,'获取公告！',$result->content);
+    }
+
 
 
 

@@ -2,13 +2,13 @@
     <div id="main">
         <swiper id="swiper" loop auto :list="swiperImg"></swiper>
 
-        <swipeout v-if="!announcement">
+        <swipeout v-if="!announcement" @click.native="$router.push('/main/announcement')">
             <swipeout-item transition-mode="follow">
                 <div slot="right-menu">
                     <swipeout-button @click.native="noShowAnnouncement()" type="warn">不再显示</swipeout-button>
                 </div>
-                <div slot="content" class="demo-content vux-1px-t">
-                    <marquee  scrollamount="4">{{ announcementContent }}</marquee>
+                <div slot="content" class="demo-content vux-1px-t" >
+                    <marquee  scrollamount="4"  >{{ '公告 : ' + announcementContent }}</marquee>
                 </div>
             </swipeout-item>
         </swipeout>
@@ -74,7 +74,7 @@
                     fallbackImg: 'https://static.vux.li/demo/3.jpg'
                 }],
                 announcement:'',
-                announcementContent:'公告：桑金超早上迟到，罚吃屎两天！',
+                announcementContent:'',
                 menu:[
                     {
                         url: '/main/release',
@@ -89,7 +89,7 @@
                         title:'任务'
                     },
                     {
-                        url: 'javascript:;',
+                        url: '/main/announcement',
                         img:'/img/icon-pwd.png',
                         icon:'ion-speakerphone',
                         title:'公告'
@@ -197,6 +197,15 @@
                         this.$vux.toast.text('网络异常!', 'top')
                     })
             },
+            get_announcementContent(){
+                axios.get('/wx/main/get_announcementContent')
+                    .then((res)=>{
+                        this.announcementContent = res.data.result
+                    })
+                    .catch(()=>{
+
+                    })
+            },
             test(){
             }
         },
@@ -207,6 +216,7 @@
             //查看公告是否显示，本地存储
             this.announcement = localStorage.getItem('announcement');
             this.swiperElement = document.getElementById('swiper')
+            this.get_announcementContent()
             this.get_task_list()
 
         }

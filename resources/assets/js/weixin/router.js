@@ -107,5 +107,11 @@ export default new VueRouter({
             path:'/main/task/info/:id',
             component: resolve =>void(require(['./components/main/TaskInfo.vue'], resolve))
         },
+        {
+            name:"公告列表",
+            path:'/main/announcement',
+            meta:{keepAlive: true},
+            component: resolve =>void(require(['./components/main/Announcement.vue'], resolve))
+        },
     ]
 })

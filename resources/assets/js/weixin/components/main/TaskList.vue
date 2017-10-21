@@ -176,6 +176,7 @@
             tabbar_change(value){
                 this.tabbar_val = value
                 try {
+                    this.$refs.scroller.disablePullup()
                     this.$refs.scroller.enablePullup()
                     this.$nextTick(() => {
                         this.$refs.scroller.reset({

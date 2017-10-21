@@ -34,7 +34,7 @@ export default new VueRouter({
         {
             name: "发表的帖子",
             path: "/note/report",
-            component: resolve =>void(require(['./components/connect/ReportNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/ReportRecode.vue'], resolve)),
         },
         {
             name: "帖子详细信息",
@@ -49,7 +49,7 @@ export default new VueRouter({
         {
             name: "社交消息",
             path: "/note/msg",
-            component: resolve =>void(require(['./components/connect/MsgRemind.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/RemindRecode.vue'], resolve)),
         },
         {
             name:"我的",

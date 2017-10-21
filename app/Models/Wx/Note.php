@@ -68,10 +68,29 @@ class Note extends Model
 		}
 		return $data;
 	}
+	//删除帖子
+	public static function delete_note($id){
+		$res =   DB::table('note')->where('id',$id)->update(['is_delete' => 1]);
+		if($res){
+			self::delete_msg($id);
+			return true;
+		}
+		return false;
+	}
+	//删除帖子评论
+	public static function delete_msg($id){
+		DB::table('comment')->where('note_id',$id)->update(['is_delete' => 1]);
+	}
+	//增加阅读量和访问量
 	public static function add_read($id){
 		$res = DB::table('note')->where([['is_delete',0],['note.id',$id]])->increment('read_num');
 	}
 	public static function add_comment($id){
 		$res = DB::table('note')->where([['is_delete',0],['note.id',$id]])->increment('comment_num');
+	}
+	//减少阅读量
+	public static function del_comment($id,$num){
+		$res = DB::table('note')->where('note.id',$id)->decrement('comment_num',$num);
+		return $res;
 	}
 }

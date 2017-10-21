@@ -20,7 +20,7 @@
                         <li> <i slot="icon" class="ion-ios-pricetags-outline"></i>
                             <a @click="$router.push('/note/join')">回复记录</a></li>
                         <li><i slot="icon" class="ion-ios-bell"></i>
-                            <a @click="$router.push('/note/msg')">消息记录</a> </li>
+                            <a @click="$router.push('/note/msg')">消息通知<badge v-if="msg>0" :text="msg" class="note-msg"></badge></a> </li>
                     </ul>
                 </transition>
               </div>
@@ -48,27 +48,37 @@
 
         <loading :show="showLoad" :text="'正在加载'"></loading>
 
-        <Navbottom></Navbottom>
+        <Navbottom v-if="msg>0" :msges="msg"></Navbottom>
+        <Navbottom v-else></Navbottom>
     </div>
 </template>
 
 <script>
     import Navbottom from './NavBottom.vue'
     import NotePack from './connect/NotePack.vue'
-    import HeaderBar from './connect/HeaderBar.vue'
     import { Tabbar,TabbarItem,Scroller,Divider,Grid,GridItem,XButton,Spinner,
-        Loading,LoadMore,GroupTitle,Group, Cell } from 'vux'
+        Loading,LoadMore,GroupTitle,Group, Cell,Badge } from 'vux'
+    Echo.channel('orders')
+    .listen('.server.created', (e) => {
+        if(Vue.userId==e.userId)
+                Vue.$vux.alert.show({
+                    title: '消息提醒',
+                    content: '论坛收到新的消息',
+                })
+    });
     export default {
         components: {
             Tabbar,TabbarItem,LoadMore,Loading,
             Group,Cell,Navbottom,NotePack,
-            Grid,GridItem,GroupTitle,HeaderBar,
-            Scroller,Divider,Spinner,XButton
+            Grid,GridItem,GroupTitle,
+            Scroller,Divider,Spinner,XButton,Badge
         },
         data(){
             return {
+                msg : 0,
                 showLoad: false,
                 showMenu: false,
+                msgStatus: false,
                 pullTitle: '正在加载', //Loading的文字提示
                 pullDown: false,    //显示下拉加载Loading
                 pdState: true,  //是否显示Loading的圆圈
@@ -158,20 +168,47 @@
                 this.pullTitle = "正在加载"
                 this.getConnect(1)
                 this.$nextTick(() => {
-                  setTimeout(() => {
+                setTimeout(() => {
                     this.$refs.scrollerObj.donePulldown()
                     this.pullupEnabled && this.$refs.scrollerObj.enablePullup()
                   }, 500)
                 })
             },
+             //更新Cookie里面的数据
+            msgCount(){
+                let self = this
+                axios.get("wx/connect/msgCount").then(function(response){
+                    self.msg = response.data.code
+                    localStorage.setItem('note-msg',response.data.code)
+                })
+            },
+            userInfo(){
+                let self = this
+                axios.get("wx/connect/userInfo").then(function(response){
+                    Vue.userId = response.data.code
+                })
+            },
         },
+
         mounted() {
             this.getConnect(0)
+            this.msgCount()
+            this.userInfo()
         },
     }
 </script>
 
 <style lang="less" scoped>
+.position-vertical-demo {
+  background-color: #ffe26d;
+  color: #000;
+  text-align: center;
+  padding: 15px;
+}
+.note-msg{
+    position: absolute;
+    margin: 15px 5px;
+}
 .nav_top>.weui-tabbar{
     top: 0px;
     bottom: auto;
@@ -186,10 +223,10 @@
     color: #ffffff;
     width: 100%;
     position: fixed;
-    background: rgba(7, 17, 27, .9);
+    background: rgba(7, 17, 27, 1);
     .content-tab {
         a {
-             color: #ffffff;
+             color: #e8e8e8;
             font-size: 14px;
             font-weight: bold;
             text-align: center;
@@ -238,7 +275,7 @@
             }
         }
         li:hover{
-            background-color:#8a8a8a;
+            background-color:black;
         }
         .fade-enter-active, .fade-leave-active {
             transition: opacity .5s
@@ -267,5 +304,4 @@
 <style type="text/css">
     .note-scroller .xs-container{padding-top: 45px;}
     .note-scroller .xs-plugin-pulldown-container{top: -15px!important;}
-
 </style>

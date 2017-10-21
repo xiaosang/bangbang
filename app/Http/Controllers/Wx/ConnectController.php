@@ -7,6 +7,7 @@ use App\Models\Wx\Note;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ConnectController extends Controller
 {
@@ -43,9 +44,11 @@ class ConnectController extends Controller
 			return responseToJson(0, '非法操作','success');
 		}
 	}
+	//请求图片的路由
 	public function get_img(Request $request){
 		return response()->file($request->img);
 	}
+	//得到帖子的详细信息
 	public function get_detail($id){
 		Note::add_read($id);//阅读量增加
 		$data = Note::get_detail($id);
@@ -55,12 +58,25 @@ class ConnectController extends Controller
 			return responseToJson(0, "不存在此文章",'error');
 		}
 	}
-
+	//得到用户回复帖子记录
 	public function note_record(Request $request){
 		$limit = $this->limit;
 		$user = get_session_user();
 		$num = $request->page*$limit;
 		$data = Note::note_record($num,$limit,$user->id);
 		return responseToJson($data->count(), $data,'success');
+	}
+	//得到用户的信息
+	public function user_info(){
+		$user = get_session_user();
+		 return responseToJson($user->id, "message",'success');
+	}
+	//删除帖子的信息
+	public function delete_note(Request $request){
+		$res = Note::delete_note($request->id);
+		if($res)
+			return responseToJson(1, "note",'success');
+		else
+			return responseToJson(0, "note",'error');
 	}
 }

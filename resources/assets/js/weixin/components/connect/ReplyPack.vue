@@ -5,9 +5,11 @@
 				<div class="msg-item">
 					<div class="msg-author">
 						<div class="author-avatar">
-							<img :src="item.author" alt=" ">
-							<a  class="author_name">{{ item.author }}</a>
-							<span class="reply_time">回复时间:{{ item.time }}</span>
+							<!-- <img :src="item.author" alt=" "> -->
+							<span class="reply_person">被回复人
+								<a  class="author_name">{{ item.author }}</a>
+								<span class="reply_time">回复时间:{{ item.time }}</span>
+				                        		</span>
 						</div>
 					</div>
 					<div class="reply_topic">
@@ -15,6 +17,9 @@
 					</div>
 					<div>
 						<span class="reply-lab">内容：</span>
+						<span class="comment-res" v-on:click="deleteMsg">
+			                                		<i slot="icon" class="ion-ios-trash-outline"></i>
+			                        		</span>
 						<p class="reply_content">{{item.content}}</p>
 					</div>
 
@@ -26,7 +31,12 @@
 
 <script>
 	export default {
-		props: ['item']
+		props: ['item'],
+		methods: {
+		    deleteMsg: function () {
+		     	this.$emit('increment')
+		    }
+		},
 	}
 </script>
 
@@ -35,7 +45,7 @@
 	margin-bottom: 5px;
 	background-color: #fff;
 	.msg-item {
-		padding: 15px 10px;
+		padding: 14px 15px 10px;
 		border-bottom: 1px #e0e0e0 solid;
 	}
 	.msg-author {
@@ -43,28 +53,27 @@
 		.author-avatar {
 			margin-right: 5px;
 			display: inline-block;
-			img {
-				border: none;
-			    	width: 34px;
-			    	height: 34px;
-			    	border-radius: 17px;
-			    	display: inline-block;
-			    	vertical-align: text-top;
-			    	background-color: black;
-			}
 		}
-		.author_name, .reply_time {
-			vertical-align: sub;
-			padding-left: 5px;
-		}
-		.reply_time{
+		.reply_person{
 			color: #969696;
+			font-size: 14px;
+			padding: 8px 0 0;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			.author_name, .reply_time {
+				padding-left: 5px;
+			}
+			.author_name{color: blue}
+			.reply_time{
+				color: #969696;
+			}
 		}
 	}
 	.reply_topic {
 		color: #969696;
 		font-size: 14px;
-		padding: 8px 0;
+		padding: 8px 0 0;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -88,7 +97,19 @@
 		margin-left: 40px;
 		background: #d4d4d4;
 		border-radius: 5px;
-	       word-break: break-word;
+	       	word-break: break-word;
+	}
+	.comment-res{
+	    	padding: 7px 20px;
+		float: right;
+	    	i{
+			display: inline-block;
+		    	transform: scale(1.2);
+		    	cursor: pointer;
+		}
+		i:hover{
+		    	color: #e63030;
+		}
 	}
 }
 </style>

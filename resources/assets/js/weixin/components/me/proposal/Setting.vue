@@ -84,7 +84,7 @@
                 this.addressOnOff = true
             },
             getSchool : function(){
-                axios.post('/wx/set/school').then(res => {
+                axios.get('/wx/set/school').then(res => {
                     this.school_all = []
                     this.school_all.push(res.data.result)
                     
@@ -109,11 +109,23 @@
                 this.img_src = '/wx/set/get_check?school_id='+this.school_id+'&current_date='+Date.parse(date)
                 this.imgShow = true
             },
+            checkV:function(v,psd){
+                return md5(md5(v.toUpperCase()).substring(0,30).toUpperCase()+'10467').substring(0,30).toUpperCase()
+                
+            },
+            checkPsd:function(psd){
+                return md5(this.student_code+md5(psd).substring(0,30).toUpperCase()+'10467').substring(0,30).toUpperCase()
+            },
             school_enter: function(){
                 var psd = this.student_psd
-                var ch = $('#check').value
-                var check= md5(md5(this.student_img.toUpperCase()).substring(0,30).toUpperCase()+'10467').substring(0,30).toUpperCase();
-                var password = md5(this.student_code+md5(psd).substring(0,30).toUpperCase()+'10467').substring(0,30).toUpperCase();
+                // var ch = $('#check').value
+                var check = this.student_img
+                var password = psd
+                if(this.school_id == 1){
+                    check= this.checkV(this.student_img)
+                    password = this.checkPsd(psd)
+                }
+                
                 var parm = {
                     user_id: this.student_code, 
                     school_id: this.school_id,

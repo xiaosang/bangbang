@@ -1,7 +1,6 @@
 <?php
 
 return [
-        'hist' => [
             'postData' =>[
                 '__VIEWSTATE' => 'dDw4ODEwMTkyNTY7Oz6uXw9RQf0bw8SrGIjZutgOtpxLCw==',
                 '__VIEWSTATEGENERATOR' =>'4B596BA9',
@@ -26,8 +25,12 @@ return [
             'login'=>'/jwweb/_data/index_LOGIN.aspx',
             'studentInfo'=>'/jwweb/xsxj/Stu_MyInfo_RPT.aspx',
             'studentInfoUrl' => 'http://jwgl.hist.edu.cn/jwweb/xsxj/Stu_MyInfo_RPT.aspx',
-
-        ]
+            
+            'headers_info' => [
+                'Host' => 'jwgl.hist.edu.cn',
+                'Referer' => 'http://jwgl.hist.edu.cn/jwweb/xsxj/Stu_MyInfo_RPT.aspx',
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36',
+            ],
     
     
 ];

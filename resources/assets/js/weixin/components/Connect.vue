@@ -223,7 +223,6 @@
     color: #ffffff;
     width: 100%;
     position: fixed;
-    padding: 3px 0;
     background: #35495e;
     .content-tab {
         a {
@@ -231,7 +230,7 @@
             font-size: 14px;
             font-weight: bold;
             text-align: center;
-            padding: 10px 15px;
+            padding: 13px 15px;
             display: inline-block;
             &.selected {
                 background: black;

@@ -43,7 +43,7 @@
     }
     .note-msg{
         position: absolute;
-        bottom: 35px;
+        bottom: 30px;
     }
 </style>
 

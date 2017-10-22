@@ -5,21 +5,22 @@
 				<div class="msg-item">
 					<div class="msg-author">
 						<div class="author-avatar">
-							<span class="reply_person">回复人：
-								<a  class="author_name">{{ item.author }}</a>
+							<span class="reply_person">
+								用户<a  class="author_name"><span class="scolor">：</span>{{ item.author }}</a>
 								<span class="reply_time">时间:{{ item.time }}</span>
 				                        		</span>
-				                        		<span class="comment-res" v-on:click="submitMsg">
-				                                		<i slot="icon" class="ion-ios-compose-outline"></i>
-				                        		</span>
 						</div>
+						<span class="comment-res" v-on:click="submitMsg">
+			                                		<!-- <i slot="icon" class="ion-ios-close-empty"></i> -->
+			                                		回复
+			                        		</span>
 					</div>
 					<div class="reply_topic">
-						帖子：<a  @click="$router.push('/note/detail/'+item.note_id)">{{ item.title }}</a>
+						帖子<a  @click="$router.push('/note/detail/'+item.note_id)"><span class="scolor">：</span>{{ item.title }}</a>
 					</div>
-					<div>
-						<span class="reply-lab">内容：</span>
-						<p class="reply_content">{{item.content}}</p>
+					<div class="reply-contain">
+						<span class="reply-lab">内容</span>
+						<p class="reply_content">：{{item.content}}</p>
 					</div>
 
 	      			</div>
@@ -40,11 +41,15 @@
 </script>
 
 <style lang="less" scoped>
+.scolor{
+	color: #969696
+}
 .msg-list {
 	margin-bottom: 5px;
 	background-color: #fff;
 	.msg-item {
-		padding: 14px 15px 10px;
+		font-size: 14px;
+		margin: 14px 0 10px 20px;
 		border-bottom: 1px #e0e0e0 solid;
 	}
 	.msg-author {
@@ -52,29 +57,31 @@
 		.author-avatar {
 			margin-right: 5px;
 			display: inline-block;
-			.comment-res{
-			    	padding-left: 10px;
-			    	i{
-					display: inline-block;
-				    	transform: scale(1.2);
-				    	cursor: pointer;
-				}
-				i:hover{
-				    	color: #e63030;
-				}
+		}
+		.comment-res{
+			color: #969696;
+		    	position:absolute;
+		    	font-size: 12px;
+		    	right: 20px;
+		    	i{
+				display: inline-block;
+			    	transform: scale(1.2);
+			    	cursor: pointer;
+			}
+			i:hover{
+			    	color: #e63030;
 			}
 		}
 		.reply_person{
 			color: #969696;
-			font-size: 14px;
 			padding: 8px 0 0;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			.author_name, .reply_time {
-				padding-left: 5px;
+				padding-right: 8px;
 			}
-			.author_name{color: blue}
+			.author_name{color: black}
 			.reply_time{
 				color: #969696;
 			}
@@ -82,32 +89,27 @@
 	}
 	.reply_topic {
 		color: #969696;
-		font-size: 14px;
 		padding: 8px 0 0;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	    	a {
-	    		color: #06c;
+	    		color: black;
 	    	}
 	}
-	.reply-lab{
-		color: #969696;
-		float: left;
-		font-size: 14px;
-		display: inline-block;
-		padding: 3px 0;
-	}
-	.reply_content {
-		padding: 3px;
-		font-size: 14px;
-		color: #484848;
-		line-height: 1.7;
-		margin-top: 5px;
-		margin-left: 40px;
-		background: #d4d4d4;
-		border-radius: 5px;
-	       	word-break: break-word;
+	.reply-contain{
+		padding: 8px 0 10px 0;
+		.reply-lab{
+			color: #969696;
+			float: left;
+			display: inline-block;
+		}
+		.reply_content {
+			color: #969696;
+			margin-left: 28px;
+			border-radius: 5px;
+		       	word-break: break-word;
+		}
 	}
 }
 </style>

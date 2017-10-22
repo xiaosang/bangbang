@@ -4,10 +4,10 @@
 		<div class="m-cell-media-wrap">
 			<div class="m-cell-media-top">
 				<span v-if="label" class="label">{{label}}</span>
-				<span> ·最新动态</span>
+				<span> ·动态</span>
 				<span v-if="time" class="top-time">{{time}}</span>
 				<span class="comment-res" v-on:click="deleteNote">
-	                                		<i slot="icon" class="ion-ios-trash-outline"></i>
+	                                		<i slot="icon" class="ion-ios-close-empty"></i>
 	                        		</span>
 			</div>
 			<div class="m-cell-media-middle">
@@ -74,6 +74,7 @@
 			.label{color: #20a0ff}
 			.comment-res{
 			    	padding-left: 10px;
+    				float: right;
 			}
 			.comment-res>i{
 				display: inline-block;
@@ -115,6 +116,7 @@
 			position: relative;
 			span{
 				padding: 0 5px;
+				font-size: 10px;
 				i{
 					transform: scale(1.2);
 					display: inline-block;

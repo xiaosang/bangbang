@@ -223,14 +223,14 @@
     color: #ffffff;
     width: 100%;
     position: fixed;
-    background: rgba(7, 17, 27, 1);
+    background: #35495e;
     .content-tab {
         a {
              color: #e8e8e8;
             font-size: 14px;
             font-weight: bold;
             text-align: center;
-            padding: 10px 15px;
+            padding: 13px 15px;
             display: inline-block;
             &.selected {
                 background: black;
@@ -250,9 +250,10 @@
             width: 100%;
             z-index: 200;
             list-style: none;
+            margin-top: 3px;
             overflow: hidden;
             position: absolute;
-            background-color: rgba(7, 17, 27, .8);
+            background-color: #35495e;
             li {
               height: 48px;
               line-height: 48px;
@@ -260,7 +261,7 @@
               padding: 0 30px;
               text-align: center;
               cursor: pointer;
-              border-bottom: 1px solid #475669;
+              border-bottom: 1px solid #3a3939;
               color: #ffffff;
               a {
                 padding: 0px;

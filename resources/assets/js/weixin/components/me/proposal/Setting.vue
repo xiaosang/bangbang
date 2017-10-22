@@ -90,7 +90,8 @@
                     
                     // this.img_src = res;
                 }).catch(err => {
-                    this.$vux.toast.text('网络异常!', 'top')
+                    this.getSchool()
+                    // this.$vux.toast.text('网络异常!', 'top')
                 })
             },
             select_school: function(value){
@@ -140,6 +141,7 @@
                     }
                 }).catch(err => {
                     this.$vux.toast.text('网络异常!', 'top')
+                    
                 })
             },
             onMD5:function(){

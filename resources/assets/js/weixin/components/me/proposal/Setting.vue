@@ -87,11 +87,8 @@
                 axios.get('/wx/set/school').then(res => {
                     this.school_all = []
                     this.school_all.push(res.data.result)
-                    
-                    // this.img_src = res;
                 }).catch(err => {
                     this.getSchool()
-                    // this.$vux.toast.text('网络异常!', 'top')
                 })
             },
             select_school: function(value){

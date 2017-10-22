@@ -4,7 +4,7 @@
         <scroller lock-x  height="-40px" use-pulldown use-pullup :pulldown-config="{downContent: '下拉刷新', upContent: '正在更新',loadingContent:''}"
             :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
                 <div>
-                    <p v-for="i in bottomCount">
+                    <p class="note-pack" v-for="i in bottomCount">
                         <NoteRecord v-on:increment="showDelete(connect[i-1].id,i-1)" :author="connect[i-1].author" :time="connect[i-1].update_time" :label="connect[i-1].label"
                         :read="connect[i-1].read_num" :comment="connect[i-1].comment_num" :createTime="connect[i-1].create_time">
                              <p slot="title" @click="$router.push('/note/detail/'+connect[i-1].id)">{{connect[i-1].title}}</p>
@@ -128,3 +128,9 @@
         }
     }
 </script>
+
+<style lang="less">
+.note-pack{
+        margin: 5px 0;
+}
+</style>

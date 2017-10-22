@@ -6,20 +6,20 @@
 					<div class="msg-author">
 						<div class="author-avatar">
 							<!-- <img :src="item.author" alt=" "> -->
-							<span class="reply_person">被回复人
+							<span class="reply_person">被回复:
 								<a  class="author_name">{{ item.author }}</a>
 								<span class="reply_time">回复时间:{{ item.time }}</span>
 				                        		</span>
 						</div>
+						<span class="comment-res" v-on:click="deleteMsg">
+			                                		<i slot="icon" class="ion-ios-close-empty"></i>
+			                        		</span>
 					</div>
 					<div class="reply_topic">
 						帖子：<a  @click="$router.push('/note/detail/'+item.note_id)">{{ item.title }}</a>
 					</div>
 					<div>
 						<span class="reply-lab">内容：</span>
-						<span class="comment-res" v-on:click="deleteMsg">
-			                                		<i slot="icon" class="ion-ios-trash-outline"></i>
-			                        		</span>
 						<p class="reply_content">{{item.content}}</p>
 					</div>
 
@@ -54,17 +54,28 @@
 			margin-right: 5px;
 			display: inline-block;
 		}
+		.comment-res{
+			float: right;
+		    	i{
+				display: inline-block;
+			    	transform: scale(1.2);
+			    	cursor: pointer;
+			}
+			i:hover{
+			    	color: #e63030;
+			}
+		}
 		.reply_person{
 			color: #969696;
-			font-size: 14px;
+			font-size: 12px;
 			padding: 8px 0 0;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			.author_name, .reply_time {
-				padding-left: 5px;
+				padding-right: 5px;
 			}
-			.author_name{color: blue}
+			.author_name{color: black}
 			.reply_time{
 				color: #969696;
 			}
@@ -78,7 +89,7 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	    	a {
-	    		color: #06c;
+	    		color: black;
 	    	}
 	}
 	.reply-lab{
@@ -95,21 +106,8 @@
 		line-height: 1.7;
 		margin-top: 5px;
 		margin-left: 40px;
-		background: #d4d4d4;
 		border-radius: 5px;
 	       	word-break: break-word;
-	}
-	.comment-res{
-	    	padding: 7px 20px;
-		float: right;
-	    	i{
-			display: inline-block;
-		    	transform: scale(1.2);
-		    	cursor: pointer;
-		}
-		i:hover{
-		    	color: #e63030;
-		}
 	}
 }
 </style>

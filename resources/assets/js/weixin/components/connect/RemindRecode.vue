@@ -3,15 +3,15 @@
     <div>
         <x-header>消息记录</x-header>
         <div>
-            <card :header="{title:'未读消息'}">
+            <x-button mini type="primary" class="msg-btn" @click.native="readMsg">全部标记为已读</x-button>
+            <card :header="{title:'未读消息'}" class="msg-read">
                 <div slot="content">
-                    <x-button mini type="primary" class="msg-btn" @click.native="readMsg">全部标记为已读</x-button>
                     <p v-for="i in remind.length">
                         <MsgPack :item="remind[i-1]" v-on:increment="showSub(remind[i-1].author,remind[i-1].parent_id,remind[i-1].cid,remind[i-1].note_id)" class="msg-remind"></MsgPack>
                     </p>
                 </div>
             </card>
-            <card :header="{title:'已读消息'}" :footer="{title:pullTitle}" @on-click-footer="clickBottom">
+            <card :header="{title:'已读消息'}" :footer="{title:pullTitle}" @on-click-footer="clickBottom" class="readed">
                 <x-button mini>submit</x-button>
                 <div slot="content">
                     <p v-for="i in bottomCount">
@@ -136,6 +136,12 @@
 </script>
 
 <style lang="less" scoped>
+.weui-panel{
+    margin-top: 5px;
+}
+.msg-read>.weui-panel__hd{
+    color: #ad192d !important;
+}
 .label_title{
     padding: 7px;
     background-color: white;
@@ -144,13 +150,22 @@
     font-weight: bold;
 }
 .msg-btn{
-    float: right;
-    top: -35px;
-    right: 15px;
+    right: 10px;
+    top: 60px;
+    position: absolute;
+    z-index: 200;
 }
+
 </style>
 <style type="text/css">
 .msg-remind .msg-list{
     margin-bottom: 0px !important;
 }
+.readed>.weui-panel__ft>a{
+        padding: 5px 0 20px 0;
+        text-align: center;
+    }
+    .readed>.weui-panel__ft>a.weui-cell:before{
+        border: none;
+    }
 </style>

@@ -71,7 +71,7 @@
 				flex: 1;
 			}
 			.m-cell-title {
-				font-size: 17px;
+				font-size: 16px;
 				line-height: 22px;
 				color: #333;
 				p{padding: 10px 60px 10px 0;}

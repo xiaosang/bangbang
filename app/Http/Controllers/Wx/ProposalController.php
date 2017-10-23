@@ -114,11 +114,32 @@ class ProposalController extends Controller
         $user_id = get_wx_user_id();
         $complaint_id = $request->input('complaint_id');
         $result = Proposal::single_complaint($complaint_id,$user_id);
-        if(count($result)>0){
+        if($result['complaint']&&$result['user']){
             return responseToJson(1,'获取成功',$result);
         }else{
             return responseToJson(0,'获取失败');
         }
+    }
+
+    function delete_complaint(Request $request){
+        $user_id = get_wx_user_id();
+        $complaint_id = $request->input('complaint_id');
+        $result = Proposal::check_complaint($user_id,$complaint_id);
+        if($result){
+            $result = Proposal::delete_complaint($complaint_id);
+            if($result){
+                return responseToJson(1,'删除成功');
+            }else{
+                return responseToJson(0,'删除失败');
+            }
+        }else{
+            return responseToJson(-1,'没有权限');
+        }
+    }
+
+    function show_img(Request $request){
+        $path = trim($request->path);
+        return response()->download(storage_path('app/'.$path));
     }
 
 }

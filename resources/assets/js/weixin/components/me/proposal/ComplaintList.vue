@@ -53,6 +53,8 @@
         padding-top: 10px;
         padding-bottom: 10px;
         border-bottom: 1px solid #fbce9a;
+        width: 90%;
+        margin: auto;
     }
 </style>
 <script>

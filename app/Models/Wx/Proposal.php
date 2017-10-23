@@ -62,11 +62,56 @@ class Proposal extends Model{
         }
     }
 
+    /**
+     * 获取单个投诉信息及相关用户
+     * 其中 judge_complaint=0时user_id投诉user_else_id  session里面的用户投诉别人 judge_complaint=1时相反
+     * @param $complaint_id
+     * @param $user_id
+     * @return mixed
+     */
     static function single_complaint($complaint_id,$user_id){
-        $result = DB::table('complaint')->where('id',$complaint_id)->where('is_delete',0)->where(function ($q) use($user_id){
+        $result['complaint'] = DB::table('complaint')->where('id',$complaint_id)->where('is_delete',0)->where(function ($q) use($user_id){
             $q->where('create_user_id',$user_id)->orWhere('complaint_user_id',$user_id);
         })->first();
+        if($result['complaint']){
+            $user_id1 = $result['complaint']->create_user_id;
+            $user_id2 = $result['complaint']->complaint_user_id;
+            if($user_id1==$user_id){
+                $user_id_else = $user_id2;
+                $result['judge_complaint'] = 0;
+            }else{
+                $user_id_else = $user_id1;
+                $result['judge_complaint'] = 1;
+            }
+            $result['user'] = DB::table('user')->where('id',$user_id_else)->first();
+        }
         return $result;
+    }
+
+    /**
+     * 检测学生的
+     * @param $user_id
+     * @param $complaint_id
+     */
+    static function check_complaint($user_id,$complaint_id){
+        $result = DB::table('complaint')->where('id',$complaint_id)->where('create_user_id',$user_id)->first();
+        if(count($result)==0){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 删除投诉
+     * @param $user_id
+     * @param $complaint_id
+     */
+    static function delete_complaint($complaint_id){
+        $result = DB::table('complaint')->where(['id'=>$complaint_id,'is_delete'=>0])->update(['is_delete'=>1]);
+        if($result){
+            return $result;
+        }
+        return 0;
     }
 
 }

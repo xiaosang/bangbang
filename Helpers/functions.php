@@ -33,19 +33,6 @@ function getFilename($ext)
     return $filename;
 }
 
-/*检查用户是否属于改班级*/
-function check($classroom_id = 0, $user_id, $type)
-{
-    $where['classroom_id'] = $classroom_id;
-    $where['user_id'] = $user_id;
-    $status = DB::table('classroom')->where('status', '!=', 2)->where('id', $classroom_id)->first();
-    if ($status) {
-        $query = DB::table('classroom_member')->where($where)->whereIn('user_job', json_decode($type, true))->first();
-        if ($query) return true;
-    }
-    return false;
-}
-
 function get_session_user()
 {
     /*$std               = new \stdClass();

@@ -1,18 +1,17 @@
-<!-- 帖子的显示块 -->
+<!-- 帖子记录的显示 -->
 <template>
 	<div class="m-piece">
 		<div class="m-cell-media-wrap">
 			<div class="m-cell-media-top">
 				<span v-if="label" class="label">{{label}}</span>
-				<span> ·</span>
+				<span> ·动态</span>
 				<span v-if="time" class="top-time">{{time}}</span>
+				<span class="comment-res" v-on:click="deleteNote">
+	                                		<i slot="icon" class="ion-ios-close-empty"></i>
+	                        		</span>
 			</div>
 			<div class="m-cell-media-middle">
 				<div class="m-cell-media">
-					<div class="m-cell-author m-ellipsis-2">
-						<img src="" alt=".">
-						<p v-if="author">{{author}}</p>
-					</div>
 					<div class="m-cell-title m-ellipsis-2">
 						<slot name="title"></slot>
 					</div>
@@ -25,6 +24,10 @@
 							<i slot="icon" class="ion-chatbox-working"></i>
 							<span>{{comment}}</span>
 						</span>
+						<span v-if="createTime">
+							<i slot="icon" class="ion-calendar"></i>
+							<span>{{createTime}}</span>
+						</span>
 					</div>
 				</div>
 
@@ -33,12 +36,18 @@
 		</div>
 	</div>
 </template>
+
 <script>
 	export default {
-		props: ['author', 'time','read','comment','label']
+		props: ['author', 'time','read','comment','label','createTime'],
+		methods: {
+		    deleteNote: function () {
+		     	this.$emit('increment')
+		    }
+		},
 	}
 </script>
-<style lang="less" scoped>
+<style lang="less">
 	.m-piece{
 		background-color: white;
 		border-bottom: 1px solid #eff2f7;
@@ -63,6 +72,18 @@
 		.m-cell-media-top{
 			font-size: 12px;
 			.label{color: #20a0ff}
+			.comment-res{
+			    	padding-left: 10px;
+    				float: right;
+			}
+			.comment-res>i{
+				display: inline-block;
+			    	transform: scale(1.5);
+			    	cursor: pointer;
+			}
+			.comment-res>i:hover{
+			    	color: #e63030;
+			}
 		}
 		.m-cell-media-middle {
 			display: flex;
@@ -71,28 +92,12 @@
 				flex: 1;
 			}
 			.m-cell-title {
-				font-size: 16px;
+				font-size: 17px;
 				line-height: 22px;
 				color: #333;
+				font-weight: bold;
 				p{padding: 10px 60px 10px 0;}
 			}
-			//用户信息显示
-			.m-cell-author {
-			    	right: 20px;
-			    	bottom: 50%;
-			    	color: #939393;
-			    	position: absolute;
-			    	transform: translateY(50%);
-				img{
-					width: 48px;
-					height: 48px;
-					border-radius: 50%;
-					display: inline-block;
-					background-color: black;
-				}
-				p{text-align: center}
-			}
-
 			.m-pull-right {
 				width: 94px;
 				height: 94px;
@@ -111,6 +116,7 @@
 			position: relative;
 			span{
 				padding: 0 5px;
+				font-size: 10px;
 				i{
 					transform: scale(1.2);
 					display: inline-block;
@@ -119,5 +125,4 @@
 			}
 		}
 	}
-
 </style>

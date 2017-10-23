@@ -30,15 +30,15 @@ const filters = {
         return pattern;
     },
     // 将时间戳 转换为 X天X小时X分钟
-    formatDuring:function(mss){
-        var days = parseInt(mss / (1000 * 60 * 60 * 24));
-        var hours = parseInt((mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = parseInt((mss % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = (mss % (1000 * 60)) / 1000;
+    formatDuring: function(mss){
+        var days = parseInt(mss / ( 60 * 60 * 24));
+        var hours = parseInt((mss % ( 60 * 60 * 24)) / ( 60 * 60));
+        var minutes = parseInt((mss % ( 60 * 60)) /  60 );
+        var seconds = mss %  60  ;
         return days + " 天 " + hours + " 小时 " + minutes + " 分钟 ";
     },
     //去掉html标签
-    delHtmlTag:function(str){
+    delHtmlTag: function(str){
         return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
     }
 

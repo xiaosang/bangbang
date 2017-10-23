@@ -2,8 +2,8 @@
     <div>
         <x-header>{{content['title']}}</x-header>
         <div class="content">
+            <p class="content-title">{{content['title']}}</p>
             <div class="connect-mid" v-html = "content['content']"></div>
-
             <blockquote class="connect-foot">
                 <span class="author">
                     <i slot="icon" class="ion-person"></i>
@@ -23,34 +23,39 @@
                 </cell>
 
                 <cell value-align="left">
-                    <div class="comment" v-for="items in reply">
-
+                    <div class="comment" v-for="items,index in reply">
                         <div class="comment-top">
                             <a href="" class="avatar">
                                 <img src="" alt=" ">
                                 <span>{{items.name}}</span>
                             </a>
+                            <!-- 回复 -->
                             <span class="comment-res" @click="changeReply(items.id,items.cid,items.name)">
-                                <i slot="icon" class="ion-android-textsms"></i>
+                                <i slot="icon" class="ion-ios-compose-outline"></i>
+                            </span>
+                            <!-- 删除 -->
+                            <span v-if="items.cid==userId" class="comment-res" @click="showDelete(items.id,index,-1)">
+                                <i slot="icon" class="ion-ios-trash-outline"></i>
                             </span>
                         </div>
                         <p>{{items.content}}</p>
                         <div class="comment-btm"><span>{{items.time}}</span></div>
 
                         <div class="sub-comment-list">
-                            <div class="sub-comment" v-for="item in items.reply">
+                            <div class="sub-comment" v-for="item,ind in items.reply">
                                 <a href="">{{item.name}}</a>
                                 <span>: <a href="">@{{item.reply_name}}</a>
                                     {{item.content}}
                                 </span>
                                 <div class="comment-btm">
                                     <span>{{item['time']}}</span>
-                                    <span @click="changeReply(item.reply_id,item.cid,item.name)">回复</span>
+                                    <span class="choose" @click="changeReply(item.reply_id,item.cid,item.name)">回复</span>
+                                    <span class="choose" v-if="item.cid==userId" @click="showDelete(item.id,index,ind)">删除</span>
                                 </div>
                             </div>
                         </div>
                         <div class="more-comment" @click="moreComment($event)" v-if="items.reply" >
-                            <a v-if="items.reply.length>3">更多回复</a>
+                            <a v-if="items.reply.length>4">更多回复</a>
                         </div>
                     </div>
                     <div v-show="showEnd">
@@ -59,22 +64,31 @@
                     </div>
                 </cell>
             </group>
-
         </div>
         <toast v-model="remindState" type="text">{{remind}}</toast>
+        <confirm
+              :title="'删除评论'"
+              theme="android"
+              v-model="showDel"
+              @on-confirm="deleteMsg">
+                <p style="text-align:center;">确认删除这条评论吗？</p>
+            </confirm>
     </div>
 </template>
 
 <script>
-    import { Toast,Group, Cell,XHeader,XTextarea,XButton,LoadMore} from 'vux'
+    import { Toast,Group, Cell,XHeader,XTextarea,XButton,LoadMore,Confirm} from 'vux'
     export default {
         components: {
             Group,Cell,XHeader,XTextarea,XButton,
-            Toast,LoadMore
+            Toast,LoadMore,Confirm
         },
 
         data(){
             return {
+                showDel:false,//显示删除的弹出框
+                delate: {},//执行删除操作的数据参数
+                userId: 0,
                 content:{},
                 note: this.$route.params.id,
                 //帖子id、信息、被回复用户id、回复的id、回复姓名
@@ -124,7 +138,6 @@
                                 }
                             }
                             self.message.content = ""
-                            console.log( self.reply)
                         }else{
                             self.remind = '回复报错啦'
                             self.remindState = true
@@ -147,10 +160,31 @@
                 this.placeholder = '@'+userName
                 $(".weui-textarea").focus();
             },
+            //回复的信息id，index顶级评论下标，ind=》二级评论下标
+            showDelete(replyId,index,type){
+                this.showDel = true
+                this.delate = {'id':replyId,'type':type,'nId':this.note,'index':index}
+            },
+            deleteMsg(){
+                let self = this
+                let type = self.delate.type
+                let index = self.delate.index
+                axios.post("wx/connect/deleteMsg",self.delate).then(function(response){
+                    if(response.data.code){
+                        if(type<0){
+                            self.reply.splice(index,1)
+                        }else{
+                            self.reply[index].reply.splice(type,1)
+                        }
+                    }else{
+                        self.remind = '删除失败'
+                        self.remindState = true
+                    }
+                })
+            },
             getMsg(){
                 let self = this
                 axios.get('wx/connect/getMsg/'+self.note+"?page="+self.limit).then((response) => {
-                    console.log(response.data.msg)
                     let num = response.data.code
                     if(num>0){
                         for(var i=0;i<num;i++)
@@ -163,6 +197,7 @@
                         self.pullTitle = "没有更多数据"
                     }
                     self.showEnd = true
+                    console.log(self.reply)
                 })
             },
             getNext(){
@@ -180,39 +215,47 @@
                 }else{
                     return
                 }
-            }
+            },
+             userInfo(){
+                let self = this
+                axios.get("wx/connect/userInfo").then(function(response){
+                    self.userId = response.data.code
+                })
+            },
         },
         mounted() {
             this.getDetail()
             this.getMsg()
+            this.userInfo()
         }
     }
-    $('.more-comment').click(function(){
-        console.log("HEllo")
-    })
 </script>
 
 <style  lang="less">
 .content{
     background-color: white;
 }
-.connect-mid>p{
-    line-height: 2.2em;
-    text-indent: 2em;
-    font-size: 14px;
-    padding: 10px 5px;
-    color: #999999;
+.content-title{
+    font-size: 21px;
+    font-family: SimHei, "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+    color: rgb(5, 27, 40);
+    font-weight: 500;
+    padding: 5px 12px;
 }
-.comment-res{float: right;}
-p>img{
-    opacity: .9;
-    display: block;
-    margin: 0 auto;
-    cursor: pointer;
-    max-width: 100%;
-    border-radius: 2px;
-    -webkit-transition: all .25s;
-    transition: all .25s;
+.connect-mid>p{
+    font-size: 14px;
+    padding: 5px 12px;
+    color: #999999;
+    img{
+        opacity: .9;
+        display: block;
+        margin: 0 auto;
+        cursor: pointer;
+        max-width: 100%;
+        border-radius: 2px;
+        -webkit-transition: all .25s;
+        transition: all .25s;
+    }
 }
 blockquote {
     margin: 0 0 .5em 0;
@@ -233,6 +276,10 @@ span>i{
     margin: 5px 0 0 44px;
     font-size: 12px;
     color: #969696;
+}
+.comment-btm>span.choose:hover{
+    cursor: pointer;
+    color: blue;
 }
 //top
 .avatar{float: left;}
@@ -257,9 +304,17 @@ span>i{
     line-height: 1.7;
     word-break: break-word !important;
 }
+.comment-res{
+    float: right;
+    padding-left: 25px;
+}
 .comment-res>i{
     float: right;
     transform: scale(1.5);
+    cursor: pointer;
+}
+.comment-res>i:hover{
+    color: #e63030;
 }
 .avatar>span{
     margin-right: 2px;

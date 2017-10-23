@@ -17,8 +17,11 @@
                 </div>
                 <!--<div class="detail"><i class="fa fa-angle-right"></i></div>-->
                 <div class="main_info"></div>
-                <cell-box is-link link="">
-                    <i class="fa fa-cog cell_i"></i>账号设置
+                <cell-box is-link link="/accountset">
+                    <i class="fa fa-cog cell_i"></i>
+                    <cell-box is-link link="">
+                        账号设置
+                    </cell-box>
                 </cell-box>
             </group>
             <group title="任务">

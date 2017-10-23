@@ -11,7 +11,7 @@
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="line-height: 36px;">用户
-                  
+
                 </span>
               </div>
               <div id="user" style="height: 100px;">
@@ -27,7 +27,7 @@
                 <span style="line-height: 36px;">测试</span>
               </div>
                <div id="order" style="height: 100px;">
-
+                 
               </div>
             </el-card>
           </el-col>
@@ -46,7 +46,7 @@
           <el-col :span="12">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span style="line-height: 36px;">任务状态分布</span>
+                <span style="line-height: 36px;">订单状态分布</span>
               </div>
                <div id="order" style="height: 480px;">
                 
@@ -157,6 +157,54 @@
             console.log(response.data.result)
             this.userCount = response.data.result
 
+          }).catch(error => {
+            this.$message("网络错误")
+          })
+        },
+        setOrder: function(){
+          var taskStatus=[
+            {'value':0,'name':'未支付'},
+            {'value':0,'name':'已支付'},
+            {'value':0,'name':'已完成'},
+            {'value':0,'name':'已结束'},
+            {'value':0,'name':'已取消'},
+          ]
+          axios.post('index/task').then(response =>{
+            console.log(response.data.result)
+            var res = response.data.result
+            for (var i = 0; i < res.length; i++) {
+              taskStatus[res[i].status].value = res[i].count
+            }
+            var myCharts = echarts.init(document.getElementById('task'))
+            var option = {
+              tooltip : {
+                  // trigger: 'item',
+                  formatter: "{b} : {c} ({d}%)"
+              },
+              legend: {
+                  top: 10,
+                  left: 'center',
+                  data: ['未接受', '已接受','已完成','已结束','已取消']
+              },
+              series : [
+                  {
+                      type: 'pie',
+                      radius : '65%',
+                      center: ['50%', '50%'],
+                      selectedMode: 'single',
+                      data:taskStatus,
+                      itemStyle: {
+                          emphasis: {
+                              shadowBlur: 10,
+                              shadowOffsetX: 0,
+                              shadowColor: 'rgba(0, 0, 0, 0.5)'
+                          }
+                      }
+                  }
+              ]
+            }
+            console.log(taskStatus)
+            myCharts.setOption(option,true)
           }).catch(error => {
             this.$message("网络错误")
           })

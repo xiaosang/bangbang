@@ -10,14 +10,15 @@ export default new VueRouter({
             path:'/test',
             component: resolve =>void(require(['./components/Example.vue'], resolve))
         },
-        {
-            name:"首页",
-            path:'/',
-            component: resolve =>void(require(['./components/Index.vue'], resolve))
-        },
+        // {
+        //     name:"首页",
+        //     path:'/',
+        //     component: resolve =>void(require(['./components/Index.vue'], resolve))
+        // },
         {
             name:"首页",
             path:'/main',
+            // meta:{keepAlive: true},
             component: resolve =>void(require(['./components/Main.vue'], resolve))
         },
         {
@@ -33,7 +34,7 @@ export default new VueRouter({
         {
             name: "发表的帖子",
             path: "/note/report",
-            component: resolve =>void(require(['./components/connect/ReportNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/ReportRecode.vue'], resolve)),
         },
         {
             name: "帖子详细信息",
@@ -43,12 +44,12 @@ export default new VueRouter({
         {
             name: "参与帖子",
             path: "/note/join",
-            component: resolve =>void(require(['./components/connect/JoinNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/ReplyRecode.vue'], resolve)),
         },
         {
             name: "社交消息",
             path: "/note/msg",
-            component: resolve =>void(require(['./components/connect/MsgNote.vue'], resolve)),
+            component: resolve =>void(require(['./components/connect/RemindRecode.vue'], resolve)),
         },
         {
             name:"我的",
@@ -76,7 +77,7 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
         },
         {
-            name:"发布",
+            name:"发布任务",
             path:'/main/release',
             component: resolve =>void(require(['./components/main/Release.vue'], resolve))
         },
@@ -86,14 +87,35 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/main/IssueSuccess.vue'], resolve))
         },
         {
+            name:"接受任务成功",
+            path:'/main/AcceptSuccess/:id',
+            component: resolve =>void(require(['./components/main/AcceptSuccess.vue'], resolve))
+        },
+        {
             name:"任务列表",
             path:'/main/task/list',
+            meta:{keepAlive: true},
             component: resolve =>void(require(['./components/main/TaskList.vue'], resolve))
+        },
+        {
+            name:"账号设置",
+            path:'/accountset',
+            component: resolve =>void(require(['./components/me/proposal/Setting.vue'], resolve))
         },
         {
             name:"任务详情",
             path:'/main/task/info/:id',
             component: resolve =>void(require(['./components/main/TaskInfo.vue'], resolve))
+        },{
+            name:"个人信息",
+            path:'/main/info/:id',
+            component: resolve =>void(require(['./components/me/proposal/Info.vue'], resolve))
+        },
+        {
+            name:"公告列表",
+            path:'/main/announcement',
+            meta:{keepAlive: true},
+            component: resolve =>void(require(['./components/main/Announcement.vue'], resolve))
         },
     ]
 })

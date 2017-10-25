@@ -1,12 +1,14 @@
 <template>
     <div class="timeline-demo">
-        <div style="margin: 0 20px;padding: 20px;" v-for="item,index in announcement_list" :key="index">
-            <h4>{{ item.content }}</h4>
-            <br>
-            <div class="team">
-                <p>帮帮团队</p>
-                <p>{{ item.create_time | date}}</p>
-            </div>
+        <div style="margin:20px;" v-for="item,index in announcement_list" :key="index">
+                <div style="height: 8px;background: url('img/wx/announcementTop.png') no-repeat;background-size:100% 8px;"></div>
+                <h4 style="background: url('img/wx/announcementMiddle.png');padding: 20px;">{{ item.content }}</h4>
+                <!--<br>-->
+                <div class="team" style="background: url('img/wx/announcementMiddle.png');">
+                    <p>帮帮团队</p><br>
+                    <p>{{ item.create_time | date}}</p>
+                </div>
+                <div style="height: 55px;background: url('img/wx/announcementBottom.png') no-repeat;background-size:100% 100%;"></div>
         </div>
         <!--<timeline>
             <timeline-item>
@@ -66,22 +68,19 @@
 <style scoped lang="less">
     .timeline-demo {
         p {
-            color: #888;
+            color: #fff;
             font-size: 0.8rem;
             width:150px;
             text-align: center;
             float: right;
         }
         h4 {
-            color: #666;
+            color: #fff;
             font-weight: normal;
             text-indent:2em;
             font-size: 14px;
             line-height: 1.5;
             min-height:40px;
-        }
-        .recent {
-            color: rgb(4, 190, 2)
         }
         .team {
             text-align: right;

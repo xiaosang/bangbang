@@ -45,8 +45,8 @@ Route::group(['prefix' => 'me'], function () {
     Route::post('/user_list','Wx\ProposalController@get_user_list');       //获取除自己以外的所有用户
     Route::post('/complaint/submit','Wx\ProposalController@submit_complaint');
     Route::post('/complaint/single','Wx\ProposalController@single_complaint');
-
-
+    Route::get('/show_img', 'Wx\ProposalController@show_img');
+    Route::post('/complaint/delete','Wx\ProposalController@delete_complaint');
 });
 
 //账号设置

@@ -7,7 +7,8 @@ const filters = {
             date = new Date(date*1000)
         }
         if (pattern == undefined) {
-            pattern = "yyyy-MM-dd hh:mm:ss";
+            // pattern = "yyyy-MM-dd hh:mm:ss";
+            pattern = "yyyy-MM-dd hh:mm";
         }
         var o = {
             "M+": date.getMonth() + 1,

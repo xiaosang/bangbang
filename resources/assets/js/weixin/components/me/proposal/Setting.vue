@@ -88,7 +88,8 @@
                     this.school_all = []
                     this.school_all.push(res.data.result)
                 }).catch(err => {
-                    this.getSchool()
+                    // this.getSchool()
+                    console.log(err)
                 })
             },
             select_school: function(value){
@@ -137,7 +138,7 @@
                         this.$router.push('/main/info/'+this.school_id)
                     }
                 }).catch(err => {
-                    this.$vux.toast.text('网络异常!', 'top')
+                    this.$vux.toast.text('教务系统已关闭!', 'top')
                     
                 })
             },

@@ -56,6 +56,10 @@ export default new VueRouter({
         },{
             path: '/order/payorder',
             component: resolve =>void(require(['./order/PayOrder.vue'], resolve))
-        },
+        },{
+            //论坛管理
+            path: '/forum/note',
+            component: resolve =>void(require(['./forum/NoteList.vue'], resolve))
+        }
     ]
 })

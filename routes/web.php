@@ -61,3 +61,11 @@ Route::group(['prefix' => 'index', 'middleware' => 'login.check'], function () {
     Route::post('task', 'Admin\Index\IndexController@get_task');
     Route::post('user', 'Admin\Index\IndexController@get_new_add_user');
 });
+
+Route::group(['prefix' => 'forum', 'middleware' => 'login.check'], function () {
+    Route::post('note', 'Admin\Forum\NoteController@get_list');
+    Route::post('comment', 'Admin\Forum\NoteController@get_comment');
+    Route::post('commentdel', 'Admin\Forum\NoteController@comment_delete');
+    Route::post('notedel', 'Admin\Forum\NoteController@note_delete');
+    // Route::post('user', 'Admin\Index\IndexController@get_new_add_user');
+});

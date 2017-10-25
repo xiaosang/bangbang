@@ -6,120 +6,112 @@
                 <el-breadcrumb-item>帖子管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-
-        <el-table
-            :data="noteList"
-            border
-            style="width: 100%;"
-            @expand="get_evaluate"
-            v-loading="tableLoading">
-            <el-table-column
-            type="index"
-            width="50">
-            </el-table-column>
-            <el-table-column
-            prop="name"
-            label="名称">
-            </el-table-column>
-            <el-table-column
-            label="详情">
-                <template slot-scope="scope">
-                    <el-popover trigger="click" placement="right">
-                    <p style="max-width:200px"> {{ scope.row.content }}</p>
-                    <div slot="reference" class="name-wrapper">
-                        <el-tag style="cursor: pointer">点击查看</el-tag>
-                    </div>
-                    </el-popover>
-                </template>
-            </el-table-column>
-            <el-table-column
-            prop="key"
-            label="完成秘钥">
-            </el-table-column>
-            <el-table-column
-            label="是否匿名">
-            <template  slot-scope="scope"><span v-if="scope.row.is_hide">是</span><span v-if="!scope.row.is_hide">否</span></template>
-            </el-table-column>
-            <el-table-column
-            label="预计接受时间">
-            <template  slot-scope="scope">{{ scope.row.expected_time|date }}</template>
-            </el-table-column>
-            <el-table-column
-            label="接受完成时间">
-            <template  slot-scope="scope">{{ scope.row.complete_time|date }}</template>
-            </el-table-column>
-            <el-table-column
-            label="支付金额">
-            <template  slot-scope="scope">{{ scope.row.pay_money/100 }}</template>
-            </el-table-column>
-            <el-table-column
-            prop="user_name"
-            label="创建用户">
-            </el-table-column>
-            <el-table-column
-            label="类型">
-            <template  slot-scope="scope"><span v-if="!scope.row.type">有偿</span><span v-if="scope.row.type">无偿</span></template>    
-            </el-table-column>
-            <el-table-column
-            label="状态">
-            <template  slot-scope="scope">
-                <span v-if="scope.row.status==0">
-                    <el-tag type="danger">未接受</el-tag>
-                </span>
-                <span v-else-if="scope.row.status==1">
-                    <el-tag type="warning">已接受</el-tag>
-                </span>
-                <span v-else-if="scope.row.status==2">
-                    <el-tag type="success">已完成</el-tag>
-                </span>
-                <span v-else-if="scope.row.status==3">
-                    <el-tag type="primary">已结束</el-tag>
-                </span>
-                <span v-else-if="scope.row.status==4">
-                    <el-tag type="gray">已取消</el-tag>
-                </span>
-            </template>
-            </el-table-column>
-            <el-table-column type="expand">
-                <template slot-scope="props">
-                    <el-form label-position="left" inline class="demo-table-expand" v-if="exLoading">
-                        <!-- <span v-if="scope.row.evaluate">{{ scope.row.evaluate }}fsdhgsdfgsdf</span> -->
-                        <!-- <span v-if="scope[0].evaluate.length!=0">{{ scope.evaluate[0].id }}fsdhgsddfgsdf</span> -->
-                        <el-form-item label="发布任务用户">
-                            <span>{{ props.row.release }}</span>
-                        </el-form-item>
-                        <el-form-item label="评论">
-                            <span>{{ props.row.user_content }}</span>
-                        </el-form-item>
-                        <el-form-item label="分数">
-                            <el-rate
-                                v-model="props.row.score"
-                                disabled
-                                show-text
-                                text-color="#ff9900"
-                                text-template="{value}">
-                            </el-rate>
-                        </el-form-item>
-                        <el-form-item label="接受任务用户">
-                            <span>{{ props.row.accept }}</span>
-                        </el-form-item>
-                        <el-form-item label="评论">
-                            <span>{{ props.row.user_content1 }}</span>
-                        </el-form-item>
-                        <el-form-item label="分数">
-                            <el-rate
-                                v-model="props.row.score1"
-                                disabled
-                                show-text
-                                text-color="#ff9900"
-                                text-template="{value}">
-                            </el-rate>
-                        </el-form-item>
-                    </el-form>
-                </template>
-            </el-table-column>
-        </el-table>
-
+        <div>
+            <el-table
+                :data="noteList"
+                v-loading='note_loading'
+                @expand="get_node_id"
+                style="width: 100%">
+                <el-table-column type="expand">
+                    <template scope="props">
+                       <el-table
+                            :data="commentList"
+                            style="width: 100%"
+                            v-loading='comment_loading'>
+                            <el-table-column
+                                label="内容"
+                                prop="content"
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                label="评论人"
+                                width="180"
+                                prop="create_user_name">
+                            </el-table-column>
+                            <el-table-column
+                                label="回复人"
+                                width="180">
+                                    <template slot-scope="scope">
+                                        <span v-if="scope.row.reply_name == null">回复主贴</span><span v-else-if="scope.row.reply_name != null">{{ scope.row.reply_name }}</span>
+                                    </template>
+                            </el-table-column>
+                            <el-table-column
+                                label="操作">
+                                <template slot-scope="scope">
+                                    <el-button
+                                    size="small"
+                                    type="danger"
+                                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                            style="padding: 1rem 0;"
+                            @current-change="_change"
+                            @size-change="change_size"
+                            :page-sizes="[5, 10, 20, 50]"
+                            :page-size="list_page_size"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="list_paginate_total">
+                        </el-pagination>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    type="index"
+                    width="60">
+                </el-table-column>
+                <el-table-column
+                    label="文章标题"
+                    prop="name">
+                </el-table-column>
+                <el-table-column
+                    label="文章描述"
+                    prop="describe">
+                </el-table-column>
+                <el-table-column
+                    label="文章内容"
+                    width="100px">
+                    <template slot-scope="scope">
+                        <el-popover trigger="click" placement="right">
+                        <span style="max-width:400px;max-height:500px;overflow:scroll;display:block" v-html='scope.row.content'>  </span>
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag style="cursor: pointer">点击查看</el-tag>
+                        </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="阅读数量"
+                    prop="read_num"
+                    width="100px">
+                </el-table-column>
+                <el-table-column
+                    label="评论条数"
+                    prop="comment_count"
+                    width="100px">
+                </el-table-column>
+                <el-table-column
+                    label="帖子分类"
+                    width="100px">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.label == 0">未分类</span>
+                        <span v-else-if="scope.row.label == 1">分享</span>
+                        <span v-else-if="scope.row.label == 2">讨论</span>
+                        <span v-else-if="scope.row.label == 3">提问</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="操作"
+                    width='70px'>
+                    <template slot-scope="scope">
+                        <el-button
+                        size="small"
+                        type="danger"
+                        @click="noteDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
         <el-pagination
                 style="padding: 1rem 0;"
                 @current-change="current_change"
@@ -133,44 +125,45 @@
 </template>
 
 <script>
-    import TaskStatus from '../../widget/TaskStatus.vue'
-    import TaskType from '../../widget/TaskType.vue'
   export default {
-      components: {
-            TaskStatus,
-            TaskType
-        },
     data() {
       return {
         noteList : [],
-        tableLoading : false,
-        isShow : false,
-        selTask : [],
-        evaluate : [],
-        exLoading: false,
+        commentList : [],
+        comment_loading : false,
+        note_loading: false,
+        note_id: 0,
+        // tableLoading : false,
+        // isShow : false,
+        // selTask : [],
+        // evaluate : [],
+        // exLoading: false,
         
          // 分页
         page: 1,
         page_size: 5,
-        paginate_total: 0
+        paginate_total: 0,
+
+        list_page: 1,
+        list_page_size:5,
+        list_paginate_total:0,
       }
     },
 
     methods:{
         getList: function(){
-            this.tableLoading = true
-            var self = this
-            var param = {
+            this.note_loading = true
+             var param = {
                 page_size: this.page_size, 
                 page: this.page,
             };
-            axios.post("/note/list",param).then(response =>{
-                self.noteList = response.data.result.data
-                console.log(self.noteList)
-                self.paginate_total = response.data.result.total
-                self.tableLoading = false
-            }).catch(error => {
-                self.$message("网络错误")
+            axios.post('/forum/note',param).then(res =>{
+                console.log(res.data.result.data)
+                this.noteList = res.data.result.data
+                this.paginate_total = res.data.result.total
+                this.note_loading = false
+            }).catch(err => {
+                this.$message('网络错误')
             })
         },
         size_change: function (size) {
@@ -181,31 +174,109 @@
             this.page = page
             this.getList()
         },
-        get_evaluate: function(row, expanded){
+        _change:function(page){
+            this.list_page = page
+            this.get_node_id({id:this.note_id},true)
+        },
+        change_size: function(size){
+            this.list_page_size = size
+            this.get_node_id({id:this.note_id},true)
+        },
+        get_node_id:function(row, expanded){
+            console.log(row.id)
+            this.note_id = row.id
+            this.comment_loading = true
             if(expanded){
                 var param = {
-                    task_id : row.id
+                    note_id : row.id,
+                    page_size: this.list_page_size, 
+                    page: this.list_page,
                 };
-                axios.post("/note/evaluate",param).then(response =>{
-                    // this.noteList[0].evaluate = response.data.result
-                    
-                    row.score = response.data.result[0].score
-                    row.score1 = response.data.result[1].score
-                    // row.status = response.data.result[0].status
-                    row.user_content = response.data.result[0].content
-                    row.release = response.data.result[0].release_user_name
-                    row.accept = response.data.result[0].accept_user_name
-                    row.user_content1 = response.data.result[1].content
-                    // row.orderNum = response.data.result[0].transaction_order_id
-                    this.exLoading = true
-                // row.accept = response.data.result[1]
-                // console.log( this.noteList.evaluate)
-            }).catch(error =>{
-                 this.$message("网络错误")
-            })
+                axios.post('/forum/comment',param).then(res =>{
+                    this.commentList = res.data.result.data
+                    // this.noteList = res.data.result.data
+                    this.list_paginate_total = res.data.result.total
+                    this.comment_loading = false
+                }).catch(err => {
 
+                })
             }
-            console.log(row,expanded)
+        },
+        handleDelete: function(index,row){
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                axios.post("/forum/commentdel",{
+                    id : row.id
+                }).then(response =>{
+                    var data = response.data;
+                    console.log(data)
+                    if (data.code == 0) {
+                        //success
+                        this.$message({
+                            title: '提示',
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.getList();
+                    } else {
+                        this.$message({
+                            title: '提示',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(error => {
+                    this.$message("网络错误")
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });          
+            });
+        
+            
+        },
+        noteDelete:function(index,row){
+
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                axios.post("/forum/notedel",{
+                    id : row.id
+                }).then(response =>{
+                    var data = response.data;
+                    console.log(data)
+                    if (data.code == 0) {
+                        //success
+                        this.$message({
+                            title: '提示',
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.getList();
+                    } else {
+                        this.$message({
+                            title: '提示',
+                            message: data.msg,
+                            type: 'warning'
+                        });
+                    }
+                }).catch(error => {
+                    this.$message("网络错误")
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });          
+            });
+        
         }
     },
     mounted(){

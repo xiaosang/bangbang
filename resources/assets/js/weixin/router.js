@@ -10,11 +10,11 @@ export default new VueRouter({
             path:'/test',
             component: resolve =>void(require(['./components/Example.vue'], resolve))
         },
-        // {
-        //     name:"首页",
-        //     path:'/',
-        //     component: resolve =>void(require(['./components/Index.vue'], resolve))
-        // },
+        {
+            name:"首页",
+            path:'/',
+            component: resolve =>void(require(['./components/Main.vue'], resolve))
+        },
         {
             name:"首页",
             path:'/main',
@@ -75,6 +75,23 @@ export default new VueRouter({
             name:"complaint/detail",
             path:'/complaint/detail/:complaint_id',
             component: resolve =>void(require(['./components/me/proposal/ComplaintDetail.vue'], resolve))
+        },
+        {
+            name:"me/task",
+            path:'/me/task',
+            component: resolve=>void(require(['./components/me/task/TaskListNav.vue'],resolve)),
+            children:[
+                {
+                    name:"release/list",
+                    path:'release/list',
+                    component: resolve=>void(require(['./components/me/task/TaskList.vue'],resolve)),
+                },
+                {
+                    name:"receive/list",
+                    path:'receive/list',
+                    component: resolve=>void(require(['./components/me/task/TaskList.vue'],resolve)),
+                }
+            ]
         },
         {
             name:"发布任务",

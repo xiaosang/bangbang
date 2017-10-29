@@ -260,7 +260,19 @@ class TaskController extends Controller
         return responseToJson(1,'获取公告！',$result->content);
     }
 
-
-
+    public function task_list(Request $request){
+        $user_id = get_wx_user_id();
+        $num = $request->num;
+        $page = $request->page;
+        $type = $request->type;
+        $status = $request->status;
+        $create_by_me = $request->create_by_me;
+        $result = Task::task_list($user_id,$create_by_me,$type,$status,$num,$page);
+        if($result){
+            return responseToJson(1,'获取任务列表成功',$result);
+        }else{
+            return responseToJson(0,'获取任务列表失败');
+        }
+    }
 
 }

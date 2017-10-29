@@ -59,6 +59,7 @@
     .header{
         position:fixed;
         width: 100%;
+        z-index: 22;
     }
     .content{
         padding-top: 47px;

@@ -25,10 +25,10 @@
                 </cell-box>
             </group>
             <group title="任务">
-                <cell-box is-link link="">
+                <cell-box is-link link="/me/task/release/list">
                     我发布的
                 </cell-box>
-                <cell-box is-link link="">
+                <cell-box is-link link="/me/task/receive/list">
                     我接收的
                 </cell-box>
             </group>

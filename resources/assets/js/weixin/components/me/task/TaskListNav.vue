@@ -1,7 +1,7 @@
 <template>
 <div>
       <div class="header">
-        <x-header :left-options="{ showBack:false,backText:''}">
+        <x-header :left-options="{ showBack:true,backText:'',preventGoBack:true}" @on-click-back="return_last">
             我的任务    
         </x-header>
             <nav id="nav_middle">
@@ -69,6 +69,9 @@ export default {
             }
         },
         methods:{
+            return_last(){
+                this.$router.push('/me');
+            },
              init () {
                var self = this
                self.nav =  [

@@ -60,6 +60,7 @@ Route::group(['prefix' => 'order', 'middleware' => 'login.check'], function () {
 Route::group(['prefix' => 'index', 'middleware' => 'login.check'], function () {
     Route::post('task', 'Admin\Index\IndexController@get_task');
     Route::post('user', 'Admin\Index\IndexController@get_new_add_user');
+    Route::post('order', 'Admin\Index\IndexController@get_order');
 });
 
 Route::group(['prefix' => 'forum', 'middleware' => 'login.check'], function () {

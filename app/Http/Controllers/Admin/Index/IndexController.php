@@ -28,5 +28,8 @@ class IndexController extends Controller
         // dd($time);
     }
 
+    function get_order(){
+        return responseToJson(0, 'success',Index::get_order());
+    }
 
 }

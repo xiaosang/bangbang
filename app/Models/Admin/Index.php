@@ -33,4 +33,8 @@ class Index extends Model
                 ->selectRaw('count(id) as count')
                 ->get();
     }
+
+    public static function get_order(){
+        return DB::table('transaction_order')->where('is_delete',0)->get();
+    }
 }

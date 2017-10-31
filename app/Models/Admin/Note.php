@@ -26,6 +26,7 @@ class Note extends Model{
     {
         DB::table('comment')->where('id', $id)->update([
             'is_delete' => 1,
+            'comment_num' => 'comment_num' - 1,
             'delete_at' => time()
         ]);
         return true;

@@ -87,7 +87,7 @@
                 </el-table-column>
                 <el-table-column
                     label="评论条数"
-                    prop="comment_count"
+                    prop="comment_num"
                     width="100px">
                 </el-table-column>
                 <el-table-column

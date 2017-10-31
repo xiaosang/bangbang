@@ -26,7 +26,7 @@
               <div slot="header" class="clearfix">
                 <span style="line-height: 36px;">测试</span>
               </div>
-               <div id="order" style="height: 100px;">
+               <div id="test" style="height: 100px;">
                  
               </div>
             </el-card>
@@ -110,7 +110,7 @@
             {'value':0,'name':'已取消'},
           ]
           axios.post('index/task').then(response =>{
-            console.log(response.data.result)
+            // console.log(response.data.result)
             var res = response.data.result
             for (var i = 0; i < res.length; i++) {
               taskStatus[res[i].status].value = res[i].count
@@ -154,7 +154,7 @@
         },
         setUser: function(){
           axios.post('index/user').then(response =>{
-            console.log(response.data.result)
+            // console.log(response.data.result)
             this.userCount = response.data.result
 
           }).catch(error => {
@@ -162,20 +162,17 @@
           })
         },
         setOrder: function(){
-          var taskStatus=[
+          var orderStatus=[
             {'value':0,'name':'未支付'},
             {'value':0,'name':'已支付'},
-            {'value':0,'name':'已完成'},
-            {'value':0,'name':'已结束'},
-            {'value':0,'name':'已取消'},
           ]
-          axios.post('index/task').then(response =>{
+          axios.post('index/order').then(response =>{
             console.log(response.data.result)
             var res = response.data.result
             for (var i = 0; i < res.length; i++) {
-              taskStatus[res[i].status].value = res[i].count
+              orderStatus[res[i].is_pay].value = orderStatus[res[i].is_pay].value + 1
             }
-            var myCharts = echarts.init(document.getElementById('task'))
+            var myCharts = echarts.init(document.getElementById('order'))
             var option = {
               tooltip : {
                   // trigger: 'item',
@@ -184,7 +181,7 @@
               legend: {
                   top: 10,
                   left: 'center',
-                  data: ['未接受', '已接受','已完成','已结束','已取消']
+                  data: ['未支付', '已支付','已完成','已结束','已取消']
               },
               series : [
                   {
@@ -192,7 +189,7 @@
                       radius : '65%',
                       center: ['50%', '50%'],
                       selectedMode: 'single',
-                      data:taskStatus,
+                      data:orderStatus,
                       itemStyle: {
                           emphasis: {
                               shadowBlur: 10,
@@ -203,7 +200,7 @@
                   }
               ]
             }
-            console.log(taskStatus)
+            // console.log(taskStatus)
             myCharts.setOption(option,true)
           }).catch(error => {
             this.$message("网络错误")
@@ -212,6 +209,7 @@
         onEcharts: function(){
           this.setTask()
           this.setUser()
+          this.setOrder()
         }
     },
     mounted(){

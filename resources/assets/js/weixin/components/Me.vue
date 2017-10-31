@@ -106,7 +106,11 @@
         },
         methods:{
           get_user_info(){
+              this.$vux.loading.show({
+                  text: '加载中...'
+              });
             this.send_request('post','/wx/me/user/info',function (response,self) {
+                self.$vux.loading.hide();
                 if(response.data.code==1){
                     let user_info = response.data.result
                     if(user_info){

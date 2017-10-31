@@ -1,7 +1,7 @@
 <template>
     <div style="height: 53px;">
         <div class="nav_bottom">
-            <tabbar v-model="select_num" @on-index-change="change_index">
+            <tabbar v-model="select_num">
                 <tabbar-item link="/main" index="0">
                     <i slot="icon" class="ion-ios-home"></i>
                     <span slot="label">首页</span>
@@ -84,15 +84,15 @@
                         break
                 }
             },
-            change_index(){
-                var self = this
-                self.$vux.loading.show({
-                    text: 'Loading'
-                })
-                setTimeout(function () {
-                    self.$vux.loading.hide()
-                },666)
-            },
+//            change_index(){
+//                var self = this
+//                self.$vux.loading.show({
+//                    text: 'Loading'
+//                })
+////                setTimeout(function () {
+////                    self.$vux.loading.hide()
+////                },666)
+//            },
             get_note_msg(){
                 if(localStorage.getItem('note-msg')==null)
                     localStorage.setItem('note-msg',0)

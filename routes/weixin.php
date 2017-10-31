@@ -47,6 +47,9 @@ Route::group(['prefix' => 'me'], function () {
     Route::post('/complaint/single','Wx\ProposalController@single_complaint');
     Route::get('/show_img', 'Wx\ProposalController@show_img');
     Route::post('/complaint/delete','Wx\ProposalController@delete_complaint');
+
+    Route::post('/task/list','Wx\TaskController@task_list');
+
 });
 
 //账号设置

@@ -1,36 +1,38 @@
 <template>
-    <div class="release">
-       
-        <remote-script src="/js/md5.js" @load="onMD5"></remote-script>
-        <group>
-            <x-input title='选择学校'  v-model="school_select_one" text-align="right"  placeholder="选择学校" disabled @click.native="selSchool"></x-input>
-        </group>
-        <group>
-            <x-input title='学号' v-model="student_code" :show-clear="false" text-align="center"  placeholder="请输入您的学号"></x-input>
-            <x-input title='密码' type="password" v-model="student_psd" :show-clear="false" text-align="center"  placeholder="请输入您的密码"></x-input>
-            <x-input title='验证码' v-model="student_img" :show-clear="false" text-align="center"  @on-focus='getFocus'  placeholder="请输入验证码"></x-input>
-            <img :src='img_src' id="validateImg" v-if="imgShow">
-        </group>
-        <group>
-            <x-button type="primary"  @click.native="school_enter">登录</x-button>
-        </group>
-         
-        <div v-transfer-dom>
-            <popup v-model="addressOnOff">
-                <div class="popup1">
-                    <group>
-                        <x-input v-model="school_select_one" :show-clear="false" text-align="left"  placeholder="选择学校" readonly>
-                        </x-input>
-                    </group>
-                    <p class="prompt">选择学校</p>
-                    <group>
-                        <picker :data='school_all' v-model='school_select' @on-change='select_school'></picker>
-                    </group>
-                </div>
-            </popup>
+    <div>
+        <div class="header">
+            <x-header :left-options="{backText: ''}">身份认证</x-header>
         </div>
+        <div class="release">
+            <remote-script src="/js/md5.js" @load="onMD5"></remote-script>
+            <group>
+                <x-input title='选择学校'  v-model="school_select_one" text-align="right"  placeholder="选择学校" disabled @click.native="selSchool"></x-input>
+            </group>
+            <group>
+                <x-input title='学号' v-model="student_code" :show-clear="false" text-align="center"  placeholder="请输入您的学号"></x-input>
+                <x-input title='密码' type="password" v-model="student_psd" :show-clear="false" text-align="center"  placeholder="请输入您的密码"></x-input>
+                <x-input title='验证码' v-model="student_img" :show-clear="false" text-align="center"  @on-focus='getFocus'  placeholder="请输入验证码"></x-input>
+                <img :src='img_src' id="validateImg" v-if="imgShow">
+            </group>
+            <group>
+                <x-button type="primary"  @click.native="school_enter">登录</x-button>
+            </group>
 
-
+            <div v-transfer-dom>
+                <popup v-model="addressOnOff">
+                    <div class="popup1">
+                        <group>
+                            <x-input v-model="school_select_one" :show-clear="false" text-align="left"  placeholder="选择学校" readonly>
+                            </x-input>
+                        </group>
+                        <p class="prompt">选择学校</p>
+                        <group>
+                            <picker :data='school_all' v-model='school_select' @on-change='select_school'></picker>
+                        </group>
+                    </div>
+                </popup>
+            </div>
+        </div>
     </div>
 </template>
 

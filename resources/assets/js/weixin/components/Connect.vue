@@ -13,14 +13,14 @@
                   </nav>
                   <transition name="fade">
                     <ul class="user-menu" v-show="showMenu">
-                        <li><i slot="icon" class="ion-edit"></i>
-                            <a @click="$router.push('/note/create')">发表帖子</a></li>
-                        <li><i slot="icon" class="ion-ios-body"></i>
-                            <a @click="$router.push('/note/report')">帖子记录</a></li>
-                        <li> <i slot="icon" class="ion-ios-pricetags-outline"></i>
-                            <a @click="$router.push('/note/join')">回复记录</a></li>
-                        <li><i slot="icon" class="ion-ios-bell"></i>
-                            <a @click="$router.push('/note/msg')">消息通知<badge v-if="msg>0" :text="msg" class="note-msg"></badge></a> </li>
+                        <li @click="$router.push('/note/create')"><i slot="icon" class="ion-edit"></i>
+                            <a>发表帖子</a></li>
+                        <li  @click="$router.push('/note/report')"><i slot="icon" class="ion-ios-body"></i>
+                            <a>帖子记录</a></li>
+                        <li  @click="$router.push('/note/join')"> <i slot="icon" class="ion-ios-pricetags-outline"></i>
+                            <a>回复记录</a></li>
+                        <li @click="$router.push('/note/msg')"><i slot="icon" class="ion-ios-bell"></i>
+                            <a>消息通知<badge v-if="msg>0" :text="msg" class="note-msg"></badge></a> </li>
                     </ul>
                 </transition>
               </div>
@@ -238,7 +238,7 @@
         }
         .menu{
             float: right;
-            padding-top: 13px;
+            padding-top: 16px;
             padding-right: 15px;
             i{
                 display: inline-block;
@@ -250,7 +250,6 @@
             width: 100%;
             z-index: 200;
             list-style: none;
-            margin-top: 3px;
             overflow: hidden;
             position: absolute;
             background-color: #35495e;

@@ -217,4 +217,40 @@ class Task extends Model
             ->first();
         return $result;
     }
+
+    /**
+     * 获取任务列表
+     * $user_id 用户id
+     * $create_by_me 1：我发布的  0:我接受的
+     * $type  任务类型  0：有偿    1；无偿    -1：全部
+     * $status  任务状态   -1:全部  0：未接受   1：已接受   2：已完成   3：已结束   4：已取消
+     * $num 分页的每页的数量
+     * $page 页号，从0开始
+     */
+    static public function task_list($user_id,$create_by_me,$type,$status,$num,$page)
+    {
+        if($create_by_me==0){
+            $q = DB::table('task')->where(['task.is_delete'=>0])->leftJoin('transaction_order','transaction_order.task_id','=','task.id')->where('transaction_order.accept_user_id',$user_id);
+        }else if($create_by_me==1){
+            $q = DB::table('task')->where(['task.create_user_id'=>$user_id,'task.is_delete'=>0])->leftJoin('transaction_order','transaction_order.task_id','=','task.id');
+        }
+        if($type==-1){
+            $q->where(function($q){
+                $q->where('task.type',1)->orWhere('task.type',0);
+            });
+        }else{
+            $q->where('task.type',$type);
+        }
+        if($status==-1){
+            $q->where(function($q){
+                $q->where('task.status',0)->orWhere('task.status',1)->orWhere('task.status',2)->orWhere('task.status',3)->orWhere('task.status',4);
+            });
+        }else{
+            $q->where('task.status',$status);
+        }
+        $start = $num*$page;
+        $result = $q->select('task.address_name','task.id','task.type','task.name','task.task_finish_time','transaction_order.pay_money')->offset($start)->limit($num)->get();
+        return $result;
+    }
+
 }

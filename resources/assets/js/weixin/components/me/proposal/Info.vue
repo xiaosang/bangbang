@@ -1,6 +1,9 @@
 <template>
   <div>
-        <group title="个人信息">
+      <div style="position: fixed;width: 100%">
+          <x-header :left-options="{backText: ''}">身份认证</x-header>
+      </div>
+        <group style="padding-top: 47px" title="个人信息">
             <x-input title="姓名" name="username" v-model="studentName" readonly></x-input>
             <x-input title="学号" name="usernum" v-model="studentNum" readonly></x-input>
             <x-input title="性别" name="usersex" v-model="studentSex" readonly></x-input>

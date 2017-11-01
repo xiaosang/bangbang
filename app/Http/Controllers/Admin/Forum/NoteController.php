@@ -24,7 +24,8 @@ class NoteController extends Controller{
     public function comment_delete(Request $request){
         
         $id = $request->id;
-        $res = Note::comment_delete($id);
+        $note_id = $request->note_id;
+        $res = Note::comment_delete($id,$note_id);
         if($res){
             return responseToJson(0,"删除成功");
         }else{

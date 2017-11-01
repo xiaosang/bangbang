@@ -60,3 +60,10 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/get_info','Wx\FollowController@get_info');
 });
 
+//失物招领
+Route::group(['prefix' => 'lost'], function () {
+
+    Route::post('/get_list','Wx\LostController@get_list');
+
+});
+

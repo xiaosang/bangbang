@@ -22,13 +22,14 @@ class Note extends Model{
         
     }
 
-    public static function comment_delete($id)
+    public static function comment_delete($id,$note_id)
     {
+        // DB::table('comment')->where('id',$id)s
         DB::table('comment')->where('id', $id)->update([
             'is_delete' => 1,
-            'comment_num' => 'comment_num' - 1,
             'delete_at' => time()
         ]);
+        DB::table('note')->where('id',$note_id)->decrement('comment_num');
         return true;
     }
 

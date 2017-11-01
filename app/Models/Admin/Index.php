@@ -37,4 +37,48 @@ class Index extends Model
     public static function get_order(){
         return DB::table('transaction_order')->where('is_delete',0)->get();
     }
+
+    public static function get_oreder_num($time,$yet_time){
+        $order=[];
+        $finsih = [];
+        $all = [];
+        $finsih['yet_num'] = DB::table('transaction_order')
+                            ->where('create_time','>',$yet_time)
+                            ->where('create_time','<',$time)
+                            ->where('is_delete',0)
+                            ->where('status',2)
+                            ->selectRaw('count(id) as count')
+                            ->get();
+        $finsih['day_num'] = DB::table('transaction_order')
+                            ->where('is_delete',0)
+                            ->where('create_time','>',$time)
+                            ->where('status',2)
+                            ->selectRaw('count(id) as count')
+                            ->get();
+        $finsih['all_num'] = DB::table('transaction_order')
+                            ->where('is_delete',0)
+                            ->where('status',2)
+                            ->selectRaw('count(id) as count')
+                            ->get();
+        $all['yet_num'] = DB::table('transaction_order')
+                            ->where('create_time','>',$yet_time)
+                            ->where('create_time','<',$time)
+                            ->where('is_delete',0)
+                            ->selectRaw('count(id) as count')
+                            ->get();
+        $all['day_num'] = DB::table('transaction_order')
+                            ->where('is_delete',0)
+                            ->where('create_time','>',$time)
+                            ->selectRaw('count(id) as count')
+                            ->get();
+        $all['all_num'] = DB::table('transaction_order')
+                            ->where('is_delete',0)
+                            ->selectRaw('count(id) as count')
+                            ->get();
+        $order['finish'] = $finsih;
+        $order['all'] = $all;
+        return $order;
+    }
+
+
 }

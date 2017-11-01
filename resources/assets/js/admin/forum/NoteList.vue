@@ -209,7 +209,8 @@
                 type: 'warning'
             }).then(() => {
                 axios.post("/forum/commentdel",{
-                    id : row.id
+                    id : row.id,
+                    note_id : row.note_id
                 }).then(response =>{
                     var data = response.data;
                     console.log(data)

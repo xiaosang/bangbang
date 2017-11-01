@@ -95,10 +95,10 @@
                         title:'公告'
                     },
                     {
-                        url: 'javascript:;',
+                        url: '/main/lost',
                         img:'/img/icon-pwd.png',
-                        icon:'ion-more',
-                        title:'更多'
+                        icon:'ion-ios-help',
+                        title:'寻物'
                     }
                 ],
                 list: [

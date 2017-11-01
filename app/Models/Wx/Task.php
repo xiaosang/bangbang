@@ -253,4 +253,16 @@ class Task extends Model
         return $result;
     }
 
+    /*
+     * 撤回任务
+     * $task_id 任务id
+     * */
+    static public function del_task($task_id){
+        $result = DB::table('task')
+            ->where('status',0)
+            ->where('id',$task_id)
+            ->update(['status'=>4]);
+        return $result;
+    }
+
 }

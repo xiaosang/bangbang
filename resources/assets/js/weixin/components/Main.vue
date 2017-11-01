@@ -2,13 +2,13 @@
     <div id="main">
         <swiper id="swiper" loop auto :list="swiperImg"></swiper>
 
-        <swipeout v-if="!announcement" @click.native="$router.push('/main/announcement')">
+        <swipeout v-if="!announcement" >
             <swipeout-item transition-mode="follow">
                 <div slot="right-menu">
                     <swipeout-button @click.native="noShowAnnouncement()" type="warn">不再显示</swipeout-button>
                 </div>
                 <div slot="content" class="demo-content vux-1px-t" >
-                    <marquee  scrollamount="4"  >{{ '公告 : ' + announcementContent }}</marquee>
+                    <marquee  scrollamount="4"  @click="$router.push('/main/announcement')">{{ '公告 : ' + announcementContent }}</marquee>
                 </div>
             </swipeout-item>
         </swipeout>

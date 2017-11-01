@@ -53,7 +53,7 @@
 
         <group>
             <x-input title='收货地址' v-model="address" :show-clear="false" text-align="right"  placeholder="请输入您的收货地址" disabled @click.native="addressOnOff=true"></x-input>
-            <x-switch title="开启匿名" :v-model="is_hide" @on-change="is_hide_change"></x-switch>
+            <x-switch title="开启匿名" v-model="is_hide" @on-change="is_hide_change"></x-switch>
         </group>
         <p class="prompt">接到任务的人可以看到您的个人信息</p>
         <div v-transfer-dom>
@@ -102,9 +102,10 @@
         },
         data(){
             return {
+                id:'',
                 name: '',
                 content:'',
-                type:'1',
+                type:"1",
                 pay_money:"",
                 temp_pay_money:"",
                 complete_time:'',
@@ -329,7 +330,45 @@
             },
             is_hide_change(value){
                 this.is_hide = value
-            }
+            },
+            get_task_info(){
+                axios.get('/wx/release/get_task_info',{
+                    params:{
+                        id:this.id,
+                        type:'1'
+                    }
+                }).then((res)=>{
+                    if( res.data.code == 3  ){
+                        this.type = res.data.result.type.toString()
+                        setTimeout(()=>{
+                            this.pay_money = res.data.result.pay_money/100
+                        },0)
+                        this.name = res.data.result.name
+                        this.content = res.data.result.content
+                        this.task_finish_time = [parseInt(res.data.result.task_finish_time / ( 60 * 60 * 24))*86400+"T",parseInt((res.data.result.task_finish_time % ( 60 * 60 * 24)) / ( 60 * 60))*3600+"H",parseInt((res.data.result.task_finish_time % ( 60 * 60)) /  60 )*60+"M"]
+                        this.expected_time = new Date(res.data.result.expected_time*1000).format("yyyy/MM/dd hh:mm")
+                        this.address = res.data.result.address_name
+                        this.user_name = res.data.result.user_name
+                        this.user_phone = res.data.result.user_phone
+                        this.is_hide = res.data.result.is_hide?true:false
+                    }else if( res.data.code == 4 ){
+                        this.$vux.toast.show({
+                            text:"您没有发布该任务!",
+                            width:"10em",
+                            position:"top",
+                            type:"text",
+                            time:1000
+                        })
+//                        this.$router.go(-1);
+                        this.$router.push({path:"/me/task/release/list"})
+                    }else{
+                        this.$vux.toast.text("网络异常！", 'top')
+                    }
+                    this.$vux.loading.hide()
+                }).catch((err)=>{
+                    this.$vux.toast.text("网络异常！", 'top')
+                })
+            },
         },
         watch:{
             name(){
@@ -361,6 +400,7 @@
                 }
             },
             address(){
+                console.log(this.address)
                 if(this.name&&this.content&&this.task_finish_time.length!=0&&this.expected_time&&this.address&&this.user_name&&this.user_phone){
                     this.releaseOnOff = true
                 }else{
@@ -390,11 +430,23 @@
                     document.getElementById('release-text').style.color = 'unset'
                 }
             },
+
         },
         mounted() {
+
             this.startDate = new Date().format("yyyy-MM-dd")
-            this.get_user_info()
             this.get_address_list()
+            this.get_user_info()
+
+            /*if(this.$route.params.id){
+                this.$vux.loading.show({
+                    text: 'Loading'
+                })
+                this.id = this.$route.params.id
+                this.get_task_info()
+            }else{
+                this.get_user_info()
+            }*/
         }
     }
 </script>

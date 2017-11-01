@@ -84,15 +84,6 @@
                         break
                 }
             },
-//            change_index(){
-//                var self = this
-//                self.$vux.loading.show({
-//                    text: 'Loading'
-//                })
-////                setTimeout(function () {
-////                    self.$vux.loading.hide()
-////                },666)
-//            },
             get_note_msg(){
                 if(localStorage.getItem('note-msg')==null)
                     localStorage.setItem('note-msg',0)

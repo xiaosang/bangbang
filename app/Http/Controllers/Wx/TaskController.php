@@ -59,7 +59,7 @@ class TaskController extends Controller
             if($task_id){
                 $temp = $expected_time-time();//截至时间-当前时间
 //        (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
-                $is_pay = 0;
+                $is_pay = $type?1:0;
                 $status = 0;
                 $order_code = time().'_'.uniqid();
                 $insert_transaction_order = Task::insert_transaction_order($task_id,$type,$pay_money,$order_code,$is_pay,$status,$create_user_id,$create_user_name);
@@ -173,26 +173,80 @@ class TaskController extends Controller
     }
 
     public function get_task_info(Request $request){
+
         $id = $request->id;
         $task_info = Task::get_task_info($id);
         $create_user_info = User::get_info($task_info->create_user_id);
-        if( $task_info && $task_info->is_delete == 0 && $task_info->status != 5 ){
+        $task_info->credit_score = $create_user_info->credit_score;
+        $task_info->avatar = $create_user_info->avatar? $create_user_info->avatar:'/img/wx/wx_avatar.jpg';
+        /*if( $request->type == 1 && $task_info->create_user_id != get_wx_user()->id){//编辑页面传过来的1
+            return responseToJson(4,'不是自己发布的任务不能编辑');
+        }else if($request->type == 1 && $task_info->create_user_id == get_wx_user()->id){
+            return responseToJson(3,'我发布的任务',$task_info);
+        }*/
+        if($task_info){
+            if($task_info->is_delete == 0){
+                $transaction_order = Task::get_transaction_order($id);
+                if($task_info->create_user_id == get_wx_user()->id){//我发布的任务
+                    $task_info->is_hide = 0;//如果任务是我发布，对我不匿名
+                    switch ($task_info->status){
+                        case 0:
+                            return responseToJson(1,'任务未接受',$task_info);
+                        case 1:
+                            return responseToJson(2,'任务已接受！',$task_info);
+                        case 2:
+                            return responseToJson(3,'任务已完成！',$task_info);
+                        case 3:
+                            return responseToJson(4,'任务已结束！',$task_info);
+                        case 4:
+                            return responseToJson(0,'任务不存在！',$task_info);
+                    }
+                }else if($transaction_order->accept_user_id!=0){//是否有人接受任务
+                    if($transaction_order->accept_user_id == get_wx_user()->id){//我接受的任务
+                        $task_info->is_hide = 0;//如果任务是我接受，对我不匿名
+                        return responseToJson(6,'完成任务',$task_info);
+                    }else{
+                        return responseToJson(0,'任务不存在！');
+                    }
+                }else{
+                    if($task_info->is_hide == 1){
+                        $task_info->create_user_name = '匿名';
+                        $task_info->user_name = '';
+                        $task_info->user_phone = '';
+                        $task_info->avatar = '/img/wx/wx_avatar.jpg';
+                    }
+                    return responseToJson(5,'任务没人接',$task_info);
+                }
+            }else if($task_info->is_delete == 1){
+                return responseToJson(0,'任务不存在！');
+            }
+        }else{
+            return responseToJson(0,'任务不存在！');
+        }
+
+
+        /*if( $task_info && $task_info->is_delete == 0 && $task_info->status != 4 ){
             $task_info->credit_score = $create_user_info->credit_score;
             $task_info->avatar = $create_user_info->avatar? $create_user_info->avatar:'/img/wx/wx_avatar.jpg';
 
             if($task_info->status == 0){
-                if($task_info->is_hide == 1){
-                    $task_info->create_user_name = '匿名';
-                    $task_info->user_name = '';
-                    $task_info->user_phone = '';
-                    $task_info->avatar = '/img/wx/wx_avatar.jpg';
+                if( $task_info->create_user_id == get_wx_user()->id ){
+                    $task_info->is_hide = 0;
+                    return responseToJson(3,'我发布的任务',$task_info);
+                }else{
+                    if($task_info->is_hide == 1){
+                        $task_info->create_user_name = '匿名';
+                        $task_info->user_name = '';
+                        $task_info->user_phone = '';
+                        $task_info->avatar = '/img/wx/wx_avatar.jpg';
+                    }
+                    return responseToJson(1,'任务详情获取成功！',$task_info);
                 }
-                return responseToJson(1,'任务详情获取成功！',$task_info);
-            }else{
+            }else if( $task_info->status != 4 ){
                 $transaction_order = Task::get_transaction_order($id);
                 if( $transaction_order->accept_user_id == get_wx_user()->id || $transaction_order->release_user_id == get_wx_user()->id){
                     $task_info->is_hide = 0;
-                    return responseToJson(1,'任务详情获取成功！',$task_info);
+                    return responseToJson(2,'我接受的任务',$task_info);
                 }else{
                     return responseToJson(0,'您老手慢了！');
                 }
@@ -200,7 +254,7 @@ class TaskController extends Controller
 
         }else{
             return responseToJson(0,'任务不存在！');
-        }
+        }*/
 
         /*if( $task_info && $task_info->is_delete == 0 && $task_info->status == 0 ){
             $task_info->credit_score = get_wx_user()->credit_score;
@@ -222,15 +276,15 @@ class TaskController extends Controller
             $id = $request->id;
             $status = 1;
             $is_pay = 0;
-            $task_info = Task::get_task_info($id);
+            /*$task_info = Task::get_task_info($id);
             if($task_info->create_user_id == get_wx_user()->id){
                 throw new exception('不允许接自己发布的任务');
-            }
+            }*/
             $update_task = Task::accept_task($id,$status);
             if($update_task == 0){
-                throw new exception('您老手慢了');
+                throw new exception('您下手慢了');
             }
-            $task_info = Task::get_task_info($id);
+//            $task_info = Task::get_task_info($id);
 //            $insert_transaction_order = Task::insert_transaction_order($task_info->id,$task_info->type,$task_info->pay_money,'fdsfs45f64s56f45s64f6',$is_pay,$task_info->status,$task_info->create_user_id,$task_info->create_user_name,get_wx_user()->id,get_wx_user()->name);
             $update_transaction_order = Task::update_transaction_order($id,[
                 'status'=>$status,
@@ -247,6 +301,21 @@ class TaskController extends Controller
             DB::rollBack();
 //            dd($e->getMessage());
             return responseToJson(0,$e->getMessage());
+        }
+    }
+
+    public function del_task(Request $request){
+        $id = $request->id;
+        $task_info = Task::get_task_info($id);
+        if($task_info->status == 0){
+            $result = Task::del_task($id);
+            if($result){
+                return responseToJson(1,'删除成功');
+            }else{
+                return responseToJson(0,'删除失败');
+            }
+        }else{
+            return responseToJson(0,'该任务无法删除');
         }
     }
 

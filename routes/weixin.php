@@ -32,6 +32,7 @@ Route::group(['prefix' => 'main'], function () {
 Route::group(['prefix' => 'task'], function () {
     Route::get('/get_task','Wx\TaskController@get_task');
     Route::post('/accept_task','Wx\TaskController@accept_task');
+    Route::post('/del_task','Wx\TaskController@del_task');
 });
 Route::group(['prefix' => 'announcement'], function () {
     Route::get('/get_announcement_list','Wx\TaskController@get_announcement_list');
@@ -48,6 +49,9 @@ Route::group(['prefix' => 'me'], function () {
     Route::post('/complaint/single','Wx\ProposalController@single_complaint');
     Route::get('/show_img', 'Wx\ProposalController@show_img');
     Route::post('/complaint/delete','Wx\ProposalController@delete_complaint');
+
+    Route::post('/task/list','Wx\TaskController@task_list');
+
 });
 
 //账号设置
@@ -56,5 +60,12 @@ Route::group(['prefix' => 'set'], function () {
     Route::get('/get_check','Wx\FollowController@get_check');
     Route::post('/login','Wx\FollowController@login');
     Route::post('/get_info','Wx\FollowController@get_info');
+});
+
+//失物招领
+Route::group(['prefix' => 'lost'], function () {
+
+    Route::post('/get_list','Wx\LostController@get_list');
+
 });
 

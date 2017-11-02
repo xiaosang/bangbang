@@ -45,12 +45,65 @@
 
         <p class="prompt" v-else>对方开启了匿名，接受任务后方可查看</p>
 
-        <group v-if="status==0">
+        <!--<group v-if="status==0">
             <x-button type="primary" @click.native="submit" >接受任务</x-button>
         </group>
         <group v-else-if="status!=-1">
             <x-button type="primary" @click.native="$router.push({ path: '/main/task/list' })" >返回任务</x-button>
+        </group> -->
+
+        <!--任务状态(1：未接受，2：已接受，3：已完成，4：已结束)-->
+        <group v-if="btn_msg == 1">
+            <x-button type="warn" @click.native="del_confirm = true" >撤回任务</x-button>
         </group>
+        <group v-else-if="btn_msg == 2">
+            <x-button type="default"  >任务进行中...</x-button>
+        </group>
+        <group v-else-if="btn_msg == 3">
+            <x-button type="default"  >任务已完成</x-button>
+        </group>
+        <group v-else-if="btn_msg == 4">
+            <x-button type="default"  >任务已结束</x-button>
+        </group>
+        <group v-else-if="btn_msg == 5">
+            <x-button type="primary" @click.native="submit">接受任务</x-button>
+        </group>
+        <group v-else-if="btn_msg == 6">
+            <x-button type="primary" @click.native="test">完成任务</x-button>
+        </group>
+
+
+
+        <!--<group v-if="btn_msg == 1">
+            <x-button type="primary" @click.native="submit" >接受任务</x-button>
+        </group>
+        <group v-else-if="btn_msg == 2">
+            <x-button type="primary" @click.native="" >完成任务</x-button>
+        </group>
+        <group v-else-if="btn_msg == 3">
+            <x-button type="warn" @click.native="del_confirm = true" >撤回任务</x-button>
+        </group>
+        <group v-else-if="btn_msg == 4">
+            <x-button type="warn" @click.native="del_confirm = true" >撤回任务</x-button>
+        </group>-->
+
+        <!--<group v-else-if="btn_msg == 3">
+            <flexbox>
+                <flexbox-item>
+                    <x-button type="primary" @click.native="edit" >编辑</x-button>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-button type="warn" @click.native="del_confirm = true" >删除</x-button>
+                </flexbox-item>
+            </flexbox>
+        </group>-->
+        <div v-transfer-dom>
+            <confirm v-model="del_confirm"
+                     title="撤回操作"
+                     @on-confirm="del">
+                <p style="text-align:center;">您确定要撤回该任务吗</p>
+            </confirm>
+        </div>
 
 
 
@@ -59,17 +112,23 @@
 </template>
 
 <script>
-    import { Group, Cell , Blur , CellBox , XButton , ToastPlugin } from 'vux'
+    import { Group, Cell , Blur , CellBox , XButton , ToastPlugin , Flexbox, FlexboxItem , Confirm , TransferDomDirective as TransferDom  } from 'vux'
     Vue.use(ToastPlugin)
 
     export default {
+        directives: {
+            TransferDom
+        },
         components: {
             Group,
             Cell,
             Blur,
             CellBox,
             XButton,
-            ToastPlugin
+            ToastPlugin,
+            Flexbox,
+            FlexboxItem,
+            Confirm
         },
         data(){
             return {
@@ -88,6 +147,8 @@
                 user_phone:'',
                 is_hide:'0',
                 status:'-1',
+                btn_msg:'-1',
+                del_confirm:false
             }
         },
         methods:{
@@ -97,10 +158,10 @@
                         id:this.id
                     }
                 }).then((res)=>{
-                    if(res.data.code == 0 ){//您老手慢了
+                    if(res.data.code == 0 ){//任务不存在
                         this.$vux.toast.text(res.data.msg, 'top')
                         this.$router.push({ path: '/main/task/list' })
-                    }else if( res.data.code == 1 ){
+                    }else if( res.data.code == 1 ||  res.data.code == 2 || res.data.code == 3 || res.data.code == 4 || res.data.code == 5 || res.data.code == 6 ){//任务状态(1：未接受，2：已接受，3：已完成，4：已结束)
                         this.url = res.data.result.avatar
                         this.create_user_name = res.data.result.create_user_name
                         this.credit_score = res.data.result.credit_score
@@ -115,6 +176,7 @@
                         this.user_phone = res.data.result.user_phone
                         this.is_hide = res.data.result.is_hide
                         this.status = res.data.result.status
+                        this.btn_msg = res.data.code
                     }else{
                         this.$vux.toast.text("网络异常！", 'top')
                     }
@@ -141,6 +203,31 @@
                                 text: res.data.msg,
                                 time:2000
                             })
+                        }else{
+                            this.$vux.toast.show({
+                                type:'warn',
+                                text: res.data.msg,
+                                time:2000
+                            })
+                        }
+                    })
+            },
+            edit(){
+                this.$router.push({ path: '/main/release/' + this.id })//0->key
+            },
+            del(){
+                this.$vux.loading.show({
+                    text: 'Loading'
+                })
+                let params = {
+                    id:this.id
+                }
+                axios.post('/wx/task/del_task',params)
+                    .then((res)=>{
+                        this.$vux.loading.hide()
+                        if(res.data.code == 1){
+                            this.$router.go(-1)
+//                            this.$router.push({ path: '/me/task/release/list' })
                         }else{
                             this.$vux.toast.show({
                                 type:'warn',

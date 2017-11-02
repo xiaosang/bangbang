@@ -136,8 +136,7 @@
             Tabbar,
             TabbarItem,
             Scroller,
-            Masker,
-            ToastPlugin
+            Masker
         },
         data(){
             return {

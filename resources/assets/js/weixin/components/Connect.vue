@@ -1,8 +1,5 @@
 <template>
     <div>
-<!--          <div class="nav_top">
-            <HeaderBar></HeaderBar>
-        </div> -->
         <div class="content-tab-wrap">
               <div class="content-tab">
                     <a class="menu" @click="menuControll">
@@ -31,13 +28,14 @@
             :pullup-config="{upContent:'', downContent: '',content:'',loadingContent:''}" v-model="status" @on-pulldown-loading="refresh" @on-pullup-loading="getNext"  ref="scrollerObj" >
                 <div>
                     <p v-for="i in bottomCount-1">
-                        <NotePack :author="connect[i].author" :time="connect[i].update_time" :label="connect[i].label"
+                        <NotePack :author="connect[i].author" :time="connect[i].update_time" :avatar="connect[i].avatar" :label="connect[i].label"
                         :read="connect[i].read_num" :comment="connect[i].comment_num">
                              <p slot="title" @click="$router.push('/note/detail/'+connect[i].id)">{{connect[i].title}}</p>
                         </NotePack>
                     </p>
                 </div>
                  <load-more :show-loading="pdState" v-show="pullDown" :tip="pullTitle"></load-more>
+                 <loading :show="showLoad" :text="'正在加载'"></loading>
             </scroller>
         </div>
 
@@ -46,8 +44,6 @@
             <p class="text">回到顶部</p>
         </div>
 
-        <loading :show="showLoad" :text="'正在加载'"></loading>
-
         <Navbottom v-if="msg>0" :msges="msg"></Navbottom>
         <Navbottom v-else></Navbottom>
     </div>
@@ -55,7 +51,7 @@
 
 <script>
     import Navbottom from './NavBottom.vue'
-    import NotePack from './connect/NotePack.vue'
+    import NotePack from './connect/pack/NotePack.vue'
     import { Tabbar,TabbarItem,Scroller,Divider,Grid,GridItem,XButton,Spinner,
         Loading,LoadMore,GroupTitle,Group, Cell,Badge } from 'vux'
     Echo.channel('orders')
@@ -145,11 +141,14 @@
             },
             //切换nav。
             changeTab(index){
+                this.pullTitle = "正在加载"
                 this.pullDown = false
                 this.pdState = true
+                this.limit = 0
                 this.showLoading()
                 this.chNav = index
                 this.getConnect(1)
+                this.$refs.scrollerObj.reset({top:0})
             },
             //切换nav显示load
             showLoading () {
@@ -189,7 +188,9 @@
                 })
             },
         },
-
+        deactivated(){
+            this.showMenu = false
+        },
         mounted() {
             this.getConnect(0)
             this.msgCount()
@@ -302,6 +303,6 @@
 }
 </style>
 <style type="text/css">
-    .note-scroller .xs-container{padding-top: 45px;}
-    .note-scroller .xs-plugin-pulldown-container{top: -15px!important;}
+    .note-scroller .xs-container{padding-top: 50px;}
+    .note-scroller .xs-plugin-pulldown-container{top: -5px!important;}
 </style>

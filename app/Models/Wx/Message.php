@@ -33,8 +33,8 @@ class Message extends Model
 	}
 
 	public static function get_msg($id,$num,$limit){
-		$data = DB::table('comment')->where([['is_delete',0],['parent_id',0],['note_id',$id]])
-			->select('comment.id', 'content','create_user_id as cid','comment.create_time as time','create_user_name as name')
+		$data = DB::table('comment')->where([['is_delete',0],['parent_id',0],['note_id',$id]])->leftJoin('user', 'user.id', '=', 'comment.create_user_id')
+			->select('comment.id', 'content','create_user_id as cid','comment.create_time as time','create_user_name as name','avatar')
 			->orderBy('comment.create_time', 'desc')->offset($num)->limit($limit)->get();
 		$msg_id = [];
 		$time = time();

@@ -25,6 +25,7 @@ export default new VueRouter({
             name:"社交",
             path:'/connect',
             component: resolve =>void(require(['./components/Connect.vue'], resolve)),
+            meta:{keepAlive: true}
         },
          {
             name: "发布",

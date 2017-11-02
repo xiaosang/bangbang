@@ -10,7 +10,7 @@
 			<div class="m-cell-media-middle">
 				<div class="m-cell-media">
 					<div class="m-cell-author m-ellipsis-2">
-						<img src="" alt=".">
+						<img v-if="avatar" :src="avatar" alt=".">
 						<p v-if="author">{{author}}</p>
 					</div>
 					<div class="m-cell-title m-ellipsis-2">
@@ -35,7 +35,7 @@
 </template>
 <script>
 	export default {
-		props: ['author', 'time','read','comment','label']
+		props: ['author', 'time','read','comment','label','avatar']
 	}
 </script>
 <style lang="less" scoped>

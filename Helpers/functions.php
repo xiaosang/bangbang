@@ -335,24 +335,23 @@ function secsToStr($secs) {
  * true 或者 敏感字
 */
 function sensitiveWordFilter($str){
-        $china = ['傻逼'];    // 建议从文件或者缓存中读取敏感词列表，
-        $english = ['fuck']; //英文约定小写
-        $flag = true;
+        //读取config配置文件
+        $data = config('sensitive');
         // 提取中文部分和英文部分，防止其中夹杂英语等
         preg_match_all("/[\x{4e00}-\x{9fa5}]+/u", $str, $match);
         $chinsesArray = $match[0];
         $chineseStr = implode('', $match[0]);
         $englishStr = strtolower(preg_replace("/[^A-Za-z0-9\.\-]/", " ", $str));
         // 全匹配过滤,去除特殊字符后过滤中文及提取中文部分
-        foreach ($china as $word){
-            if (strpos($chineseStr, $word)>=0){
+        foreach ($data['china'] as $word){
+            if (strpos($chineseStr, $word)!==false){
                 return $word;
             }
         }
-        foreach ($english as $word){
-            if (strpos($englishStr, $word)>=0){
+        foreach ($data['english'] as $word){
+            if (strpos($englishStr, $word)!==false){
                 return $word;
             }
         }
-        return $flag;
+        return $true;
 }

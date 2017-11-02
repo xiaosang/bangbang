@@ -43,7 +43,12 @@
             <cell-box><a :href="'tel:'+user_phone" style="color: #000;">{{ user_name }}  {{ user_phone }} </a></cell-box>
         </group>
 
+
         <p class="prompt" v-else>对方开启了匿名，接受任务后方可查看</p>
+
+        <group title="密钥" v-if="btn_msg == 1||btn_msg == 2||btn_msg == 3||btn_msg == 4">
+            <cell-box>{{ key }}</cell-box>
+        </group>
 
         <!--<group v-if="status==0">
             <x-button type="primary" @click.native="submit" >接受任务</x-button>
@@ -148,7 +153,8 @@
                 is_hide:'0',
                 status:'-1',
                 btn_msg:'-1',
-                del_confirm:false
+                del_confirm:false,
+                key:''
             }
         },
         methods:{
@@ -177,6 +183,7 @@
                         this.is_hide = res.data.result.is_hide
                         this.status = res.data.result.status
                         this.btn_msg = res.data.code
+                        this.key = res.data.result.key
                     }else{
                         this.$vux.toast.text("网络异常！", 'top')
                     }

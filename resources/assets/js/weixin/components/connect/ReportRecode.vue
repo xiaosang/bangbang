@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import NoteRecord from './ReportPack.vue'
+    import NoteRecord from './pack/ReportPack.vue'
     import { Group, Cell,XHeader,Scroller,LoadMore,Confirm } from 'vux'
     export default {
         components: {

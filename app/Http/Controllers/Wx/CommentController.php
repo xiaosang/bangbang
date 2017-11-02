@@ -15,7 +15,7 @@ class CommentController extends Controller
 	public function submit_msg(Request $request){
 		$data = $request->all();
 		$user = get_session_user();
-		if($data['userId']>0){
+		if($data['userId']>0&&$data['userId']!=$user->id){
 			event(new PusherEvent(['userId'=>$data['userId']]));
 		}
 		$data['cid'] = $user->id;
@@ -27,6 +27,7 @@ class CommentController extends Controller
 			$data['id'] = $id;
 			$data['reply'] = [];
 			$data['time'] = '2秒前';
+			$data['avatar'] = $user->avatar;
 			return responseToJson($id, $data,'success');
 		}else{
 			return responseToJson(0, "非法操作",'error');

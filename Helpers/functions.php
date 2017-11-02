@@ -328,3 +328,30 @@ function secsToStr($secs) {
 //    }
     return $r;
 }
+
+/*
+ * 敏感字查询
+ * str 匹配的字符串
+ * true 或者 敏感字
+*/
+function sensitiveWordFilter($str){
+        //读取config配置文件
+        $data = config('sensitive');
+        // 提取中文部分和英文部分，防止其中夹杂英语等
+        preg_match_all("/[\x{4e00}-\x{9fa5}]+/u", $str, $match);
+        $chinsesArray = $match[0];
+        $chineseStr = implode('', $match[0]);
+        $englishStr = strtolower(preg_replace("/[^A-Za-z0-9\.\-]/", " ", $str));
+        // 全匹配过滤,去除特殊字符后过滤中文及提取中文部分
+        foreach ($data['china'] as $word){
+            if (strpos($chineseStr, $word)!==false){
+                return $word;
+            }
+        }
+        foreach ($data['english'] as $word){
+            if (strpos($englishStr, $word)!==false){
+                return $word;
+            }
+        }
+        return $true;
+}

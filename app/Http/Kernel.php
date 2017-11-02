@@ -65,5 +65,7 @@ class Kernel extends HttpKernel
 
         //微信授权
         'wechat.oauth' => \App\Http\Middleware\WeChatOauth::class,
+        //敏感字匹配
+        'mid_sensitive' => \App\Http\Middleware\SensitiveWord::class,
     ];
 }

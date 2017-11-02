@@ -32,7 +32,7 @@
 
 <script>
     import { Group, Cell,XHeader,Scroller,LoadMore,Card,XButton,Confirm } from 'vux'
-    import MsgPack from './RemindPack.vue'
+    import MsgPack from './pack/RemindPack.vue'
     export default {
         components: {
             Group,XHeader,Scroller,MsgPack,LoadMore,

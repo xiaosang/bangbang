@@ -7,7 +7,7 @@
         </div>
         <remote-script src="/js/echarts.min.js" @load="onEcharts"></remote-script>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="line-height: 36px;">用户
@@ -16,18 +16,62 @@
               </div>
               <div id="user" style="height: 100px;">
                 <div class="databox-right">
-                  <span class="databox-number azure" >全部：{{ userCount.all_follow }}&nbsp;&nbsp;昨日：{{  userCount.yet_follow }}</span>
+                  <span class="databox-number azure" >全部用户：{{ userCount.all_follow }}&nbsp;&nbsp;昨日新增：{{  userCount.yet_follow }}</span>
                 </div>
               </div>
             </el-card>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
-                <span style="line-height: 36px;">测试</span>
+                <span style="line-height: 36px;">完成订单量</span>
               </div>
-               <div id="test" style="height: 100px;">
-                 
+               <div id="orderAll" style="height: 100px;">
+                 <el-row type="flex" class="row-bg" justify="space-around">
+                    <!-- <el-col :span="4"></el-col> -->
+                    <el-col :span="12" class="order-left databox-number azure"><span>昨日完成订单量</span></el-col>
+                    <el-col :span="12" class="order-right databox-number azure" ><span v-if="flag">{{ finishOrderNums['yet_num'][0].count }}</span></el-col>
+                    <!-- <el-col :span="4"></el-col> -->
+                </el-row>
+                <el-row type="flex" class="row-bg" justify="space-around">
+                    <!-- <el-col :span="4"></el-col> -->
+                    <el-col :span="12" class="order-left databox-number azure"><span>今日完成订单量</span></el-col>
+                    <el-col :span="12" class="order-right databox-number azure"><span v-if="flag">{{ finishOrderNums['day_num'][0].count }}</span></el-col>
+                    <!-- <el-col :span="4"></el-col> -->
+                </el-row>
+                <el-row type="flex" class="row-bg" justify="space-around">
+                    <!-- <el-col :span="4"></el-col> -->
+                    <el-col :span="12" class="order-left databox-number azure"><span>总共完成订单量</span></el-col>
+                    <el-col :span="12" class="order-right databox-number azure"><span v-if="flag">{{ finishOrderNums['all_num'][0].count }}</span></el-col>
+                    <!-- <el-col :span="4"></el-col> -->
+                </el-row>
+              </div>
+            </el-card>
+          </el-col>
+           <el-col :span="8">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">订单总量</span>
+              </div>
+               <div id="orderAllNum" style="height: 100px;">
+                 <el-row type="flex" class="row-bg" justify="space-around">
+                    <!-- <el-col :span="4"></el-col> -->
+                    <el-col :span="12" class="order-left databox-number azure"><span>昨日订单量</span></el-col>
+                    <el-col :span="12" class="order-right databox-number azure" ><span v-if="flag">{{ allOrderNums['yet_num'][0].count }}</span></el-col>
+                    <!-- <el-col :span="4"></el-col> -->
+                </el-row>
+                <el-row type="flex" class="row-bg" justify="space-around">
+                    <!-- <el-col :span="4"></el-col> -->
+                    <el-col :span="12" class="order-left databox-number azure"><span>今日订单量</span></el-col>
+                    <el-col :span="12" class="order-right databox-number azure"><span v-if="flag">{{ allOrderNums['day_num'][0].count }}</span></el-col>
+                    <!-- <el-col :span="4"></el-col> -->
+                </el-row>
+                <el-row type="flex" class="row-bg" justify="space-around">
+                    <!-- <el-col :span="4"></el-col> -->
+                    <el-col :span="12" class="order-left databox-number azure"><span>总共订单量</span></el-col>
+                    <el-col :span="12" class="order-right databox-number azure"><span v-if="flag">{{ allOrderNums['all_num'][0].count }}</span></el-col>
+                    <!-- <el-col :span="4"></el-col> -->
+                </el-row>
               </div>
             </el-card>
           </el-col>
@@ -61,33 +105,48 @@
 
 
   .box-card {
-    width: 480px;
+    /* width: 480px; */
     /* height: 480px; */
   }
-  .databox.databox-lg .databox-right {
-    -lh-property: 0;
-    width: -webkit-calc(100% - 80px);
-    width: -moz-calc(100% - 80px);
-    width: calc(100% - 80px);
-    height: 80px;
-    padding: 10px 15px;
+
+  .order-right{
+    /* font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica; */
+    text-align: right;
+    font-size: 18px;
+  }
+  .order-left{
+    /* font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica; */
+    text-align: left;
+    font-size: 18px;
+  }
+
+  .databox-right {
+    /* -lh-property: 0; */
+    /* width: -webkit-calc(100% - 80px); */
+    /* width: -moz-calc(100% - 80px); */
+    /* width: calc(100% - 80px); */
+    /* height: 80px; */
+    /* padding: 10px 15px; */
+    line-height: 100px;
+    text-align: center;
+    
     }
-    .databox.databox-lg .databox-number {
-    font-size: 20px;
-    margin: 4px 0 6px;
-}
 .azure {
     color: #2dc3e8!important;
-    font-size: 50px;
+    /* line-height: 100px; */
+    display: inline;
+    font-size: 30px;
 }
-.databox .databox-number {
-    display: block;
-    font-size: 25px;
-    line-height: 26px;
+  .databox-number {
+    /* font-size: 20px; */
+    margin: 4px 0 6px;
+    font-size: 20px;
+    /* line-height: 26px; */
     margin: 2px;
     position: relative;
     font-family: 'Lucida Sans','trebuchet MS',Arial,Helvetica;
     font-weight: 700;
+    
 }
 </style>
 
@@ -97,6 +156,9 @@
     data() {
       return {
        userCount : [],
+       finishOrderNum :[],
+       flag:false,
+       allOrderNums:[],
       }
     },
     
@@ -206,10 +268,22 @@
             this.$message("网络错误")
           })
         },
+        getNum :function(){
+          this.flag = false
+          axios.post('index/ordernum').then(response =>{
+            console.log(response.data.result)
+            this.finishOrderNums = response.data.result['finish']
+            this.allOrderNums =   response.data.result['all']
+            this.flag = true
+          }).catch(error =>{
+            this.$message("网络错误")
+          })
+        },
         onEcharts: function(){
           this.setTask()
           this.setUser()
           this.setOrder()
+          this.getNum()
         }
     },
     mounted(){

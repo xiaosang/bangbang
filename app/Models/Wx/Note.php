@@ -30,7 +30,7 @@ class Note extends Model
 		else
 			$serch = ['label','>',$type];
 		$data = DB::table('note')->where([['is_delete',0],$serch])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
-			->select('note.id','note.name as title','user.name as author','content','read_num','comment_num',
+			->select('note.id','note.name as title','user.name as author','avatar','content','read_num','comment_num',
 				'label','note.update_time')
 			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
 		$time = time();

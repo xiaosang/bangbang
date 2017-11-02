@@ -26,7 +26,7 @@
                     <div class="comment" v-for="items,index in reply">
                         <div class="comment-top">
                             <a href="" class="avatar">
-                                <img src="" alt=" ">
+                                <img :src="items.avatar" alt=" ">
                                 <span>{{items.name}}</span>
                             </a>
                             <!-- 回复 -->
@@ -139,7 +139,7 @@
                             }
                             self.message.content = ""
                         }else{
-                            self.remind = '回复报错啦'
+                            self.remind = response.data.msg
                             self.remindState = true
                         }
                     })
@@ -323,7 +323,7 @@ span>i{
     padding-left: 7px;
     font-size: 16px;
     line-height: 1.45;
-    vertical-align: text-bottom;
+    vertical-align: middle;
 }
 //评论列表
 a{

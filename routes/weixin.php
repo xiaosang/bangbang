@@ -1,20 +1,21 @@
 <?php
 Route::group(['prefix' => 'connect'], function () {
-	Route::get('/', 'Wx\ConnectController@index');
-       Route::get('/userInfo', 'Wx\ConnectController@user_info');
-       Route::get('/noteRecord', 'Wx\ConnectController@note_record');
-       Route::post('/readMsg', 'Wx\CommentController@read_msg');
-       Route::get('/msgRecord', 'Wx\CommentController@msg_record');
-       Route::get('/msgRemind', 'Wx\CommentController@msg_remind');
-       Route::get('/msgRemindScorll', 'Wx\CommentController@msg_remind_scorll');
-	Route::post('/setNote', 'Wx\ConnectController@set_note');
-	Route::post('/noteUpld', 'Wx\ConnectController@upload');
-	Route::get('/getImg', 'Wx\ConnectController@get_img');
-	Route::get('/getDetail/{id}', 'Wx\ConnectController@get_detail');
-	Route::get('/getMsg/{id}', 'Wx\CommentController@get_msg');
-	Route::post('/submitMsg', 'Wx\CommentController@submit_msg');
+        Route::get('/', 'Wx\ConnectController@index');
+        Route::get('/userInfo', 'Wx\ConnectController@user_info');
+        Route::get('/noteRecord', 'Wx\ConnectController@note_record');
+        Route::post('/readMsg', 'Wx\CommentController@read_msg');
+        Route::get('/msgRecord', 'Wx\CommentController@msg_record');
+        Route::get('/msgRemind', 'Wx\CommentController@msg_remind');
+        Route::get('/msgRemindScorll', 'Wx\CommentController@msg_remind_scorll');
+        Route::post('/setNote', 'Wx\ConnectController@set_note')->middleware('mid_sensitive');;
+        Route::post('/noteUpld', 'Wx\ConnectController@upload');
+        Route::get('/getImg', 'Wx\ConnectController@get_img');
+        Route::get('/getDetail/{id}', 'Wx\ConnectController@get_detail');
+        Route::get('/getMsg/{id}', 'Wx\CommentController@get_msg');
+        Route::post('/submitMsg', 'Wx\CommentController@submit_msg')->middleware('mid_sensitive');
         Route::post('/deleteMsg', 'Wx\CommentController@delete_msg');
         Route::post('/deleteNote', 'Wx\ConnectController@delete_note');
+        Route::any('/sensitive/{word}', 'Wx\ConnectController@sensitive')->name('sensitive');
         Route::get('/msgCount', 'Wx\CommentController@msg_count');//得要用户未读消息的数量
 });
 Route::group(['prefix' => 'release'], function () {

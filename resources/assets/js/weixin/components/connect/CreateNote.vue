@@ -39,6 +39,7 @@
                             handlers: {
                                 'image': function() {
                                     $('#upload').click()
+                                    $('#upload').click()
                                 }
                             }
                         }
@@ -84,12 +85,12 @@
                     return;
                 }
                 axios.post("wx/connect/setNote",self.note).then(function(response){
-                    if(response.data.code == 0||response.data.code == 1){
+                    if(response.data.code == 1){
                         self.remind = response.data.msg
                         self.remindState = true;
                         self.$router.push('/connect')
-                    }else if(response.data.code == 1){
-                        self.remind = "系统错误"
+                    }else if(response.data.code == 0){
+                        self.remind = response.data.msg
                         self.remindState = true;
                         return;
                     }

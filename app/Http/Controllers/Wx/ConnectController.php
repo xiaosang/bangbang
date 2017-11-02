@@ -79,4 +79,8 @@ class ConnectController extends Controller
 		else
 			return responseToJson(0, "note",'error');
 	}
+	//帖子的敏感信息
+	public function sensitive(Request $request){
+		return responseToJson(0, "失败，含有敏感词：".$request->word,'error');
+	}
 }

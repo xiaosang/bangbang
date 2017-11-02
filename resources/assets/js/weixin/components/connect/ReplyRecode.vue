@@ -24,7 +24,7 @@
 
 <script>
     import { Group, Cell,XHeader,Scroller,LoadMore,Confirm } from 'vux'
-    import MsgPack from './ReplyPack.vue'
+    import MsgPack from './pack/ReplyPack.vue'
     export default {
         components: {
             Group,XHeader,Scroller,MsgPack,LoadMore,

@@ -204,6 +204,7 @@ class TaskController extends Controller
                 }else if($transaction_order->accept_user_id!=0){//是否有人接受任务
                     if($transaction_order->accept_user_id == get_wx_user()->id){//我接受的任务
                         $task_info->is_hide = 0;//如果任务是我接受，对我不匿名
+                        $task_info->key = '';
                         return responseToJson(6,'完成任务',$task_info);
                     }else{
                         return responseToJson(0,'任务不存在！');

@@ -27,6 +27,9 @@ Route::group(['prefix' => 'release'], function () {
 Route::group(['prefix' => 'main'], function () {
     Route::get('/get_task_list','Wx\TaskController@get_task_list');
     Route::get('/get_announcementContent','Wx\TaskController@get_announcementContent');
+    //失物招领
+    Route::post('/get_lost_list','Wx\LostController@get_list');
+    // Route::post('/get_lost_list','Wx\LostController@get_list');
 });
 Route::group(['prefix' => 'task'], function () {
     Route::get('/get_task','Wx\TaskController@get_task');
@@ -61,10 +64,10 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/get_info','Wx\FollowController@get_info');
 });
 
-//失物招领
-Route::group(['prefix' => 'lost'], function () {
 
-    Route::post('/get_list','Wx\LostController@get_list');
+// Route::group(['prefix' => 'lost'], function () {
 
-});
+   
+
+// });
 

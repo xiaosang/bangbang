@@ -23,4 +23,8 @@ class Lost extends Model
 
    }
 
+   public static function get_info($id){
+        return DB::table('lost')->where('id',$id)->first();
+   }
+
 }

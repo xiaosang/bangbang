@@ -48,4 +48,10 @@ class LostController extends Controller
         
     }
 
+    public function lost_info(Request $request){
+        $id = $request->id;
+        // sendMsg(18737383137);
+        return responseToJson(0, 'success',Lost::get_info($id));
+    }
+
 }

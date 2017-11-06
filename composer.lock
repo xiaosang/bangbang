@@ -4861,6 +4861,151 @@
             "time": "2017-10-05 14:43:42"
         },
         {
+            "name": "toplan/laravel-sms",
+            "version": "2.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/toplan/laravel-sms.git",
+                "reference": "9c8427493c768c07a15fb993436267b81f31bae5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/toplan/laravel-sms/9c8427493c768c07a15fb993436267b81f31bae5.zip",
+                "reference": "9c8427493c768c07a15fb993436267b81f31bae5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "toplan/phpsms": "~1.8"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "psr-0": {
+                    "Toplan\\Sms": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "toplan",
+                    "email": "toplan710@gmail.com"
+                }
+            ],
+            "description": "A mobile phone number validation solution based on laravel",
+            "keywords": [
+                "laravel",
+                "laravel-sms",
+                "mobile",
+                "phone",
+                "sms"
+            ],
+            "time": "2017-06-23 10:07:04"
+        },
+        {
+            "name": "toplan/phpsms",
+            "version": "1.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/toplan/phpsms.git",
+                "reference": "863918ed0970d335471fb48c09f9f446a4daddbd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/toplan/phpsms/863918ed0970d335471fb48c09f9f446a4daddbd.zip",
+                "reference": "863918ed0970d335471fb48c09f9f446a4daddbd",
+                "shasum": ""
+            },
+            "require": {
+                "jeremeamia/superclosure": "~2.2",
+                "php": ">=5.4.0",
+                "toplan/task-balancer": "~0.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Toplan\\PhpSms\\": [
+                        "src/phpsms/",
+                        "src/phpsms/agents/",
+                        "src/phpsms/interfaces/"
+                    ],
+                    "Toplan\\PhpSms\\Facades\\": [
+                        "src/phpsms/facades/"
+                    ]
+                },
+                "classmap": [
+                    "src/phpsms/lib/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "toplan",
+                    "email": "toplan710@gmail.com"
+                }
+            ],
+            "description": "Probably the most intelligent, elegant sms send library in php",
+            "keywords": [
+                "php",
+                "phpsms",
+                "sms",
+                "sms library"
+            ],
+            "time": "2017-07-10 17:23:21"
+        },
+        {
+            "name": "toplan/task-balancer",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/toplan/task-balancer.git",
+                "reference": "6ba16aafbf6888de0f0c53ea93dfff844b6ef27f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/toplan/task-balancer/6ba16aafbf6888de0f0c53ea93dfff844b6ef27f.zip",
+                "reference": "6ba16aafbf6888de0f0c53ea93dfff844b6ef27f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Toplan\\TaskBalance\\": "src/TaskBalancer/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "toplan",
+                    "email": "toplan710@gmail.com"
+                }
+            ],
+            "description": "lightweight and powerful task load balancing.",
+            "keywords": [
+                "balance",
+                "load balancing",
+                "task"
+            ],
+            "time": "2017-05-15 03:19:56"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.2.0",
             "source": {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Wx;
 
-use App\Models\wx\Follow;
+use App\Models\Wx\Follow;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;

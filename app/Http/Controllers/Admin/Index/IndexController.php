@@ -11,9 +11,9 @@ class IndexController extends Controller
 {
     function get_task()
     {
-        $this->getip();
+        // $this->getip();
         // return Response::json(Menu::get_format_menu());
-        // return responseToJson(0, 'success', Index::get_task_status());
+        return responseToJson(0, 'success', Index::get_task_status());
         
         // dd();
     }

@@ -7,7 +7,7 @@
                 <!--<router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>-->
                 <!--返回到首页-->
                 <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
-                <span style="font-size: 18px;">寻物启事</span>
+                <span style="font-size: 18px;">发布失物/寻物</span>
             </span>
         </x-header>
         <div>
@@ -51,12 +51,12 @@
         },
         methods:{
             getLostInfo:function(){
-                console.log(this.id)
+                // console.log(this.id)
             }
         },
         mounted() {
-            this.id = this.$route.params.id
-            this.getLostInfo()
+            // this.id = this.$route.params.id
+            // this.getLostInfo()
         }
     }
 </script>

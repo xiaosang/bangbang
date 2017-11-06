@@ -8,7 +8,9 @@
                 <!--返回到首页-->
                 <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
                 <span style="font-size: 18px;">寻物启事</span>
+                
             </span>
+            <router-link slot="right" to="/main/createlost" class="ion-android-add" style="font-size: 22px;"></router-link>
         </x-header>
         <div style="width:100%;">
              <scroller lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask()" @on-pullup-loading="up_updateTask()" ref="scroller" @on-scroll="onScroll()" height="-99">

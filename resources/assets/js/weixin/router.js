@@ -147,5 +147,11 @@ export default new VueRouter({
             meta:{keepAlive: true},
             component: resolve =>void(require(['./components/main/LostInfo.vue'], resolve))
         },
+        {
+            name:"发布失物招领",
+            path:'/main/createlost',
+            meta:{keepAlive: true},
+            component: resolve =>void(require(['./components/main/ReleaseLost.vue'], resolve))
+        },
     ]
 })

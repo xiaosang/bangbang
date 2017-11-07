@@ -393,7 +393,7 @@ function sendMsg($phone){
         Log::info("[success]Phone:".$phone);
         return 0;//发送成功
     }
-    // print_r($res);
+    print_r($res);
     Log::info($res->Code."[error]Phone:".$phone);
 
     return 1;//发送失败，服务器繁忙
@@ -405,11 +405,21 @@ function sendMsg($phone){
  * 
 */
 function check_msg($num){
-    $res = DB::table('wx_phone_message')->where(function ($q) use ($phone){
-        $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
-    })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();
-    if($res->code == $num){
-        return true;//验证成功
+    $res = DB::table('wx_phone_message')
+    ->Where('openid',get_wx_user_openid())
+    ->where('send_time','>=',time() - 5*60)
+    ->where('is_use',0)->first();
+    // dd($res);
+    
+    if($res){
+        $id = $res->id;
+        // print_r($id);
+        if($res->code == $num){
+            DB::table('wx_phone_message')->where('id',$id)->update([
+                'is_use' => 1
+            ]);
+            return true;//验证成功
+        }
     }
     return false;//验证失败
 }

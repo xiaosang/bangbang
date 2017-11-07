@@ -7,12 +7,25 @@
                 <!--<router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>-->
                 <!--返回到首页-->
                 <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
-                <span style="font-size: 18px;"v-if='lostInfo !=[]'>{{ lostInfo.title }}</span>
+                <span style="font-size: 18px;">返回列表</span>
             </span>
         </x-header>
-        <div>
-            
-
+        <div v-if="lostInfo !=[]">
+            <group style='border-bottom:2px'>
+                <span >{{lostInfo.title}}</span>
+            </group>
+            <group>
+                <div>
+                    <img :src="'/'+lostInfo.img_path" alt="">
+                    {{ lostInfo.img_path }}
+                </div>
+                <div>
+                    {{lostInfo.content}}
+                </div>
+                
+                
+            </group>
+            <!-- <hr></hr> -->
             
         </div>
     </div>
@@ -55,10 +68,10 @@
         },
         methods:{
             getLostInfo:function(){
-                // console.log(this.id)
+                console.log(this.id)
 
                 axios.post('/wx/main/lost/info',{'id':this.id}).then(res => {
-                    // console.log(res.data.result)
+                    console.log(res.data.result)
                     this.lostInfo = res.data.result
                     this.$vux.loading.hide()
                 }).catch(error => {
@@ -70,6 +83,7 @@
             }
         },
         mounted() {
+            console.log('............')
             this.$vux.loading.show({
                     text: '正在加载数据...'
             })

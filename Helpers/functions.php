@@ -367,7 +367,7 @@ function sendMsg($phone){
         $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
     })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();
     if($res){
-        return 2;
+        return 2; //已经发过，无需再次请求。
     }
 
 
@@ -391,10 +391,10 @@ function sendMsg($phone){
             'send_time' => time()
         ]);
         Log::info("[success]Phone:".$phone);
-        return 0;
+        return 0;//发送成功
     }
     // print_r($res);
     Log::info($res->Code."[error]Phone:".$phone);
 
-    return 1;
+    return 1;//发送失败，服务器繁忙
 }

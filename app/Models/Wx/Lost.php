@@ -20,7 +20,7 @@ class Lost extends Model
        ->get();
    }
 
-   public static function submit_lost($title,$user_name,$user_id,$content,$lost_time,$place,$create_time,$status,$is_lost,$is_delete,$reward_content,$phone_num,$img_path){
+   public static function submit_lost($title,$user_name="",$user_id,$content,$lost_time,$place,$create_time,$status,$is_lost,$is_delete,$reward_content="",$phone_num,$img_path=""){
        $data = [
            'title'=>$title,
            'user_name'=>$user_name,

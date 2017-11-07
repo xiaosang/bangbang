@@ -41,29 +41,29 @@
         </group>
 
         <group>
-            <x-input title='姓名' v-model="user_name" :show-clear="false" text-align="right"  placeholder="请输入您的姓名"></x-input>
-            <x-input title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话"></x-input>
+            <x-input title='姓名' v-model="user_name" :show-clear="false" text-align="right"  placeholder="请输入您的姓名(可选)"></x-input>
+            <x-input :type="'number'" title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话"></x-input>
         </group>
 
 
 
-        <group title="添加照片">
+        <group title="添加照片（可选）">
             <input ref="input" id="upload" style="display: none;" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" @change="upload">
             <div id="preview_div" style="float: left;">
             </div>
-            <i @click="show" class="ion-android-add" style="    width: 48px;
-    height: 48px;
+            <i @click="show" class="ion-android-add" style="
     text-align: center;
     display: inline-block;
     font-size: 40px;
     color: #ddd;
     border: 1px solid #ddd;
     margin: 6px;
+    padding: 0px 16px;
 ">
             </i>
         </group>
 
-        <x-button class="submit_btn" type="primary" @click.native="submit_feedback">提交</x-button>
+        <x-button id="submit" class="submit_btn" type="primary" @click.native="submit_feedback" style="background: #a9a9a9">提交</x-button>
 
         <!--<remote-script src="/js/fileapi/FileAPI.html5.min.js" @load="onFileApiLoad"></remote-script>-->
 
@@ -190,6 +190,10 @@
 
             },
             submit_feedback(){
+                if(!this.is_submit){
+                    alert('请填写完整信息')
+                    return
+                }
                 if(this.can_submit){
                     this.$vux.loading.show({
                         text: '努力提交中...'
@@ -210,8 +214,8 @@
                     formdata.append('upload_file_num',this.upload_files.length)
                     this.send_request('post','/wx/main/submit_lost',function (response,self) {
                         if(response.data.code==1){
-                            self.toast_message('感谢您的反馈，我们会继续努力');
-//                            self.$router.push('/me');
+                            self.toast_message('发布成功');
+                            self.$router.push('/main/lost');
                         }else{
                             self.toast_message(response.data.msg,'warn');
                         }
@@ -224,32 +228,65 @@
         },
         watch:{
             name(){
-                if(this.name && this.content && this.type && ){
-
+//                console.log(this.name)
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                    this.is_submit = true
                 }else{
-
+                    this.is_submit = false
                 }
             },
             content(){
-
+                //                console.log(this.name)
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                    this.is_submit = true
+                }else{
+                    this.is_submit = false
+                }
             },
             type(){
-
+//                console.log(this.name)
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                    this.is_submit = true
+                }else{
+                    this.is_submit = false
+                }
             },
             complete_time(){
-
+//                console.log(this.name)
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                    this.is_submit = true
+                }else{
+                    this.is_submit = false
+                }
             },
             place(){
-
+//                console.log(this.name)
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                    this.is_submit = true
+                }else{
+                    this.is_submit = false
+                }
             },
             user_name(){
 
             },
             user_phone(){
-
+//                console.log(this.name)
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                    this.is_submit = true
+                }else{
+                    this.is_submit = false
+                }
             },
             is_submit(){
-
+//                console.log(this.is_submit)
+                if(!this.is_submit){
+//                    console.log('red')
+                    document.getElementById('submit').style.backgroundColor = '#a9a9a9'
+                }else{
+//                    console.log('yellow')
+                    document.getElementById('submit').style.background = '#1AAD19'
+                }
             }
         },
         mounted() {

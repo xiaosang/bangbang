@@ -32,6 +32,8 @@ Route::group(['prefix' => 'main'], function () {
     Route::post('/get_lost_list','Wx\LostController@get_list');
 
      Route::post('/submit_lost','Wx\LostController@submit_lost');
+     Route::post('/send_yzm','Wx\LostController@send_yzm');
+
 
     Route::group(['prefix' => 'lost'],function(){
         Route::post('/info','Wx\LostController@lost_info');

@@ -354,7 +354,7 @@ function sensitiveWordFilter($str){
                 return $word;
             }
         }
-        return $true;
+        return true;
 }
 
 /*
@@ -404,7 +404,7 @@ function sendMsg($phone){
  * $num 验证码
  * 
 */
-function check_msg($num){
+function check_msg($num,$phone){
     $res = DB::table('wx_phone_message')->where(function ($q) use ($phone){
         $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
     })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();

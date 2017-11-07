@@ -162,7 +162,17 @@ class LostController extends Controller
         $id = $request->id;
         // sendMsg(18737383137);
         return responseToJson(0, 'success',Lost::get_info($id));
+    }
 
+    public function send_yzm(Request $request){
+        $result = sendMsg($request->phone);
+        if($result == 0){
+            return responseToJson(0,'发送成功');
+        }else if($result == 1){
+            return responseToJson(1,'发送失败，服务器繁忙');
+        }else if($result == 2){
+            return responseToJson(2,'已经发过，无需再次请求');
+        }
     }
 
 }

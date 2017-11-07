@@ -42,7 +42,10 @@
 
         <group>
             <x-input title='姓名' v-model="user_name" :show-clear="false" text-align="right"  placeholder="请输入您的姓名(可选)"></x-input>
-            <x-input :type="'number'" title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话"></x-input>
+            <x-input :type="'number'" title='' v-model="user_phone" :show-clear="false" text-align="left"  placeholder="请输入您的联系电话">
+                <x-button slot="right" type="primary" mini @click.native="send_yzm">发送验证码</x-button>
+            </x-input>
+            <x-input title='验证码' v-model="yzm" :show-clear="false" text-align="right"  placeholder="请输入收到的验证码"></x-input>
         </group>
 
 
@@ -138,7 +141,8 @@
                 place:'',
                 upload_files:[],
                 can_submit:true,
-                is_submit:false
+                is_submit:false,
+                yzm:''
             }
         },
         methods:{
@@ -223,6 +227,15 @@
                         self.can_submit = true;
                     },formdata)
                 }
+            },
+            send_yzm(){
+                axios.post('/wx/main/send_yzm',{phone:this.user_phone})
+                    .then((res)=>{
+                        console.log(res.data.message)
+                    })
+                    .catch((err)=>{
+                        console.log(err)
+                    })
             }
 
         },

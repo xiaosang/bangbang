@@ -156,7 +156,7 @@ class LostController extends Controller
         }else{
             return responseToJson(0,'失败');
         }
-
+    }
     public function lost_info(Request $request){
         $id = $request->id;
         // sendMsg(18737383137);

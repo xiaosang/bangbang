@@ -144,7 +144,7 @@ export default new VueRouter({
         {
             name:"寻物启事详情",
             path:'/main/lost/info/:id',
-            meta:{keepAlive: true},
+            meta:{keepAlive: false},
             component: resolve =>void(require(['./components/main/LostInfo.vue'], resolve))
         },
         {

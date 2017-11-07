@@ -224,11 +224,11 @@
         },
         watch:{
             name(){
-                if(this.name && this.content && this.type && ){
+                // if(this.name && this.content && this.type && ){
 
-                }else{
+                // }else{
 
-                }
+                // }
             },
             content(){
 

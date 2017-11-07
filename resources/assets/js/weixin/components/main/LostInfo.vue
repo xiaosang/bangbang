@@ -1,6 +1,6 @@
 <template>
     <div>
-       <x-header :left-options="{ showBack:false,backText:'' }">
+       <x-header :left-options="{ showBack:false,backText:'' }" :title="lostInfo.title">
             <span slot="left">
                 <!--<a href="back(-1)" class="ion-arrow-left-c"></a>-->
                 <!--<a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>-->
@@ -16,8 +16,8 @@
             </group>
             <group>
                 <div>
-                    <img :src="'/'+lostInfo.img_path" alt="">
-                    {{ lostInfo.img_path }}
+                    <img :src="'/storage/'+lostInfo.img_path" alt="">
+                    <!-- {{ lostInfo.img_path }} -->
                 </div>
                 <div>
                     {{lostInfo.content}}

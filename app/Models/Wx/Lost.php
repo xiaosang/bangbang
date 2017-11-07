@@ -18,9 +18,27 @@ class Lost extends Model
        ->offset($start)
        ->limit($num)
        ->get();
-        
-        
+   }
 
+   public static function submit_lost($title,$user_name,$user_id,$content,$lost_time,$place,$create_time,$status,$is_lost,$is_delete,$reward_content,$phone_num,$img_path){
+       $data = [
+           'title'=>$title,
+           'user_name'=>$user_name,
+           'user_id'=>$user_id,
+           'content'=>$content,
+           'lost_time'=>$lost_time,
+           'place'=>$place,
+           'create_time'=>$create_time,
+           'status'=>$status,
+           'is_lost'=>$is_lost,
+           'is_delete'=>$is_delete,
+           'reward_content'=>$reward_content,
+           'phone_num'=>$phone_num,
+           'img_path'=>$img_path
+       ];
+       $result = DB::table('lost')
+           ->insert($data);
+       return $result;
    }
 
 }

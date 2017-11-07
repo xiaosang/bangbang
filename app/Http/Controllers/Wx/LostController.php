@@ -45,7 +45,7 @@ class LostController extends Controller
         }
 
         return responseToJson(0, 'success',$data);
-        
+
     }
 
 
@@ -124,37 +124,38 @@ class LostController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    function submit_lost(Request $request){
+    function submit_lost(Request $request)
+    {
         $user_id = get_wx_user_id();
         $upload_file_num = $request->input('upload_file_num');
-        for($i=0;$i<$upload_file_num;$i++){
-            $upload_files[$i] = $request->file('upload_file'.$i);
+        for ($i = 0; $i < $upload_file_num; $i++) {
+            $upload_files[$i] = $request->file('upload_file' . $i);
         }
         $name = $request->input('name');
-        $content= $request->input('content');
-        $type= $request->input('type');
-        $reward_content= $request->input('reward_content');
-        $user_name= $request->input('user_name');
-        $user_phone= $request->input('user_phone');
-        $lost_time= strtotime($request->input('complete_time'));
-        $place= $request->input('place');
+        $content = $request->input('content');
+        $type = $request->input('type');
+        $reward_content = $request->input('reward_content');
+        $user_name = $request->input('user_name');
+        $user_phone = $request->input('user_phone');
+        $lost_time = strtotime($request->input('complete_time'));
+        $place = $request->input('place');
 
         $url = '';
-        for ($i=0;$i<$upload_file_num;$i++){
+        for ($i = 0; $i < $upload_file_num; $i++) {
             $file_new_name = getFilename($upload_files[$i]->getClientOriginalExtension());
-            $upload_file_url = $upload_files[$i]->storeAs('lose/min',$file_new_name);
-            if($i==$upload_file_num-1){
-                $url = $url.$upload_file_url;
-            }else{
-                $url = $url.$upload_file_url.';';
+//            $upload_file_url = $upload_files[$i]->storeAs('lose/min', $file_new_name);
+            if ($i == $upload_file_num - 1) {
+                $url = $url . $file_new_name;
+            } else {
+                $url = $url . $file_new_name . ';';
             }
         }
-        $result = Lost::submit_lost($name,$user_name,$user_id,$content,$lost_time,$place,time(),0,$type,0,$reward_content,$user_phone,$url);
+        $result = Lost::submit_lost($name, $user_name, $user_id, $content, $lost_time, $place, time(), 0, $type, 0, $reward_content, $user_phone, $url);
 //        $result = Proposal::submit_feedback($user_id,$feedback_content,$url,$user_agent,$ip);
-        if($result){
-            return responseToJson(1,'成功');
-        }else{
-            return responseToJson(0,'失败');
+        if ($result) {
+            return responseToJson(1, '成功');
+        } else {
+            return responseToJson(0, '失败');
         }
     }
     public function lost_info(Request $request){

@@ -408,6 +408,8 @@ function check_msg($num){
     $res = DB::table('wx_phone_message')->where(function ($q) use ($phone){
         $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
     })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();
-
-    return $res;
+    if($res->code == $num){
+        return true;//验证成功
+    }
+    return false;//验证失败
 }

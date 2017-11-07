@@ -365,7 +365,7 @@ function sensitiveWordFilter($str){
 function sendMsg($phone){
     $res = DB::table('wx_phone_message')->where(function ($q) use ($phone){
         $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
-    })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();
+    })->where('send_time','>=',time()-5*60)->where('is_use',0)->first();
     if($res){
         return 2; //已经发过，无需再次请求。
     }

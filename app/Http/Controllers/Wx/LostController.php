@@ -126,6 +126,10 @@ class LostController extends Controller
      */
     function submit_lost(Request $request)
     {
+        $yzm = check_msg($request->yzm);
+        if(!$yzm){
+            return responseToJson(0, '验证码有误');
+        }
         $user_id = get_wx_user_id();
         $upload_file_num = $request->input('upload_file_num');
         for ($i = 0; $i < $upload_file_num; $i++) {
@@ -143,7 +147,7 @@ class LostController extends Controller
         $url = '';
         for ($i = 0; $i < $upload_file_num; $i++) {
             $file_new_name = getFilename($upload_files[$i]->getClientOriginalExtension());
-//            $upload_file_url = $upload_files[$i]->storeAs('lose/min', $file_new_name);
+            $upload_file_url = $upload_files[$i]->storeAs('lose/min', $file_new_name);
             if ($i == $upload_file_num - 1) {
                 $url = $url . $file_new_name;
             } else {

@@ -41,4 +41,8 @@ class Lost extends Model
        return $result;
    }
 
+   public static function get_info($id){
+        return DB::table('lost')->where('id',$id)->first();
+   }
+
 }

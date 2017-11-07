@@ -30,7 +30,13 @@ Route::group(['prefix' => 'main'], function () {
     Route::get('/get_announcementContent','Wx\TaskController@get_announcementContent');
     //失物招领
     Route::post('/get_lost_list','Wx\LostController@get_list');
+
      Route::post('/submit_lost','Wx\LostController@submit_lost');
+
+    Route::group(['prefix' => 'lost'],function(){
+        Route::post('/info','Wx\LostController@lost_info');
+    });
+
 });
 Route::group(['prefix' => 'task'], function () {
     Route::get('/get_task','Wx\TaskController@get_task');

@@ -6,6 +6,7 @@
  * @param $msg
  * @param $paras
  */
+
 function responseToJson($code = 0, $msg = '', $paras = null)
 {
     $res["code"] = $code;
@@ -354,4 +355,46 @@ function sensitiveWordFilter($str){
             }
         }
         return $true;
+}
+
+/*
+ *发送短信验证码
+ * $phone 手机号
+ * 
+*/
+function sendMsg($phone){
+    $res = DB::table('wx_phone_message')->where(function ($q) use ($phone){
+        $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
+    })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();
+    if($res){
+        return 2; //已经发过，无需再次请求。
+    }
+
+
+    $config = config('alidayu');
+    // dd(env('ALI_SIGNNAME'));
+    $client  = new Flc\Dysms\Client($config);
+    $sendSms = new Flc\Dysms\Request\SendSms;
+    $sendSms->setPhoneNumbers($phone);
+    $sendSms->setSignName(env('ALI_SIGNNAME',''));
+    $sendSms->setTemplateCode(env('ALI_LATECODE',''));
+    $code = rand(100000, 999999);
+    $sendSms->setTemplateParam(['code' => $code]);
+    $sendSms->setOutId('bangbang');
+    $res = $client->execute($sendSms);
+    Log::info("Phone:".$phone);
+    if($res->Code =='OK'){
+        DB::table('wx_phone_message')->insert([
+            'openid' => get_wx_user_openid(),
+            'code' => $code,
+            'phone' => $phone,
+            'send_time' => time()
+        ]);
+        Log::info("[success]Phone:".$phone);
+        return 0;//发送成功
+    }
+    // print_r($res);
+    Log::info($res->Code."[error]Phone:".$phone);
+
+    return 1;//发送失败，服务器繁忙
 }

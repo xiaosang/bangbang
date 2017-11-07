@@ -48,6 +48,7 @@ class LostController extends Controller
         
     }
 
+
     /*public function upload_img(Request $request){
         dd($request->all());
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
@@ -155,6 +156,12 @@ class LostController extends Controller
         }else{
             return responseToJson(0,'失败');
         }
+
+    public function lost_info(Request $request){
+        $id = $request->id;
+        // sendMsg(18737383137);
+        return responseToJson(0, 'success',Lost::get_info($id));
+
     }
 
 }

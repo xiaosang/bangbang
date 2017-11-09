@@ -77,4 +77,4 @@ Route::group(['prefix' => 'set'], function () {
    
 
 // });
-
+Route::get('/show_img','Wx\LostController@show_img');

@@ -7,7 +7,7 @@
                 <!--<router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>-->
                 <!--返回到首页-->
                 <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;color:#FFF">
-                <span style="font-size: 18px;color:#FFF">返回列表</span></a>
+                <span style="font-size: 18px;color:#FFF"></span></a>
             </span>
         </x-header>
         <div v-if="lostInfo !=[]">
@@ -16,14 +16,16 @@
                     <swiper :list="img" auto style="width:100%;margin:0 auto;" height="280px" dots-class="custom-bottom" dots-position="center"  v-model="index" @click.native="open_img"></swiper>
                     <!-- {{ lostInfo.img_path }} -->
                 </div>
-                <div style="background-image:url('/img/wx/lost.png');background-size:100%;position:relative">
+                <div class="back">
                     <!-- <group> -->
                         <x-input title="联系人:" readonly v-model="lostInfo.user_name"></x-input>
                         <x-input title="地　点:" readonly v-model="lostInfo.place"></x-input>
                         <x-input title="时　间:" readonly v-model="lostInfo.lost_time"></x-input>
                         <x-input title="内　容:" readonly v-model="lostInfo.content"></x-input>
+                        <x-input title="悬　赏:" readonly v-model="lostInfo.reward_content" v-if="lostInfo.is_lost==1"></x-input>
                         <a :href="'tel:'+lostInfo.phone_num" style="color :#000"><x-input title="电　话:" readonly v-model="lostInfo.phone_num"></x-input></a>
                     <!-- </group> -->
+                       
                     <div class="over" v-if="lostInfo.status == 1">
 
                     </div>
@@ -84,6 +86,11 @@
     z-index: 10000;
     width: 100%;
 }
+.back{
+    background:url('/img/wx/lost.png') no-repeat;
+    background-size:100%;
+    position:relative;
+}
 </style>
 
 <script>
@@ -131,14 +138,18 @@
                     console.log(res.data.result)
                     this.lostInfo = res.data.result
                     var img_path = this.lostInfo.img_path
-                    var img = img_path.split(";")
-                    for(var i=0;i < img.length;i++){
-                        // this.img[i] = 'wx/show_img/?name=app/lost/min/' + this.img[i]
+                    if(img_path != ""){
+                        var img = img_path.split(";")
+                        for(var i=0;i < img.length;i++){
+                            this.img.push({
+                                img: 'wx/show_img/?name=app/lost/min/' + img[i]
+                            });
+                        }
+                    }else{
                         this.img.push({
-                            img: 'wx/show_img/?name=app/lost/min/' + img[i]
+                            img: 'wx/show_img/?name=app/lost/min/nopic.png'
                         });
                     }
-                    // img_path
                     this.setDate()
                     this.$vux.loading.hide()
                     

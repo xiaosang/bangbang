@@ -147,7 +147,7 @@ class LostController extends Controller
         $url = '';
         for ($i = 0; $i < $upload_file_num; $i++) {
             $file_new_name = getFilename($upload_files[$i]->getClientOriginalExtension());
-           $upload_file_url = $upload_files[$i]->storeAs('lost/min', $file_new_name);
+            $upload_file_url = $upload_files[$i]->storeAs('lost/min', $file_new_name);
 
             if ($i == $upload_file_num - 1) {
                 $url = $url . $file_new_name;

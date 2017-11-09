@@ -147,8 +147,9 @@
                         }
                     }else{
                         this.img.push({
-                            img: 'wx/show_img/?name=app/lost/min/nopic.png'
+                            img: '/img/wx/nopic.png'
                         });
+                        console.log(this.img)
                     }
                     this.setDate()
                     this.$vux.loading.hide()

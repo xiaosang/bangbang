@@ -354,7 +354,7 @@ function sensitiveWordFilter($str){
                 return $word;
             }
         }
-        return $true;
+        return true;
 }
 
 /*
@@ -366,7 +366,7 @@ function sendMsg($phone){
 
     $res = DB::table('wx_phone_message')->where(function ($q) use ($phone){
         $q->orWhere('phone',$phone)->orWhere('openid',get_wx_user_openid());
-    })->where('send_time','>=',time()+5*60)->where('is_use',0)->first();
+    })->where('send_time','>=',time()-5*60)->where('is_use',0)->first();
     if($res){
         return 2; //已经发过，无需再次请求。
     }
@@ -405,13 +405,12 @@ function sendMsg($phone){
  * $num 验证码
  * 
 */
+
 function check_msg($num){
     $res = DB::table('wx_phone_message')
     ->Where('openid',get_wx_user_openid())
     ->where('send_time','>=',time() - 5*60)
     ->where('is_use',0)->first();
-    // dd($res);
-    
     if($res){
         $id = $res->id;
         // print_r($id);

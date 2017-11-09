@@ -126,6 +126,10 @@ class LostController extends Controller
      */
     function submit_lost(Request $request)
     {
+        $yzm = check_msg($request->yzm);
+        if(!$yzm){
+            return responseToJson(0, '验证码有误');
+        }
         $user_id = get_wx_user_id();
         $upload_file_num = $request->input('upload_file_num');
         for ($i = 0; $i < $upload_file_num; $i++) {
@@ -144,6 +148,7 @@ class LostController extends Controller
         for ($i = 0; $i < $upload_file_num; $i++) {
             $file_new_name = getFilename($upload_files[$i]->getClientOriginalExtension());
            $upload_file_url = $upload_files[$i]->storeAs('lost/min', $file_new_name);
+
             if ($i == $upload_file_num - 1) {
                 $url = $url . $file_new_name;
             } else {
@@ -161,9 +166,19 @@ class LostController extends Controller
     public function lost_info(Request $request){
         $id = $request->id;
         $res = Lost::get_info($id);
-        // dd($res);
         return responseToJson(0, 'success',$res);
+    }
 
+
+    public function send_yzm(Request $request){
+        $result = sendMsg($request->phone);
+        if($result == 0){
+            return responseToJson(0,'发送成功');
+        }else if($result == 1){
+            return responseToJson(1,'发送失败，服务器繁忙');
+        }else if($result == 2){
+            return responseToJson(2,'已经发过，无需再次请求');
+        }
     }
 
 

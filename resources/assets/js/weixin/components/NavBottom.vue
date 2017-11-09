@@ -20,7 +20,7 @@
                 </tabbar-item>
                 <tabbar-item link="/me" index="2">
                     <i slot="icon" class="ion-android-person"></i>
-                    <span slot="label">我的</span>
+                    <span slot="label">我的 <badge v-if="unread"></badge></span>
                 </tabbar-item>
             </tabbar>
         </div>
@@ -62,6 +62,7 @@
             return {
                 select_num:-1,
                 msg : 0,
+                unread:false,
             }
         },
         computed: {
@@ -83,11 +84,21 @@
                         this.select_num = 2
                         break
                 }
+                this.check_unread();
             },
             get_note_msg(){
                 if(localStorage.getItem('note-msg')==null)
                     localStorage.setItem('note-msg',0)
                 this.msg = localStorage.getItem('note-msg')
+            },
+            check_unread(){
+                this.send_request('post','/wx/news/check/unread',function (response,self) {
+                    if(response.data.result){
+                        self.unread = true;
+                    }else{
+                        self.unread = false;
+                    }
+                });
             }
         },
         mounted(){

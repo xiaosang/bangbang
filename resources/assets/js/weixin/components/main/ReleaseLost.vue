@@ -42,7 +42,10 @@
 
         <group>
             <x-input title='姓名' v-model="user_name" :show-clear="false" text-align="right"  placeholder="请输入您的姓名(可选)"></x-input>
-            <x-input :type="'number'" title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话"></x-input>
+            <x-input :type="'number'" title='' v-model="user_phone" :show-clear="false" text-align="left"  placeholder="请输入您的联系电话">
+                <x-button id="yzm" slot="right" type="primary" mini @click.native="send_yzm" :text="yzm_text"></x-button>
+            </x-input>
+            <x-input title='验证码' v-model="yzm" :show-clear="false" text-align="right"  placeholder="请输入收到的验证码"></x-input>
         </group>
 
 
@@ -138,7 +141,11 @@
                 place:'',
                 upload_files:[],
                 can_submit:true,
-                is_submit:false
+                is_submit:false,
+                yzm:'',
+                yzm_text:'发送验证码',
+                is_send_yzm:true,
+                count:59
             }
         },
         methods:{
@@ -208,6 +215,7 @@
                     formdata.append('user_phone',this.user_phone)
                     formdata.append('complete_time',this.complete_time)
                     formdata.append('place',this.place)
+                    formdata.append('yzm',this.yzm)
                     for (let i=0;i<this.upload_files.length;i++){
                         formdata.append('upload_file'+i,this.upload_files[i])
                     }
@@ -223,13 +231,46 @@
                         self.can_submit = true;
                     },formdata)
                 }
+            },
+            send_yzm(){
+                if(this.is_send_yzm){
+                    this.is_send_yzm = false
+                    axios.post('/wx/main/send_yzm',{phone:this.user_phone})
+                        .then((res)=>{
+                            if(res.data.code == 0){
+                                this.yzm_text = '已发送( '+(this.count--)+' )'
+                                document.getElementById('yzm').style.backgroundColor = '#a9a9a9'
+                                var timer = setInterval(()=>{
+                                    this.yzm_text = '已发送( '+(this.count--)+' )'
+                                    if(this.count == 1){
+                                        clearInterval(timer)
+                                        this.count = 60
+                                        this.yzm_text = '发送验证码'
+                                        this.is_send_yzm = true
+                                        document.getElementById('yzm').style.backgroundColor = '#1AAD19'
+                                    }
+                                },1000)
+                            }
+                            this.is_send_yzm = true
+                        })
+                        .catch((err)=>{
+                            this.is_send_yzm = true
+                        })
+                }
+
             }
 
         },
         watch:{
+            yzm(){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
+                    this.is_submit = true
+                }else{
+                    this.is_submit = false
+                }
+            },
             name(){
-
-                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
                     this.is_submit = true
                 }else{
                     this.is_submit = false
@@ -238,7 +279,7 @@
             },
             content(){
                 //                console.log(this.name)
-                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
                     this.is_submit = true
                 }else{
                     this.is_submit = false
@@ -246,7 +287,7 @@
             },
             type(){
 //                console.log(this.name)
-                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
                     this.is_submit = true
                 }else{
                     this.is_submit = false
@@ -254,7 +295,7 @@
             },
             complete_time(){
 //                console.log(this.name)
-                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
                     this.is_submit = true
                 }else{
                     this.is_submit = false
@@ -262,7 +303,7 @@
             },
             place(){
 //                console.log(this.name)
-                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
                     this.is_submit = true
                 }else{
                     this.is_submit = false
@@ -273,7 +314,7 @@
             },
             user_phone(){
 //                console.log(this.name)
-                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() ){
+                if( this.name.trim() && this.content.trim() && this.type.trim() && this.complete_time.trim() && this.place.trim() && this.user_phone.trim() && this.yzm.trim()){
                     this.is_submit = true
                 }else{
                     this.is_submit = false
@@ -291,7 +332,6 @@
             }
         },
         mounted() {
-
         }
     }
 </script>

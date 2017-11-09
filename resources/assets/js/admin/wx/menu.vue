@@ -14,6 +14,7 @@
 
             <p>3、 发布成功后，会在24小时内在手机端同步显示。</p>
         </div>
+        {{ name1 }}
         <table v-loading.body="loading" element-loading-text="请稍等~">
             <tr>
                 <td>
@@ -40,11 +41,12 @@
                                             <el-button style="width:100%;margin-left:0px;border:0px;" @click="addSubMenu(2)"><i class="el-icon-plus"></i></el-button>
                                         </div>
                                     </el-popover>
-                                    <el-button v-show="but > 0" class="button_text" style="float:left;margin-left:0px;" :id="0" :class="classBut(0)" @click="setMenu(0)" v-popover:popover1>{{name1}}</el-button>
-                                    <el-button v-show="but > 1" class="button_text" style="float:left;margin-left:0px;" :id="1" :class="classBut(1)" @click="setMenu(1)" v-popover:popover2>{{name2}}</el-button>
-                                    <el-button v-show="but > 2" class="button_text" style="float:left;margin-left:0px;" :id="2" :class="classBut(2)" @click="setMenu(2)" v-popover:popover3>{{name3}}</el-button>
+                                    <el-button v-show="but > 0" class="button_text" style="float:left;margin-left:0px;" :id="0" :class="classBut(0)" @click="setMenu(0)" v-popover:popover1> {{ name1 }} </el-button>
+                                    <el-button v-show="but > 1" class="button_text" style="float:left;margin-left:0px;" :id="1" :class="classBut(1)" @click="setMenu(1)" v-popover:popover2> {{ name2 }} </el-button>
+                                    <el-button v-show="but > 2" class="button_text" style="float:left;margin-left:0px;" :id="2" :class="classBut(2)" @click="setMenu(2)" v-popover:popover3> {{ name3 }} </el-button>
                                     <el-button v-show="add" style="float:right;margin-left:0px;" :class="classObject()" icon="plus" @click="addMenu"></el-button>
                                 </div>
+
                                 <!--<div style="position: absolute;bottom: -50px;z-index: 999;background: #FFF;display: block;width: 100%;height: 50px;border-top: 1px solid #ddd;"></div>-->
                             </div>
                         </div>
@@ -167,9 +169,14 @@
                             }
                         }
                     }
+                    console.log(this.name1,this.name2,this.name3)
                 },
                 deep: true
             },
+            name1:function (val,oldval) {
+//                this.$set(this.name1,"123")
+                console.log(this.name1)
+            }
 
         },
         methods: {
@@ -196,6 +203,7 @@
                 axios.post("admin/weixin/menu/get").then(function (response) {
                     var data = response.data;
                     self.menus = data;
+                    console.log(self.menus,data)
                     if(data.length > 0){
                         self.sub_button1 = data[0].sub_button
                         if(data.length > 1){

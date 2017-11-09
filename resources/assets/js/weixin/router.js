@@ -153,5 +153,10 @@ export default new VueRouter({
             meta:{keepAlive: true},
             component: resolve =>void(require(['./components/main/ReleaseLost.vue'], resolve))
         },
+        {
+            name:"news/list",
+            path:'/news/list',
+            component: resolve =>void(require(['./components/me/news/NewsList.vue'], resolve))
+        },
     ]
 })

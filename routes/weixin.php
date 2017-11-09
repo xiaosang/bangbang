@@ -32,6 +32,8 @@ Route::group(['prefix' => 'main'], function () {
     Route::post('/get_lost_list','Wx\LostController@get_list');
 
      Route::post('/submit_lost','Wx\LostController@submit_lost');
+     Route::post('/send_yzm','Wx\LostController@send_yzm');
+
 
     Route::group(['prefix' => 'lost'],function(){
         Route::post('/info','Wx\LostController@lost_info');
@@ -71,10 +73,18 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/get_info','Wx\FollowController@get_info');
 });
 
+/**
+ * 微信订单消息
+ */
+Route::group(['prefix' => 'news'], function () {
+    Route::post('/check/unread','Wx\NewsController@check_unread');
+    Route::post('/list','Wx\NewsController@news_list');
 
-// Route::group(['prefix' => 'lost'], function () {
+ });
 
-   
-
+<<<<<<< HEAD
 // });
 Route::get('/show_img','Wx\LostController@show_img');
+=======
+
+>>>>>>> fe7c5f49419ffc34f269608301b5c9c32d56a862

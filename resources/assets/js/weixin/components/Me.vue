@@ -33,8 +33,8 @@
                 </cell-box>
             </group>
             <group title="消息">
-                <cell-box is-link link="">
-                    我的消息
+                <cell-box is-link link="/news/list">
+                    我的消息<badge v-if="unread" style="position: absolute;right: 10%;height: 1px;top: 0;bottom: 0;margin: auto"></badge>
                 </cell-box>
             </group>
             <group title="反馈与投诉">
@@ -87,7 +87,7 @@
 </style>
 <script>
     import Navbottom from './NavBottom.vue'
-    import { Group, Cell,XHeader,Blur,CellBox } from 'vux'
+    import { Group, Cell,XHeader,Blur,CellBox,Badge } from 'vux'
     export default {
         components: {
             Group,
@@ -95,13 +95,15 @@
             Navbottom,
             XHeader,
             Blur,
-            CellBox
+            CellBox,
+            Badge
         },
         data(){
             return {
                 user_avatar:"",
                 user_name:'',
                 user_is_v:'',
+                unread:false
             }
         },
         methods:{
@@ -137,11 +139,21 @@
                 this.user_avatar = '/img/wx/student.jpg'
                 this.user_name='未知'
                 this.user_is_v = '未知'
+            },
+            check_unread(){
+                this.send_request('post','/wx/news/check/unread',function (response,self) {
+                    if(response.data.result){
+                        self.unread = true;
+                    }else{
+                        self.unread = false;
+                    }
+                });
             }
 
         },
         mounted() {
             this.get_user_info()
+            this.check_unread();
         }
     }
 </script>

@@ -73,10 +73,13 @@ Route::group(['prefix' => 'set'], function () {
     Route::post('/get_info','Wx\FollowController@get_info');
 });
 
+/**
+ * 微信订单消息
+ */
+Route::group(['prefix' => 'news'], function () {
+    Route::post('/check/unread','Wx\NewsController@check_unread');
+    Route::post('/list','Wx\NewsController@news_list');
 
-// Route::group(['prefix' => 'lost'], function () {
+ });
 
-   
-
-// });
 

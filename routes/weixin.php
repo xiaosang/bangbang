@@ -82,9 +82,6 @@ Route::group(['prefix' => 'news'], function () {
 
  });
 
-<<<<<<< HEAD
 // });
 Route::get('/show_img','Wx\LostController@show_img');
-=======
 
->>>>>>> fe7c5f49419ffc34f269608301b5c9c32d56a862

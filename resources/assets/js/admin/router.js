@@ -24,6 +24,7 @@ export default new VueRouter({
             path: '/forum/note',
             component: resolve =>void(require(['./forum/NoteList.vue'], resolve))
         },
+        //微信
     	{
             path: '/wx/reply',
             component: resolve =>void(require(['./wx/reply.vue'], resolve))
@@ -40,7 +41,22 @@ export default new VueRouter({
             //name: "微信菜单配置",
             path: '/wx/menu',
             component: resolve =>void(require(['./wx/menu.vue'], resolve))
-        },{
+        },
+        //公告
+        {
+            path: '/notice/list',
+            component: resolve =>void(require(['./notice/List.vue'], resolve))
+        },
+        {
+            path: '/notice/edit',
+            component: resolve =>void(require(['./notice/Edit.vue'], resolve))
+        },
+        //失物招领
+        {
+            path: '/loafo/list',
+            component: resolve =>void(require(['./loafo/List.vue'], resolve))
+        },
+        {
 
             //任务管理
             path: '/task/list',

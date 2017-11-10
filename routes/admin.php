@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'login.check'], function () {
     Route::post('super/password', 'Admin\SuperController@password');    //修改密码
 
     Route::get('/menu/get', 'Admin\MenuController@get_menu');
@@ -37,5 +37,17 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/group/menu/b/set', 'Admin\WeixinController@set_wx_group_menu_b');
         Route::get('/menu/get', 'Admin\WeixinController@get_wx_menu');
         Route::get('/user/menu/get', 'Admin\WeixinController@get_wx_user_mennu');
+    });
+    //任务
+    Route::group(['prefix' => 'notice'], function () {
+        Route::post('list', 'Admin\Notice\IndexController@get_list');
+        Route::post('del', 'Admin\Notice\IndexController@notice_delete');
+        Route::get('get', 'Admin\Notice\IndexController@get');
+        Route::post('edit', 'Admin\Notice\IndexController@edit');
+    });
+    //失物招领
+    Route::group(['prefix' => 'loafo'], function () {
+        Route::post('list', 'Admin\Loafo\IndexController@get_list');
+        Route::post('del', 'Admin\Loafo\IndexController@loafo_delete');
     });
 });

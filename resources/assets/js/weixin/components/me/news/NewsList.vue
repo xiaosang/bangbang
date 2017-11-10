@@ -4,9 +4,21 @@
             <x-header :left-options="{backText:''}">消息</x-header>
         </div>
         <div class="content">
-            <div >
-
-            </div>
+            <scroller lock-x height="-55" ref="scroller" @on-scroll-bottom="get_news_list" @on-scroll="$refs.scroller.reset()">
+                <div>
+                    <div class="news" v-for="(nl,index) in  news_list" :key="index">
+                        <div class="news_content">
+                            {{nl.content}}
+                        </div>
+                        <div class="news_info">
+                            <span class="create_time">{{nl.create_time | date}}</span>
+                        </div>
+                    </div>
+                    <load-more v-if="no_more" :show-loading="false" tip="没有更多" background-color="#fbf9fe"></load-more>
+                    <load-more v-if="is_loading" :show-loading="true" tip="加载中..." background-color="#fbf9fe"></load-more>
+                    <load-more v-if="no_data" :show-loading="true" tip="没有数据" background-color="#fbf9fe"></load-more>
+                </div>
+            </scroller>
         </div>
     </div>
 </template>
@@ -17,15 +29,48 @@
         width: 100%;
     }
     .content{
-        padding-top: 47px;
+        padding-top: 55px;
+        margin: auto;
+        width: 95%;
     }
+
+    .news{
+        padding-top: 5px;
+        border:1px solid #acacac;
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+    .news_content{
+        border-bottom: 1px solid #ececec;
+        padding-bottom: 5px;
+        display: inline-block;
+        width: 100%;
+        text-indent: 1em;
+        word-wrap: break-word;
+    }
+
+    .news_info{
+        display: inline-block;
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .create_time{
+        float: right;
+        color: #acacac;
+        margin-right: 10px;
+    }
+
 </style>
 
 <script type="text/ecmascript-6">
-    import { XHeader } from 'vux'
+    import { XHeader,Scroller,LoadMore } from 'vux'
     export default {
         components:{
-            XHeader
+            XHeader,
+            Scroller,
+            LoadMore
         },
         data(){
             return {
@@ -53,6 +98,8 @@
                         this.$vux.loading.show({
                             text: '努力加载中...'
                         })
+                        this.receive_list = [];
+                        this.news_list = [];
                     }else{
                         this.is_loading = true;
                     }
@@ -75,7 +122,7 @@
                                     self.can_get = true;
                                     self.page++;
                                 }else{
-                                    self.can_get = fasle;
+                                    self.can_get = false;
                                     self.no_more = true;
                                 }
                             }else{

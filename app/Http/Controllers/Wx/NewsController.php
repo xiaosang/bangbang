@@ -30,6 +30,9 @@ class NewsController extends Controller
         $unread = $request->input('unread');
         $page = $request->input('page');
         $num = $request->input('num');
+        if($unread==-1||$unread==0){
+            News::change_unread_to_read($user_id,$page,$num);
+        }
         $result = News::news_list($user_id,$unread,$page,$num);
         if($result){
             return responseToJson(1,'获取成功',$result);

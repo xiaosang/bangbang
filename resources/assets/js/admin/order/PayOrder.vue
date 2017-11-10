@@ -4,8 +4,8 @@
         <div class="gm-breadcrumb">
             <!--<i class="ion-ios-home gm-home"></i>-->
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/order/payorder">订单管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/order/payorder">支付订单</el-breadcrumb-item>
+                <el-breadcrumb-item to="/admin/order/payorder">订单管理</el-breadcrumb-item>
+                <el-breadcrumb-item to="/admin/order/payorder">支付订单</el-breadcrumb-item>
                 <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
             </el-breadcrumb>
         </div>
@@ -161,7 +161,7 @@
                 endDate : this.endDate,
                 startDate : this.startDate,
             };
-            axios.post("/order/payorder",param).then(response =>{
+            axios.post("/admin/order/payorder",param).then(response =>{
                 
                 self.orderAll = response.data.result.data
                 console.log(self.orderAll)
@@ -205,7 +205,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.post("/order/paydel",{
+                    axios.post("/admin/order/paydel",{
                         id : row.id
                     }).then(response =>{
                         var data = response.data;

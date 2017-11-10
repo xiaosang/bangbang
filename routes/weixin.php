@@ -67,7 +67,9 @@ Route::group(['prefix' => 'me'], function () {
 
 //账号设置
 Route::group(['prefix' => 'set'], function () {
-    Route::get('/school','Wx\FollowController@get_school');
+    Route::group(['middleware' => 'auth.student'], function () {
+        Route::get('/school','Wx\FollowController@get_school');
+    });
     Route::get('/get_check','Wx\FollowController@get_check');
     Route::post('/login','Wx\FollowController@login');
     Route::post('/get_info','Wx\FollowController@get_info');
@@ -81,5 +83,7 @@ Route::group(['prefix' => 'news'], function () {
     Route::post('/list','Wx\NewsController@news_list');
 
  });
+
+// });
 
 

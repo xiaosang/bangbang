@@ -157,7 +157,7 @@
                 page_size: this.page_size, 
                 page: this.page,
             };
-            axios.post('/forum/note',param).then(res =>{
+            axios.post('/admin/forum/note',param).then(res =>{
                 console.log(res.data.result.data)
                 this.noteList = res.data.result.data
                 this.paginate_total = res.data.result.total
@@ -192,7 +192,7 @@
                     page_size: this.list_page_size, 
                     page: this.list_page,
                 };
-                axios.post('/forum/comment',param).then(res =>{
+                axios.post('/admin/forum/comment',param).then(res =>{
                     this.commentList = res.data.result.data
                     // this.noteList = res.data.result.data
                     this.list_paginate_total = res.data.result.total
@@ -208,7 +208,7 @@
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.post("/forum/commentdel",{
+                axios.post("/admin/forum/commentdel",{
                     id : row.id,
                     note_id : row.note_id
                 }).then(response =>{
@@ -248,7 +248,7 @@
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.post("/forum/notedel",{
+                axios.post("/admin/forum/notedel",{
                     id : row.id
                 }).then(response =>{
                     var data = response.data;

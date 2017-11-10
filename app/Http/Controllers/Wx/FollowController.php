@@ -115,9 +115,9 @@ class FollowController extends Controller
     }
 
     public function get_info(Request $request){
-        $school = $this->check_school($request->school_id);
         $res = Follow::is_set(get_wx_user_openid());
-        if($res->is_v == 0){
+        if($res->is_student == 0){
+            $school = $this->check_school($request->school_id);
             $client = new Client([
                 'base_uri' => $school['base_uri'],
                 'timeout' => 2

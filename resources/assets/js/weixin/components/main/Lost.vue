@@ -1,16 +1,16 @@
 <template>
     <div>
-        <x-header :left-options="{ showBack:false,backText:'' }">
+        <x-header :left-options="{ showBack:false,backText:'' }" style="background-color:#9EC9BD;">
             <span slot="left">
                 <!--<a href="back(-1)" class="ion-arrow-left-c"></a>-->
                 <!--<a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>-->
                 <!--<router-link to="/main" class="ion-android-arrow-back" style="font-size: 18px;"></router-link>-->
                 <!--返回到首页-->
-                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
-                <span style="font-size: 18px;">寻物启事</span>
+                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;color:#FFF"></a>
+                <span style="font-size: 18px;color:#FFF">寻物启事</span>
                 
             </span>
-            <router-link slot="right" to="/main/createlost" class="ion-android-add" style="font-size: 22px;"></router-link>
+            <router-link slot="right" to="/main/createlost" class="ion-android-add" style="font-size: 22px; color:#FFF"></router-link>
         </x-header>
         <div style="width:100%;">
              <scroller lock-x  use-pulldown :pulldown-config="pulldown" use-pullup :pullup-config="pullup"  @on-pulldown-loading="down_updateTask()" @on-pullup-loading="up_updateTask()" ref="scroller" @on-scroll="onScroll()" height="-99">

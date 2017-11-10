@@ -3,7 +3,7 @@
         <div class="header">
             <x-header :left-options="{backText:'',showBack:false}">我的</x-header>
         </div>
-        <div class="content">
+        <div class="content" v-if="!loading">
             <group class="account_div">
                 <div class="main_info"></div>
                 <blur :height="80" url="" style="float:left;margin-left:30px;">
@@ -17,10 +17,14 @@
                 </div>
                 <!--<div class="detail"><i class="fa fa-angle-right"></i></div>-->
                 <div class="main_info"></div>
-                <cell-box is-link link="/accountset">
-                    <i class="fa fa-cog cell_i"></i>
+                <cell-box  v-if="is_student==0" is-link link="/accountset">
                     <cell-box is-link link="">
-                        账号设置
+                        学生认证
+                    </cell-box>
+                </cell-box>
+                <cell-box v-else is-link link="/main/info/">
+                    <cell-box is-link link="">
+                        个人信息
                     </cell-box>
                 </cell-box>
             </group>
@@ -103,7 +107,10 @@
                 user_avatar:"",
                 user_name:'',
                 user_is_v:'',
-                unread:false
+                unread:false,
+                is_student : 0,
+                loading : true,
+                
             }
         },
         methods:{
@@ -123,6 +130,7 @@
                         }else{
                             self.user_is_v = '未认证'
                         }
+                        self.is_student = user_info.is_student
                         self.user_avatar = user_info.avatar
                     }else{
                         self.user_info_empty()
@@ -133,6 +141,7 @@
                 if(self.user_avatar==''){
                     self.user_avatar='/img/wx/student.jpg'
                 }
+                self.loading = false
             });
           },
             user_info_empty(){

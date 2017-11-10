@@ -147,7 +147,8 @@ class LostController extends Controller
         $url = '';
         for ($i = 0; $i < $upload_file_num; $i++) {
             $file_new_name = getFilename($upload_files[$i]->getClientOriginalExtension());
-            $upload_file_url = $upload_files[$i]->storeAs('lose/min', $file_new_name);
+            $upload_file_url = $upload_files[$i]->storeAs('lost/min', $file_new_name);
+
             if ($i == $upload_file_num - 1) {
                 $url = $url . $file_new_name;
             } else {
@@ -164,10 +165,10 @@ class LostController extends Controller
     }
     public function lost_info(Request $request){
         $id = $request->id;
-        // sendMsg(18737383137);
-        check_msg('826196');
-        return responseToJson(0, 'success',Lost::get_info($id));
+        $res = Lost::get_info($id);
+        return responseToJson(0, 'success',$res);
     }
+
 
     public function send_yzm(Request $request){
         $result = sendMsg($request->phone);
@@ -179,5 +180,9 @@ class LostController extends Controller
             return responseToJson(2,'已经发过，无需再次请求');
         }
     }
+
+
+ 
+    
 
 }

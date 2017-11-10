@@ -32,4 +32,14 @@ class IndexController extends Controller
         //查看服务是否运行
         echo "Server is running: " . $redis->ping();
     }
+
+        /*显示图片*/
+    public function show_img(Request $request) {
+        
+        $path = storage_path() . '/' . $request->name;
+        // dd($path);
+        if(file_exists($path)) {
+            return response()->file($path);
+        }
+    }
 }

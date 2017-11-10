@@ -171,7 +171,7 @@
             {'value':0,'name':'已结束'},
             {'value':0,'name':'已取消'},
           ]
-          axios.post('index/task').then(response =>{
+          axios.post('/admin/index/task').then(response =>{
             // console.log(response.data.result)
             var res = response.data.result
             for (var i = 0; i < res.length; i++) {
@@ -215,7 +215,7 @@
           
         },
         setUser: function(){
-          axios.post('index/user').then(response =>{
+          axios.post('/admin/index/user').then(response =>{
             // console.log(response.data.result)
             this.userCount = response.data.result
 
@@ -228,7 +228,7 @@
             {'value':0,'name':'未支付'},
             {'value':0,'name':'已支付'},
           ]
-          axios.post('index/order').then(response =>{
+          axios.post('/admin/index/order').then(response =>{
             console.log(response.data.result)
             var res = response.data.result
             for (var i = 0; i < res.length; i++) {
@@ -270,7 +270,7 @@
         },
         getNum :function(){
           this.flag = false
-          axios.post('index/ordernum').then(response =>{
+          axios.post('/admin/index/ordernum').then(response =>{
             console.log(response.data.result)
             this.finishOrderNums = response.data.result['finish']
             this.allOrderNums =   response.data.result['all']

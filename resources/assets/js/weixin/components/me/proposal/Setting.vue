@@ -135,9 +135,9 @@
                 }
                 axios.post('/wx/set/login',parm).then(res => {
                     this.$vux.toast.text(res.data.result)
-                    console.log(res.data.code)
+                    // console.log(res.data.code)
                     if(res.data.code == 0){
-                        this.$router.push('/main/info/'+this.school_id)
+                        this.$router.push('/main/info/')
                     }
                 }).catch(err => {
                     this.$vux.toast.text('教务系统已关闭!', 'top')

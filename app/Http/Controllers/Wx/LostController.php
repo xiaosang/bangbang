@@ -182,15 +182,7 @@ class LostController extends Controller
     }
 
 
-     /*显示图片*/
-     public function show_img(Request $request) {
-
-        $path = storage_path() . '/' . $request->name;
-        // dd($path);
-        if(file_exists($path)) {
-            return response()->file($path);
-        }
-    }
+ 
     
 
 }

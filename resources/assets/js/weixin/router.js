@@ -126,7 +126,7 @@ export default new VueRouter({
             component: resolve =>void(require(['./components/main/TaskInfo.vue'], resolve))
         },{
             name:"个人信息",
-            path:'/main/info/:id',
+            path:'/main/info',
             component: resolve =>void(require(['./components/me/proposal/Info.vue'], resolve))
         },
         {

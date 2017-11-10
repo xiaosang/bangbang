@@ -1,9 +1,9 @@
 <template>
     <div class="lost">
-       <x-header :left-options="{ showBack:false,backText:'' }">
+       <x-header :left-options="{ showBack:false,backText:'' }" style="background-color:#9EC9BD;">
             <span slot="left">
-                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;"></a>
-                <span style="font-size: 18px;">发布失物/寻物</span>
+                <a href="javascript:history.go(-1)" class="ion-android-arrow-back" style="font-size: 18px;color:#FFF"></a>
+                <span style="font-size: 18px;color:#FFF">发布失物/寻物</span>
             </span>
         </x-header>
 

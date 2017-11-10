@@ -3,8 +3,8 @@
         <div class="gm-breadcrumb">
             <!--<i class="ion-ios-home gm-home"></i>-->
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/task/list">任务管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/task/list">全部任务</el-breadcrumb-item>
+                <el-breadcrumb-item to="/admin/task/list">任务管理</el-breadcrumb-item>
+                <el-breadcrumb-item to="/admin/task/list">全部任务</el-breadcrumb-item>
                 <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
             </el-breadcrumb>
         </div>
@@ -149,7 +149,7 @@
                 status : this.status,
                 type : this.type,
             };
-            axios.post("/task/list",param).then(response =>{
+            axios.post("/admin/task/list",param).then(response =>{
                 
                 self.taskAll = response.data.result.data
                 console.log(self.taskAll)
@@ -188,7 +188,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.post("/task/del",{
+                    axios.post("/admin/task/del",{
                         id : row.id
                     }).then(response =>{
                         var data = response.data;

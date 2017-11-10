@@ -142,9 +142,10 @@
                         var img = img_path.split(";")
                         for(var i=0;i < img.length;i++){
                             this.img.push({
-                                img: 'wx/show_img/?name=app/lost/min/' + img[i]
+                                img: '/show_img/?name=app/lost/min/' + img[i]
                             });
                         }
+                        console.log(this.img)
                     }else{
                         this.img.push({
                             img: '/img/wx/nopic.png'

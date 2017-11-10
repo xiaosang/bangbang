@@ -20,7 +20,7 @@ class Follow extends Model
                 'student_class' => $info['student_class'],
                 'department' => $info['student_department'],
                 'student_num' => $info['student_num'],
-                'is_v' => 1,
+                'is_student' => 1,
             ]);
             return DB::table('user')->where('openid', $info['openid'])->first();
     }

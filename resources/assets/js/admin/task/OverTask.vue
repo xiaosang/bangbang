@@ -3,8 +3,8 @@
         <div class="gm-breadcrumb">
             <!--<i class="ion-ios-home gm-home"></i>-->
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item to="/task/overlist">任务管理</el-breadcrumb-item>
-                <el-breadcrumb-item to="/task/overlist">已完成任务</el-breadcrumb-item>
+                <el-breadcrumb-item to="/admin/task/overlist">任务管理</el-breadcrumb-item>
+                <el-breadcrumb-item to="/admin/task/overlist">已完成任务</el-breadcrumb-item>
                 <!-- <el-breadcrumb-item v-if="exam.exam_paper.name">{{exam.exam_paper.name}}</el-breadcrumb-item> -->
             </el-breadcrumb>
         </div>
@@ -184,7 +184,7 @@
                 status : this.status,
                 type : this.type,
             };
-            axios.post("/task/over",param).then(response =>{
+            axios.post("/admin/task/over",param).then(response =>{
                 self.taskAll = response.data.result.data
                 console.log(self.taskAll)
                 self.paginate_total = response.data.result.total
@@ -218,7 +218,7 @@
                 var param = {
                     task_id : row.id
                 };
-                axios.post("/task/evaluate",param).then(response =>{
+                axios.post("/admin/task/evaluate",param).then(response =>{
                     // this.taskAll[0].evaluate = response.data.result
                     
                     row.score = response.data.result[0].score

@@ -40,6 +40,9 @@ const filters = {
     //去掉html标签
     delHtmlTag: function(str){
         return str.replace(/<[^>]+>/g,"");//去掉所有的html标记
+    },
+    hide_code: function(code,start,end) {
+        return code.substr(0, start) + '****' + code.substr(end);//18
     }
 
 }
@@ -78,5 +81,7 @@ Date.prototype.format = function(fmt) {
     }
     return fmt;
 }
+
+    
 
 export { filters }

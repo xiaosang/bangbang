@@ -37,5 +37,13 @@ class News extends Model
         return $result;
     }
 
+    /**
+     * 将列表显示出来的消息如果是未读状态的话，将其改为已读状态
+     */
+    static function change_unread_to_read($user_id,$page,$num){
+        $start = $num*$page;
+        DB::table('message')->where(['user_id'=>$user_id])->orderBy('create_time','desc')->offset($start)->limit($num)
+            ->update(['is_read'=>1,'view_time'=>time()]);
+    }
 
 }

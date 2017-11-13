@@ -10,8 +10,8 @@
                 <span style="font-size: 18px;color:#FFF"></span></a>
             </span>
         </x-header>
-        <div v-if="lostInfo !=[]">
-            <group>
+        <div v-if="lostInfo !=[]" >
+            <div>
                 <div>
                     <swiper :list="img" auto style="width:100%;margin:0 auto;" height="280px" dots-class="custom-bottom" dots-position="center"  v-model="index" @click.native="open_img"></swiper>
                     <!-- {{ lostInfo.img_path }} -->
@@ -32,7 +32,7 @@
                 </div>
                 
                 
-            </group>
+            </div>
             <!-- <hr></hr> -->
             
         </div>
@@ -91,6 +91,7 @@
     background-size:100%;
     position:relative;
 }
+
 </style>
 
 <script>

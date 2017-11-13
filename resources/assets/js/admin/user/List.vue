@@ -52,7 +52,7 @@
             label="姓名">
             </el-table-column>
             <el-table-column
-                    prop="student_code"
+                    prop="student_num"
                     label="学号">
             </el-table-column>
             <el-table-column

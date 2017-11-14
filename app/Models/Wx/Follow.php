@@ -29,4 +29,8 @@ class Follow extends Model
     public static function is_set($openid){
         return DB::table('user')->where('openid', $openid)->first();
     }
+
+    public static function save_school($id,$school_id){
+        return DB::table('user')->where('id', $id)->update(['school_id'=>$school_id]);
+    }
 }

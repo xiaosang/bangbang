@@ -18,15 +18,15 @@ class LoginCheck
     public function handle($request, Closure $next, $guard = null)
     {
         //TODO 指定用户测试
-        $dev_user_id = env('DEV_USER_ID', 0);
-        if ($dev_user_id && $dev_user_id != get_session_user_id()) {
-            $user = User::get_info($dev_user_id);
-            if ($user->status==0) {
-                session(['user' => $user, 'permission' => null]);
-            }
-        }
+        // $dev_user_id = env('DEV_USER_ID', 0);
+        // if ($dev_user_id && $dev_user_id != get_session_user_id()) {
+        //     $user = User::get_info($dev_user_id);
+        //     if ($user->status==0) {
+        //         session(['user' => $user, 'permission' => null]);
+        //     }
+        // }
 
-        if (get_session_user_id()) {
+        if (get_session_user_id()&&get_session_user()->type=='super') {
             return $next($request);
         } else {
             //TODO 跳转到登录,登录成功后返回到原来访问页面

@@ -37,7 +37,7 @@ class NoteController extends Controller{
     public function note_delete(Request $request){
         
         $id = $request->id;
-        $res = Note::comment_delete($id);
+        $res = Note::note_delete($id);
         if($res){
             return responseToJson(0,"删除成功");
         }else{

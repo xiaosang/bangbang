@@ -170,7 +170,7 @@
                 console.log(row)
                 var param = {
                     id: row.id,
-                    status: (row.status+1)%2
+                    status: (parseInt(row.status)+1)%2
                 };
                 axios.post("/admin/user/status",param).then(response =>{
 //                    if(response.data.code == 0)

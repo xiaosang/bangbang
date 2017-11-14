@@ -114,19 +114,19 @@
             <p style="text-align: center;margin-top: 30px;color: #acacac;">请输入密钥以确认任务完成</p>
             <div class="sign_input">
                 <div class="pincode-input-container">
-                    <input type="number" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
+                    <input type="text" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
                            ref="sign_input_first" name="first"
                            v-model.trim="sign_input_code.first" maxlength="1"  autocomplete="off" class="form-control pincode-input-text first">
-                    <input type="number" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
+                    <input type="text" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
                            name="second"
                            ref="sign_input_second"
                            v-model.trim="sign_input_code.second" maxlength="1"
                            autocomplete="off" class="form-control pincode-input-text mid">
-                    <input type="number" v-model.trim="sign_input_code.third" name="third" ref="sign_input_third"
+                    <input type="text" v-model.trim="sign_input_code.third" name="third" ref="sign_input_third"
                            maxlength="1"
                            autocomplete="off" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
                            class="form-control pincode-input-text mid">
-                    <input type="number" v-model.trim="sign_input_code.fourth" name="fourth" ref="sign_input_fourth"
+                    <input type="text" v-model.trim="sign_input_code.fourth" name="fourth" ref="sign_input_fourth"
                            maxlength="1"
                            autocomplete="off" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
                            class="form-control pincode-input-text last">

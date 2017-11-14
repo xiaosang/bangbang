@@ -366,8 +366,8 @@ class TaskController extends Controller
         if($transaction_order->is_delete!=0){
             return responseToJson(0,'接收任务订单不存在');
         }
-        if(Task::finish_task($task_id)){
-            return responseToJson(1,'任务已完成，酬劳已到账，请注意查收');
+        if(Task::finish_task($task_id,$task_info)){
+            return responseToJson(1,'任务已完成');
         }
         return responseToJson(0,'网络繁忙，请稍后再试');
 

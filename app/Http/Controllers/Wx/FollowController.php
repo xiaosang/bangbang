@@ -107,6 +107,9 @@ class FollowController extends Controller
         }
         
         if($text == '正在加载权限数据...'){
+            DB::table('user')->update([
+                'school_id'=>$school
+            ])->where('id',get_session_user_id());
             return responseToJson(0, 'success', '登录成功，正在加载信息');
         }else{
             return responseToJson(1, 'error', $text);
@@ -116,8 +119,9 @@ class FollowController extends Controller
 
     public function get_info(Request $request){
         $res = Follow::is_set(get_wx_user_openid());
+        // dd($request->is_student);
         if($res->is_student == 0){
-            $school = $this->check_school($request->school_id);
+            $school = $this->check_school($res->school_id);
             $client = new Client([
                 'base_uri' => $school['base_uri'],
                 'timeout' => 2

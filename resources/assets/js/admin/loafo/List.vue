@@ -105,14 +105,27 @@
                 :visible.sync="dialogVisible"
                 >
             <el-carousel indicator-position="outside">
-                <el-carousel-item v-for="item in img" :key="item">
-                    <img :src="item.img">
+                <el-carousel-item class="img_center" v-for="item,index in img" :key="index">
+                    <img class="img_min" :src="item.img">
                 </el-carousel-item>
             </el-carousel>
 
         </el-dialog>
     </div>
 </template>
+
+<style>
+.img_min{
+    max-width:100%;
+    max-height: 100%;
+
+}
+
+.img_center{
+    text-align: center
+}
+
+</style>
 
 <script>
     import TaskStatus from '../../widget/TaskStatus.vue'

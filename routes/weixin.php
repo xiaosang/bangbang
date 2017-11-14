@@ -37,6 +37,8 @@ Route::group(['prefix' => 'main'], function () {
 
     Route::group(['prefix' => 'lost'],function(){
         Route::post('/info','Wx\LostController@lost_info');
+        Route::post('/finish','Wx\LostController@finish_lost');
+        Route::post('/delete','Wx\LostController@delete_lost');
     });
 
 });
@@ -67,9 +69,9 @@ Route::group(['prefix' => 'me'], function () {
 
 //账号设置
 Route::group(['prefix' => 'set'], function () {
-    Route::group(['middleware' => 'auth.student'], function () {
+    // Route::group(['middleware' => 'auth.student'], function () {
         Route::get('/school','Wx\FollowController@get_school');
-    });
+    // });
     Route::get('/get_check','Wx\FollowController@get_check');
     Route::post('/login','Wx\FollowController@login');
     Route::post('/get_info','Wx\FollowController@get_info');

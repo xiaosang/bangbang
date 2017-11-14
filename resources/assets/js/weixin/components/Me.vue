@@ -130,6 +130,7 @@
                         }else{
                             self.user_is_v = '未认证'
                         }
+                        console.log(user_info)
                         self.is_student = user_info.is_student
                         self.user_avatar = user_info.avatar
                     }else{

@@ -42,7 +42,16 @@ class Lost extends Model
    }
 
    public static function get_info($id){
-        return DB::table('lost')->where('id',$id)->first();
+        return DB::table('lost')->where('id',$id)->where('is_delete',0)->first();
    }
 
+   public static function finish_lost($id){
+        DB::table('lost')->where('id',$id)->where('is_delete',0)->update(['status'=>1]);
+        return true;
+   }
+
+    public static function delete_lost($id){
+        DB::table('lost')->where('id',$id)->update(['is_delete'=>1]);
+        return true;
+    }   
 }

@@ -34,8 +34,25 @@
                 
             </div>
             <!-- <hr></hr> -->
-            
+            <div v-if="is_self" class="over_btn">
+                
+                <x-button type="primary"  v-if="lostInfo.status == 0" @click.native="is_over = true">任务已完成</x-button>
+                <x-button type="warn" @click.native="is_del = true">删除任务</x-button>
+            </div>
+            <div>
+                <confirm v-model="is_over"
+                     title="任务已完成"
+                     @on-confirm="finish_lost">
+                    <p style="text-align:center;">确定完成了吗？</p>
+                </confirm>
+                <confirm v-model="is_del"
+                     title="删除任务"
+                     @on-confirm="delete_lost">
+                    <p style="text-align:center;">确定删除任务吗？</p>
+                </confirm>
+            </div>
         </div>
+
         <div v-transfer-dom>
             <x-dialog v-model="show" class="dialog-demo">
                 <div class="img-box">
@@ -77,13 +94,18 @@
   }
 }
 
+.over_btn{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 .over{
     background-image: url(/img/wx/over.png);
     background-size: 100%;
     height: 300px;
     position: absolute;
     top: -100px;
-    z-index: 10000;
+    // z-index: 10000;
     width: 100%;
 }
 .back{
@@ -98,7 +120,7 @@
     
 
 
-    import { Group,XInput, XHeader,Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller , Divider , ToastPlugin,XDialog,TransferDomDirective as TransferDom   } from 'vux'
+    import { Group,XInput, XButton,XHeader,Confirm,Swiper ,Swipeout, SwipeoutItem, SwipeoutButton , Grid, GridItem  , FormPreview , Scroller , Divider , ToastPlugin,XDialog,TransferDomDirective as TransferDom   } from 'vux'
     import {filters} from '../../filter.js'
     Vue.use(ToastPlugin)
     var self = this
@@ -108,6 +130,8 @@
         },
         components: {
             Group,
+            Confirm,
+            XButton,
             XInput,
             XHeader,
             Swiper,
@@ -130,6 +154,10 @@
                 index:0,
                 open_url:'',
                 show:false,
+                is_self:false,
+                is_over : false,
+                is_del : false,
+
             }
                 
         },
@@ -137,7 +165,8 @@
             getLostInfo:function(){
                 axios.post('/wx/main/lost/info',{'id':this.id}).then(res => {
                     console.log(res.data.result)
-                    this.lostInfo = res.data.result
+                    this.is_self = res.data.result.is_self
+                    this.lostInfo = res.data.result.res
                     var img_path = this.lostInfo.img_path
                     if(img_path != ""){
                         var img = img_path.split(";")
@@ -168,6 +197,25 @@
             },
             setDate: function(){
              this.lostInfo.lost_time = filters.date(this.lostInfo.lost_time)
+            },
+            finish_lost: function (){
+                // console.log(1)
+                axios.post('/wx/main/lost/finish',{'id':this.id}).then(res => {
+                    this.$vux.loading.show({
+                        text: '正在提交数据...'
+                    })
+                    this.getLostInfo()
+
+                }).catch(err =>{
+                    this.$vux.toast.text('网络异常!', 'top')
+                })
+            },
+            delete_lost: function(){
+                axios.post('/wx/main/lost/delete',{'id':this.id}).then(res => {
+                    this.$router.push('/main/lost')
+                }).catch(err =>{
+                    this.$vux.toast.text('网络异常!', 'top')
+                })
             }
         },
         mounted() {

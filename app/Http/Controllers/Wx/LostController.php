@@ -30,6 +30,9 @@ class LostController extends Controller
             $row->label = "丢失地点";
             $row->value =  $v->place;
             array_push($temp,json_decode(json_encode($row)));
+            $row->label = "是否完成";
+            $row->value =  $v->status == 0 ? '未完成' : '已完成';
+            array_push($temp,json_decode(json_encode($row)));
             array_push($temp,$v->is_lost);
             $btn_arr = [];
             $btn = (Object)[];
@@ -166,7 +169,8 @@ class LostController extends Controller
     public function lost_info(Request $request){
         $id = $request->id;
         $res = Lost::get_info($id);
-        return responseToJson(0, 'success',$res);
+        // dd();
+        return responseToJson(0, 'success',['res'=>$res,'is_self'=>get_session_user_id()==$res->user_id]);
     }
 
 
@@ -181,8 +185,17 @@ class LostController extends Controller
         }
     }
 
+    public function finish_lost(Request $request){
+        Lost::finish_lost($request->id);
+        return responseToJson(0,'success');
 
- 
+    }
+
+    public function delete_lost(Request $request){
+        Lost::delete_lost($request->id);
+        return responseToJson(0,'success');
+                
+    }
     
 
 }

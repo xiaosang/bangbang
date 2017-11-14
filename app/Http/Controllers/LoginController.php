@@ -33,6 +33,7 @@ class LoginController extends Controller
                     //解决ajax轮询对session的影响,导致登录后session丢失,此处重新生成session
                     // $session = $request->session();
                     // $session->invalidate();//重新生成session
+                    $user->type = 'super';
                     $this->login_success($request, $user);
 
                     Log::info(['LOGIN SUCCESS' => json_encode($user)]);

@@ -26,7 +26,7 @@ class LoginCheck
         //     }
         // }
 
-        if (get_session_user_id()) {
+        if (get_session_user_id()&&get_session_user()->type=='super') {
             return $next($request);
         } else {
             //TODO 跳转到登录,登录成功后返回到原来访问页面

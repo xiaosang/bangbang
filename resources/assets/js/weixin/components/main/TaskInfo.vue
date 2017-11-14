@@ -74,7 +74,7 @@
             <x-button type="primary" @click.native="submit">接受任务</x-button>
         </group>
         <group v-else-if="btn_msg == 6">
-            <x-button type="primary" @click.native="test">完成任务</x-button>
+            <x-button type="primary" @click.native="show_finish_task">完成任务</x-button>
         </group>
 
 
@@ -110,14 +110,37 @@
             </confirm>
         </div>
 
-
+        <popup v-model="show_popup_finish">
+            <p style="text-align: center;margin-top: 30px;color: #acacac;">请输入密钥以确认任务完成</p>
+            <div class="sign_input">
+                <div class="pincode-input-container">
+                    <input type="number" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
+                           ref="sign_input_first" name="first"
+                           v-model.trim="sign_input_code.first" maxlength="1"  autocomplete="off" class="form-control pincode-input-text first">
+                    <input type="number" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
+                           name="second"
+                           ref="sign_input_second"
+                           v-model.trim="sign_input_code.second" maxlength="1"
+                           autocomplete="off" class="form-control pincode-input-text mid">
+                    <input type="number" v-model.trim="sign_input_code.third" name="third" ref="sign_input_third"
+                           maxlength="1"
+                           autocomplete="off" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
+                           class="form-control pincode-input-text mid">
+                    <input type="number" v-model.trim="sign_input_code.fourth" name="fourth" ref="sign_input_fourth"
+                           maxlength="1"
+                           autocomplete="off" @keydown="onSignBoxInput" @keyup="onSignBoxInput" @focus="onSignBoxFocus"
+                           class="form-control pincode-input-text last">
+                </div>
+                <x-button plain @click.native="check_secret" type="primary">确认完成</x-button>
+            </div>
+        </popup>
 
         <!--<h1>{{ id }}</h1>-->
     </div>
 </template>
 
 <script>
-    import { Group, Cell , Blur , CellBox , XButton , ToastPlugin , Flexbox, FlexboxItem , Confirm , TransferDomDirective as TransferDom  } from 'vux'
+    import { Group, Cell , Blur , CellBox , XButton , ToastPlugin , Flexbox, FlexboxItem , Confirm , TransferDomDirective as TransferDom ,Popup } from 'vux'
     Vue.use(ToastPlugin)
 
     export default {
@@ -133,7 +156,8 @@
             ToastPlugin,
             Flexbox,
             FlexboxItem,
-            Confirm
+            Confirm,
+            Popup
         },
         data(){
             return {
@@ -154,7 +178,14 @@
                 status:'-1',
                 btn_msg:'-1',
                 del_confirm:false,
-                key:''
+                key:'',
+                show_popup_finish:false,
+                sign_input_code: {
+                    first: '', second: '', third: '', fourth: '', toString: function () {
+                        return this.first + this.second + this.third + this.fourth;
+                    }
+                },
+                can_check_secret:false,
             }
         },
         methods:{
@@ -244,10 +275,80 @@
                         }
                     })
             },
-            test(){
-                alert(1)
-            }
+           show_finish_task(){
+               this.show_popup_finish = true;
+            },
+            onSignBoxFocus(event){
+                event.target.select();
+            },
+            onSignBoxInput(event){
+                var name = event.target.name;
+                var value = event.target.value;
+                if (event.type == 'keydown') {
+                    if (event.keyCode == 8) {
+                        //backspace
+                        event.target.setAttribute('old_value', value);
+                    } else {
+                        event.target.removeAttribute('old_value');
+                    }
+                } else if (event.type == 'keyup') {
+                    var oldValue = event.target.hasAttribute('old_value') ? event.target.getAttribute('old_value') : '';
+                    if (name == 'first') {
+                        if (event.keyCode == 8) {
+                            //backspace
+                        } else {
+                            this.$refs.sign_input_second.focus();
+                        }
 
+                    } else if (name == 'second') {
+                        if (event.keyCode == 8) {
+                            //backspace
+                            if (oldValue == '') {
+                                this.$refs.sign_input_first.focus();
+                            }
+                        } else {
+                            this.$refs.sign_input_third.focus();
+                        }
+
+                    } else if (name == 'third') {
+
+                        if (event.keyCode == 8) {
+                            //backspace
+                            if (oldValue == '') {
+                                this.$refs.sign_input_second.focus();
+                            }
+                        } else {
+                            this.$refs.sign_input_fourth.focus();
+                        }
+                    } else if (name == 'fourth') {
+                        if (event.keyCode == 8) {
+                            //backspace
+                            if (oldValue == '') {
+                                this.$refs.sign_input_third.focus();
+                            }
+                        } else {
+
+                        }
+                    }
+                }
+            },
+            check_secret(){
+                if(this.can_check_secret){
+                    this.can_check_secret = false;
+                    let data = {
+                        task_id:this.$route.params.id,
+                        secret:this.sign_input_code.toString()
+                    }
+                    this.send_request('post','/check_secret',function (response,self) {
+                        self.can_check_secret = true;
+                        if(response.data.code==1){
+                            history.go(-1);
+                        }else{
+                            self.toast_message(response.data.msg,'warn');
+                        }
+                    },data);
+                }
+            }
         },
         watch:{
 
@@ -283,5 +384,73 @@
         font-size: 12px;
         text-align: center;
         margin-top: .4em
+    }
+    .sign_input {
+        width: 75%;
+        margin: 0 auto;
+        font-size: 4rem;
+        margin-top: 40px;
+        margin-bottom: 35px;
+    }
+    .pincode-input-container {
+        display: inline-block;
+    }
+
+    .pincode-input-container input.first {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .pincode-input-container input.last {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left-width: 0px;
+    }
+
+    .pincode-input-container input.mid {
+        border-radius: 0px;
+        border-left-width: 0px;
+    }
+
+    .pincode-input-text, .form-control.pincode-input-text {
+        width: 35px;
+        float: left;
+        text-align: center;
+        border-top:solid 1px #999;
+        border-bottom:solid 1px #999;
+    }
+
+    .pincode-input-error {
+        clear: both;
+    }
+
+    .pincode-input-container {
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .pincode-input-container input.first {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-left: 1px solid #999;
+        border-right: 1px solid #999;
+    }
+
+    .pincode-input-container input.last {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left-width: 0px;
+        border-right: 1px solid #999;
+    }
+
+    .pincode-input-container input.mid {
+        border-radius: 0px;
+        border-right: 1px solid #999;
+    }
+
+    .pincode-input-text, .form-control.pincode-input-text {
+        width: 24%;
+        font-size: 4rem;
+        float: left;
     }
 </style>

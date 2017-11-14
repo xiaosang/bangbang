@@ -168,6 +168,12 @@ class WxServer
                 'unionid' => strval($userInfo->unionid)
             ]);
         }
+        $user_query = DB::table('user')->where('openid',$openid)->first();
+        if($user_query){
+            DB::table('user')->where('openid',$openid)->update(['sex'=>$userInfo->sex,'update_time'=>time(),'avatar'=>strval($userInfo->headimgurl),'nickname' => wx_nickname_filter(strval($userInfo->nickname))]);
+        }else{
+            DB::table('user')->insert(['sex'=>$userInfo->sex,'update_time'=>time(),'avatar'=>strval($userInfo->headimgurl),'nickname' => wx_nickname_filter(strval($userInfo->nickname))]);
+        }
         //TODO 返回关注公众号时配置的信息
         //类型，0：被添加自动回复(关注时回复)，1：消息自动回复（关键字匹配不到回复），2：关键词自动回复
         $autoReply = DB::table('wx_autoreply')

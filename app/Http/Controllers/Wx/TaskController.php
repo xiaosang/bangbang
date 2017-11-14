@@ -38,7 +38,7 @@ class TaskController extends Controller
     public function issue_task(Request $request){
 //        Log::info($request->all());
         $name = trim($request->name);
-        $content = trim($request->content);
+        $content = trim($request->input('content'));
         $type = (int)$request->type;
         $pay_money = $request->pay_money ? $request->pay_money*100 : 0 ;
         $task_finish_time = $request->task_finish_time;
@@ -345,4 +345,31 @@ class TaskController extends Controller
         }
     }
 
+    public function check_secret(Request $request){
+        $user_id = get_wx_user_id();
+        $task_id = trim($request->task_id);
+        $secret = trim($request->secret);
+        if(empty($secret)){
+            return responseToJson(0,'密钥不能为空！');
+        }
+       $task_info = Task::get_task_info($task_id);
+        if($task_info->is_delete==1){
+            return responseToJson(0,'该任务已被删除');
+        }
+        if($task_info->key!=$secret){
+            return responseToJson(0,'密钥输入错误，请重新输入');
+        }
+        $transaction_order = Task::get_transaction_order($task_id);
+        if($transaction_order->accept_user_id!=$user_id){
+            return responseToJson(-1,'没有权限');
+        }
+        if($transaction_order->is_delete!=0){
+            return responseToJson(0,'接收任务订单不存在');
+        }
+        if(Task::finish_task($task_id)){
+            return responseToJson(1,'任务已完成，酬劳已到账，请注意查收');
+        }
+        return responseToJson(0,'网络繁忙，请稍后再试');
+
+    }
 }

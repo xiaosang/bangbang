@@ -265,4 +265,29 @@ class Task extends Model
         return $result;
     }
 
+    /**
+     * 完成任务操作
+     */
+    static function finish_task($task_id){
+        DB::beginTransaction();
+        try {
+            DB::commit();
+            /**
+             * 支付接口后返回金钱
+             */
+            $pay_money = 0;
+            $new_pay_order = DB::table('pay_order')->insert(['create_time'=>time(),'delete_at'=>time(),'is_delete'=>0,'is_pay'=>1,'order_code'=>time().'_'.uniqid(),'pay_money'=>$pay_money,'status'=>2,'task_id'=>$task_id,'type'=>1,'user_id'=>get_wx_user_id(),'user_name'=>get_wx_user()->name]);
+            if($new_pay_order){
+                $credit_score_increment =env('CREDIT_SCORE_INCREMENT',2);
+                DB::table('transaction_order')->where(['task_id'=>$task_id,'is_pay'=>1])->update(['status'=>2]);
+                DB::table('task')->where(['id'=>$task_id,'is_delete'=>0])->update(['update_time'=>time(),'status'=>2]);
+                DB::table('user')->where('id',get_wx_user_id())->increment('credit_score',$credit_score_increment);
+            }
+            return 1;
+        } catch (PDOException $ex) {
+            DB::rollback();
+            return 0;
+        }
+    }
+
 }

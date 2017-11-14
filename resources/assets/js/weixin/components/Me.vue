@@ -12,20 +12,20 @@
                     </div>
                 </blur>
                 <div class="info">
-                    <p>{{user_name}}</p>
+                    <p>{{nick_name}}</p>
                     <p>{{user_is_v}}</p>
                 </div>
                 <!--<div class="detail"><i class="fa fa-angle-right"></i></div>-->
                 <div class="main_info"></div>
                 <cell-box  v-if="is_student==0" is-link link="/accountset">
-                    <cell-box is-link link="">
+                    
                         学生认证
-                    </cell-box>
+                    
                 </cell-box>
                 <cell-box v-else is-link link="/main/info/">
-                    <cell-box is-link link="">
+                    
                         个人信息
-                    </cell-box>
+                    
                 </cell-box>
             </group>
             <group title="任务">
@@ -105,7 +105,7 @@
         data(){
             return {
                 user_avatar:"",
-                user_name:'',
+                nick_name:'',
                 user_is_v:'',
                 unread:false,
                 is_student : 0,
@@ -124,7 +124,7 @@
                     let user_info = response.data.result
                     if(user_info){
                         self.user_avatar = user_info.avatar;
-                        self.user_name = user_info.name;
+                        self.nick_name = user_info.nick_name;
                         if(user_info.is_v==1){
                             self.user_is_v = "已认证"
                         }else{

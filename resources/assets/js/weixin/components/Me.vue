@@ -18,14 +18,14 @@
                 <!--<div class="detail"><i class="fa fa-angle-right"></i></div>-->
                 <div class="main_info"></div>
                 <cell-box  v-if="is_student==0" is-link link="/accountset">
-                    <cell-box is-link link="">
+                    
                         学生认证
-                    </cell-box>
+                    
                 </cell-box>
                 <cell-box v-else is-link link="/main/info/">
-                    <cell-box is-link link="">
+                    
                         个人信息
-                    </cell-box>
+                    
                 </cell-box>
             </group>
             <group title="任务">

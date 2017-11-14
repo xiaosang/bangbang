@@ -169,27 +169,25 @@ class WxServer
             ]);
         }
         $user_query = DB::table('user')->where('openid',$openid)->first();
-        $re = null;
         if($user_query){
-            $re = DB::table('user')
+            DB::table('user')
             ->where('openid',$openid)
             ->update([
                 'sex'=>$userInfo->sex,
                 'update_time'=>time(),
                 'avatar'=>strval($userInfo->headimgurl),
-                'nickname' => wx_nickname_filter(strval($userInfo->nickname))
+                'nick_name' => wx_nickname_filter(strval($userInfo->nickname))
             ]);
         }else{
-            $re = DB::table('user')
+            DB::table('user')
             ->insert([
                 'openid'=>$openid,
                 'sex'=>$userInfo->sex,
                 'create_time'=>time(),
                 'avatar'=>strval($userInfo->headimgurl),
-                'nickname' => wx_nickname_filter(strval($userInfo->nickname))
+                'nick_name' => wx_nickname_filter(strval($userInfo->nickname))
             ]);
         }
-        Log::info($re);
         
         
         //TODO 返回关注公众号时配置的信息

@@ -107,7 +107,7 @@ class FollowController extends Controller
         }
         // dd($text);
         if($text == '正在加载权限数据...'){
-            dd($school);
+            // dd($school);
             DB::table('user')->update([
                 'school_id'=>$request->school_id
             ])->where('id',get_session_user_id());

@@ -32,7 +32,7 @@ class User extends Model
             $sql->where('credit_score', '>', 60);
         else if($score)
             $sql->where('credit_score', '<', 60);
-        $sql->orderBy('student_code');
+        $sql->orderBy('student_num');
         return $sql->paginate($page_size);
     }
 

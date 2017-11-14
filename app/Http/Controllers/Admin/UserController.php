@@ -22,7 +22,7 @@ class UserController extends Controller
 
     function edit_status (Request $request) {
 
-        $id = $request->id;
+        $id = intval($request->id);
         $status = $request->status;
 
         if(User::edit_status($id,$status)){

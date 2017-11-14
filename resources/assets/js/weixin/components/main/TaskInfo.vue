@@ -185,7 +185,7 @@
                         return this.first + this.second + this.third + this.fourth;
                     }
                 },
-                can_check_secret:false,
+                can_check_secret:true,
             }
         },
         methods:{
@@ -339,7 +339,7 @@
                         task_id:this.$route.params.id,
                         secret:this.sign_input_code.toString()
                     }
-                    this.send_request('post','/check_secret',function (response,self) {
+                    this.send_request('post','/wx/task/check_secret',function (response,self) {
                         self.can_check_secret = true;
                         if(response.data.code==1){
                             history.go(-1);

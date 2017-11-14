@@ -105,10 +105,11 @@ class FollowController extends Controller
         }else if($request->school_id == 3){
             $text = $crawler->filter('#divLogNote')->text();
         }
-        
+        // dd($text);
         if($text == '正在加载权限数据...'){
+            dd($school);
             DB::table('user')->update([
-                'school_id'=>$school
+                'school_id'=>$request->school_id
             ])->where('id',get_session_user_id());
             return responseToJson(0, 'success', '登录成功，正在加载信息');
         }else{

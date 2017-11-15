@@ -85,10 +85,11 @@
         });
         $(".but-send").click(function(){
             if(isPoneAvailable($(".phone").val())){
+                jishi();
                 $.post("/wx/phone/send", {phone: $(".phone").val()}, function (response) {
                         console.log(response)
                         if (response.code == 0) {
-                            jishi();
+                            alert(response.msg);
                         } else {
                             alert(response.msg);
                         }

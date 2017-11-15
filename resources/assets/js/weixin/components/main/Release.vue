@@ -210,7 +210,7 @@
                                 this.$vux.loading.hide()
                                 if(res.data.code == 1){//发布成功
 
-                                    if(this.type == 0){//有偿
+                                    if(this.type == 0){ //有偿
                                         this.$vux.loading.show({
                                             text: '生成订单...'
                                         })
@@ -226,7 +226,9 @@
                                     }else if(this.type == 1){//无偿
                                         this.$router.push({ path: '/main/IssueSuccess/' + res.data.result[0] })//0->key
                                     }
-                                }else{
+                                }else if(res.data.code == 3){//敏感字
+                                    this.$vux.toast.text('不得包含敏感字!('+res.data.msg+')', 'top')
+                                } else{
                                     this.$vux.toast.text('发布失败!', 'top')
                                 }
                         })

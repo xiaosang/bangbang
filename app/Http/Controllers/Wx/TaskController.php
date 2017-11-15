@@ -51,6 +51,16 @@ class TaskController extends Controller
         $create_user_name = get_wx_user()->nick_name;
         $key = str_rand(4);
 
+        /*判断敏感字*/
+        $name_mgz = sensitiveWordFilter($name);
+        if($name_mgz!==true){
+            return responseToJson(3,$name_mgz);
+        }
+        $content_mgz = sensitiveWordFilter($content);
+        if($content_mgz!==true){
+            return responseToJson(3,$content_mgz);
+        }
+
 
         DB::beginTransaction();
         try{
@@ -58,7 +68,7 @@ class TaskController extends Controller
 
             if($task_id){
                 $temp = $expected_time-time();//截至时间-当前时间
-//                (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
+                (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
                 $is_pay = $type?1:0;
                 $status = 0;
                 $order_code = time().'_'.uniqid();

@@ -58,7 +58,7 @@ class TaskController extends Controller
 
             if($task_id){
                 $temp = $expected_time-time();//截至时间-当前时间
-//                (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
+                (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
                 $is_pay = $type?1:0;
                 $status = 0;
                 $order_code = time().'_'.uniqid();

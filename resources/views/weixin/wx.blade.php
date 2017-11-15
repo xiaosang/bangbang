@@ -128,9 +128,12 @@
         if(miao==0){
             miao=60;
             $(".but-send").val("发送验证码");
+            $(".but-send").attr("disabled", false);
         } else{
             miao--;
             $(".but-send").val(miao+"s后重新发送");
+            $(".but-send").attr("disabled", true);
+            $(".but-send").css('color','#333');
             setTimeout(jishi,1000);
         }
     }

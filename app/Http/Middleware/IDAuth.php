@@ -58,6 +58,6 @@ class IDAuth
 //            return redirect()->to('/wx/auth#!/');
             //如果获取不到则可以跳转到出错页面
         }
-        return $next($request);
+        return $next($request).header('Access-Control-Allow-Origin','*');
     }
 }

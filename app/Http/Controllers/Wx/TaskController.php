@@ -327,7 +327,7 @@ class TaskController extends Controller
 
     public function get_announcementContent(){
         $result = Task::get_announcementContent();
-        return responseToJson(1,'获取公告！',$result->content);
+        return responseToJson(1,'获取公告！',$result);
     }
 
     public function task_list(Request $request){

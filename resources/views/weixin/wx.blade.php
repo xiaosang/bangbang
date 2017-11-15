@@ -103,7 +103,6 @@
                 $.post("/wx/phone/check", {phone: $(".phone").val(),code: $(".code").val()}, function (response) {
                     console.log(response)
                     if (response.code == 0) {
-                        alert(response.msg);
                         window.location.href='/wx#'
                     } else {
                         alert(response.msg);

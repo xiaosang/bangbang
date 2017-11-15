@@ -92,6 +92,7 @@ class WechatOauth
             $data['openid'] = $userInfo["openid"];
             $data['create_time'] = time();
             DB::table('wx_user')->insert($data);
+
         }
     }
 }

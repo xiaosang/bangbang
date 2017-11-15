@@ -16,7 +16,7 @@ class User
         if ($fields) {
             $query->select($fields);
         } else {
-            $query->select('id','name','sex','phone','status','age','openid','code','credit_score','is_v','avatar','is_student');
+            $query->select('id','name','sex','phone','status','age','openid','code','credit_score','is_v','avatar','is_student','nick_name');
         }
         return $query->first();
     }

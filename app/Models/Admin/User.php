@@ -18,7 +18,7 @@ class User extends Model
     //用户列表
     public static function get_list($page_size = 50,$status = -1,$input = '',$score = 0) {
 
-        $sql = DB::table('user')->where('is_audit',1);
+        $sql = DB::table('user');
         if($status != -1)
             $sql->where('status',$status);
         if($input != '')
@@ -30,7 +30,7 @@ class User extends Model
             });
         if($score == 1)
             $sql->where('credit_score', '>', 60);
-        else if($score)
+        else if($score == 2)
             $sql->where('credit_score', '<', 60);
         $sql->orderBy('student_num');
         return $sql->paginate($page_size);

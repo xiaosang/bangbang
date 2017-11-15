@@ -104,6 +104,13 @@ class TaskController extends Controller
         }
     }
     /*
+     * 支付成功
+     * */
+    public function pay_suc(Request $request){
+        $task_id = $request->task_id;
+        Task::pay_suc($task_id);
+    }
+    /*
      *              [
                         {
                             label: '标题',

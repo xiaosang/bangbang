@@ -199,6 +199,19 @@ class Task extends Model
     }
 
     /*
+     * 支付成功调用，改变pay_order表和transaction_order状态
+     *
+     * */
+    static public function pay_suc($task_id){
+        DB::table('pay_order')
+            ->where('task_id',$task_id)
+            ->update(['is_pay'=>1]);
+        DB::table('transaction_order')
+            ->where('task_id',$task_id)
+            ->update(['is_pay'=>1]);
+    }
+
+    /*
      * 获取公告列表
      * */
     static public function get_announcement_list(){

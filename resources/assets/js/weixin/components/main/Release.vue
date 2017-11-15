@@ -237,9 +237,11 @@
                                     .then((result)=>{
                                         this.$vux.loading.hide()
                                         //调用支付接口
+
                                         let param = {
                                             yzm:res.yzm,
-                                            msg:'支付成功！'
+                                            msg:'支付成功！',
+                                            task_id : res.task_id
                                         }
                                         resolve(param)
                                     })
@@ -253,10 +255,13 @@
                                 text: res.msg,
                                 time:1000
                             })
-                            setTimeout(()=>{
-                                this.$router.push({ path: '/main/IssueSuccess/' + res.yzm }) // 0->key
-//                                this.$vux.toast.hide()
-                            },800)
+                            axios.post('/wx/release/pay_suc',res)
+                                .then((result)=>{
+                                    this.$router.push({ path: '/main/IssueSuccess/' + res.yzm }) // 0->key
+                                })
+                                .catch((error)=>{
+                                    this.$vux.toast.text('网络异常!', 'top')
+                                })
                         })
 
                     /*axios.post('/wx/release/issue_task',param)

@@ -104,7 +104,7 @@
                     console.log(response)
                     if (response.code == 0) {
                         alert(response.msg);
-                        windows.location.href='/'
+                        window.location.href='/wx#'
                     } else {
                         alert(response.msg);
                     }

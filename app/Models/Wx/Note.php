@@ -30,7 +30,7 @@ class Note extends Model
 		else
 			$serch = ['label','>',$type];
 		$data = DB::table('note')->where([['is_delete',0],$serch])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
-			->select('note.id','note.name as title','user.name as author','avatar','content','read_num','comment_num',
+			->select('note.id','note.name as title','user.nick_name as author','avatar','content','read_num','comment_num',
 				'label','note.update_time')
 			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
 		$time = time();
@@ -47,7 +47,7 @@ class Note extends Model
 	*/
 	public static function get_detail($id){
 		$data = DB::table('note')->where([['is_delete',0],['note.id',$id]])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
-			->select('note.id', 'note.name as title','content','describe','note.create_time as time','user.name as name')->get();
+			->select('note.id', 'note.name as title','content','describe','note.create_time as time','user.nick_name as name')->get();
 		if($data->count()==1)
 			$data[0]->time = date("Y-m-d",$data[0]->time);
 		else
@@ -57,7 +57,7 @@ class Note extends Model
 	//得到用户发表帖子的记录
 	public static function note_record($num,$limit,$id){
 		$data = DB::table('note')->where([['is_delete',0],['create_user_id',$id]])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
-			->select('note.id','note.name as title','user.name as author','content','read_num','comment_num',
+			->select('note.id','note.name as title','user.nick_name as author','content','read_num','comment_num',
 				'label','note.update_time','note.create_time')
 			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
 		$time = time();

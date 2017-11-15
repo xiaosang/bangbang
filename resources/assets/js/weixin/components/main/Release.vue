@@ -48,7 +48,7 @@
 
         <group>
             <x-input title='雇主姓名' v-model="user_name" :show-clear="false" text-align="right"  placeholder="请输入您的姓名"></x-input>
-            <x-input title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话"></x-input>
+            <x-input title='联系电话' v-model="user_phone" :show-clear="false" text-align="right"  placeholder="请输入您的联系电话" readonly></x-input>
         </group>
 
         <group>

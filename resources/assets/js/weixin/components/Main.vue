@@ -26,7 +26,7 @@
         <scroller lock-x  use-pulldown :pulldown-config="pulldown"  @on-pulldown-loading="updateTask" ref="scroller" @on-scroll="onScroll" height="-127">
             <div>
                 <div class="task" v-if="list.length">
-                    <form-preview header-label="任务类型" :header-value=" item[item.length-2] ? '无偿' : '有偿' " :body-items="item" :footer-buttons="item[item.length-1]" v-for="item,index in list" :key="index"  class="item"></form-preview>
+                    <form-preview header-label="任务类型" :header-value=" item[item.length-2] ? '有偿' : '无偿' " :body-items="item" :footer-buttons="item[item.length-1]" v-for="item,index in list" :key="index"  class="item"></form-preview>
                     <divider style="font-size: 12px;opacity: 0.4;">仅显示最新{{ show_num }}条任务</divider>
                 </div>
                 <divider style="font-size: 12px;opacity: 0.4;" v-if="show_result">暂时没有任务</divider>

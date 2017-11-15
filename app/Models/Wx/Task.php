@@ -73,11 +73,13 @@ class Task extends Model
             $type = [1];
         }
         $result = DB::table('task')
-            ->where('is_delete',0)
-            ->where('status',0)
-            ->wherein('type',$type)
-            ->where('create_time','<=',$time=='-1'?time():$time)
-            ->orderby('create_time','desc')
+            ->leftJoin('transaction_order','task.id','=','transaction_order.task_id')
+            ->where('transaction_order.is_pay',1)
+            ->where('task.is_delete',0)
+            ->where('task.status',0)
+            ->wherein('task.type',$type)
+            ->where('task.create_time','<=',$time=='-1'?time():$time)
+            ->orderby('task.create_time','desc')
             ->offset($start)
             ->limit($num)
             ->get();

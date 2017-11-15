@@ -394,7 +394,7 @@ function sendMsg($phone){
         Log::info("[success]Phone:".$phone);
         return 0;//发送成功
     }
-    print_r($res);
+    // print_r($res);
     Log::info($res->Code."[error]Phone:".$phone);
 
     return 1;//发送失败，服务器繁忙

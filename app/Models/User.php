@@ -61,10 +61,10 @@ class User
     }
 
     public static function set_phone($phone){
-        DB::table('user')->where('openid',$openid)->update([
+        DB::table('user')->where('openid',get_wx_user_openid())->update([
             'phone'=>$phone,
         ]);
-        return DB::table('user')->where('openid',$openid)->first();
+        return DB::table('user')->where('openid',get_wx_user_openid())->first();
     }
 
 

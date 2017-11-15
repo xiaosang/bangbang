@@ -79,6 +79,7 @@ class Task extends Model
             ->where('task.status',0)
             ->wherein('task.type',$type)
             ->where('task.create_time','<=',$time=='-1'?time():$time)
+            ->select('task.*')
             ->orderby('task.create_time','desc')
             ->offset($start)
             ->limit($num)

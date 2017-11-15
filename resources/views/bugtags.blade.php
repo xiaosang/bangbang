@@ -1,4 +1,3 @@
-<meta http-equiv="Access-Control-Allow-Origin" content="*">
 @if (config('app.debug'))
     <script src="https://dn-bts.qbox.me/sdk/bugtags-1.0.3.js"></script>
     <script>

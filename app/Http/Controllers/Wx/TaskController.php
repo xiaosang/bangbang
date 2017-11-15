@@ -48,7 +48,7 @@ class TaskController extends Controller
         $address_name = trim($request->address_name);
         $is_hide = $request->is_hide ? 1 : 0 ;
         $create_user_id = get_wx_user()->id;
-        $create_user_name = get_wx_user()->name;
+        $create_user_name = get_wx_user()->nick_name;
         $key = str_rand(4);
 
 
@@ -58,7 +58,7 @@ class TaskController extends Controller
 
             if($task_id){
                 $temp = $expected_time-time();//截至时间-当前时间
-                (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
+//                (new MonitorTask($task_id,$temp))->end();//todo  截止时间消失队列
                 $is_pay = $type?1:0;
                 $status = 0;
                 $order_code = time().'_'.uniqid();
@@ -184,6 +184,7 @@ class TaskController extends Controller
         $id = $request->id;
         $task_info = Task::get_task_info($id);
         $create_user_info = User::get_info($task_info->create_user_id);
+        $task_info->create_user_name = $create_user_info->nick_name;
         $task_info->credit_score = $create_user_info->credit_score;
         $task_info->avatar = $create_user_info->avatar? $create_user_info->avatar:'/img/wx/wx_avatar.jpg';
         /*if( $request->type == 1 && $task_info->create_user_id != get_wx_user()->id){//编辑页面传过来的1
@@ -196,6 +197,8 @@ class TaskController extends Controller
                 $transaction_order = Task::get_transaction_order($id);
                 if($task_info->create_user_id == get_wx_user()->id){//我发布的任务
                     $task_info->is_hide = 0;//如果任务是我发布，对我不匿名
+                    $task_info->accept_user_name = $transaction_order->accept_user_name;
+                    $task_info->accept_user_phone = $transaction_order->accept_user_phone;
                     switch ($task_info->status){
                         case 0:
                             return responseToJson(1,'任务未接受',$task_info);
@@ -206,7 +209,8 @@ class TaskController extends Controller
                         case 3:
                             return responseToJson(4,'任务已结束！',$task_info);
                         case 4:
-                            return responseToJson(0,'任务不存在！',$task_info);
+//                            return responseToJson(0,'任务不存在！',$task_info);
+                            return responseToJson(7,'任务已撤回！',$task_info);
                     }
                 }else if($transaction_order->accept_user_id!=0){//是否有人接受任务
                     if($transaction_order->accept_user_id == get_wx_user()->id){//我接受的任务
@@ -297,7 +301,8 @@ class TaskController extends Controller
             $update_transaction_order = Task::update_transaction_order($id,[
                 'status'=>$status,
                 'accept_user_id'=>get_wx_user()->id,
-                'accept_user_name'=>get_wx_user()->name
+                'accept_user_name'=>get_wx_user()->nick_name,
+                'accept_user_phone'=>get_wx_user()->phone
             ]);
             if($update_transaction_order == 0){
                 throw new exception('接受任务失败！');

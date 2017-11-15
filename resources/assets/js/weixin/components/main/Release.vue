@@ -168,8 +168,11 @@
 //                this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
-                if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){
+                if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money) || this.pay_money < 0 ){
                     this.$vux.toast.text('请输入正确的金额!', 'top')
+                    return false
+                }else if(this.pay_money > 99999999 ){
+                    this.$vux.toast.text('最大金额限制为 99999999 元', 'top')
                     return false
                 }
                 if( expected_time <= now_time ){

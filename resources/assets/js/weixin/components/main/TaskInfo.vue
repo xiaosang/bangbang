@@ -13,16 +13,17 @@
             </div>
         </blur>
 
-        <group>
+        <group v-if="task_name">
             <div slot="title" class="weui-cells__title">
-                <span>悬赏金额</span>
+                <span v-if="task_type == 0">悬赏金额</span>
+                <span v-if="task_type == 1">任务标题</span>
                 <span style="color: red;float: right;font-size: 20px;" v-if="task_type == 0">￥{{ task_pay_money/100 }}</span>
                 <div style="clear: both;"></div>
             </div>
             <cell-box>{{ task_name }}</cell-box>
         </group>
 
-        <group>
+        <group v-if="task_content">
             <div slot="title" class="weui-cells__title">
                 <span>任务描述</span>
                 <!--<span style="color: red;float: right;font-size: 20px;" v-if="task_type == 0">￥{{ task_pay_money/100 }}</span>-->
@@ -31,16 +32,20 @@
             <cell-box> {{ task_content }} </cell-box>
         </group>
 
-        <group title="限定时间">
+        <group title="限定时间" v-if="task_finish_time">
             <cell-box> <span v-if="task_finish_time">{{ task_finish_time | formatDuring }}</span> </cell-box>
         </group>
 
-        <group title="收货地址">
+        <group title="收货地址" v-if="address_name">
             <cell-box> {{ address_name }} </cell-box>
         </group>
 
         <group title="联系方式" v-if="is_hide == 0">
             <cell-box><a :href="'tel:'+user_phone" style="color: #000;">{{ user_name }}  {{ user_phone }} </a></cell-box>
+        </group>
+
+        <group title="帮者信息" v-if="is_hide == 0">
+            <cell-box><a :href="'tel:'+accept_user_phone" style="color: #000;">{{ accept_user_name }}  {{ accept_user_phone }} </a></cell-box>
         </group>
 
 
@@ -186,6 +191,8 @@
                     }
                 },
                 can_check_secret:true,
+                accept_user_phone:'',
+                accept_user_name:''
             }
         },
         methods:{
@@ -197,8 +204,9 @@
                 }).then((res)=>{
                     if(res.data.code == 0 ){//任务不存在
                         this.$vux.toast.text(res.data.msg, 'top')
-                        this.$router.push({ path: '/main/task/list' })
-                    }else if( res.data.code == 1 ||  res.data.code == 2 || res.data.code == 3 || res.data.code == 4 || res.data.code == 5 || res.data.code == 6 ){//任务状态(1：未接受，2：已接受，3：已完成，4：已结束)
+//                        this.$router.push({ path: '/main/task/list' })
+                        this.$router.go(-1)
+                    }else if( res.data.code == 1 ||  res.data.code == 2 || res.data.code == 3 || res.data.code == 4 || res.data.code == 5 || res.data.code == 6 || res.data.code == 7){//任务状态(1：未接受，2：已接受，3：已完成，4：已结束 7：任务已撤回)
                         this.url = res.data.result.avatar
                         this.create_user_name = res.data.result.create_user_name
                         this.credit_score = res.data.result.credit_score
@@ -215,6 +223,8 @@
                         this.status = res.data.result.status
                         this.btn_msg = res.data.code
                         this.key = res.data.result.key
+                        this.accept_user_phone = res.data.result.accept_user_phone
+                        this.accept_user_name = res.data.result.accept_user_name
                     }else{
                         this.$vux.toast.text("网络异常！", 'top')
                     }

@@ -103,7 +103,7 @@
                     console.log(response)
                     if (response.code == 0) {
                         alert(response.msg);
-                        location.reload()
+                        windows.location.href='/wx'
                     } else {
                         alert(response.msg);
                     }

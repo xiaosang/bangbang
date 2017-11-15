@@ -35,6 +35,8 @@ class IndexController extends Controller
     public function check(Request $request){
         if(check_msg($request->code)){
             User::set_auth(get_wx_user_openid());
+            $res = User::set_phone($request->phone);
+            session(['user' => $res]);
             return responseToJson(0, '认证成功');
         }else{
             return responseToJson(1, '认证失败，验证码错误');

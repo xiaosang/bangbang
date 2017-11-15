@@ -60,5 +60,13 @@ class User
         return true;
     }
 
+    public static function set_phone($phone){
+        DB::table('user')->where('openid',$openid)->update([
+            'phone'=>$phone,
+        ]);
+        return DB::table('user')->where('openid',$openid)->first();
+    }
+
+
 }
 

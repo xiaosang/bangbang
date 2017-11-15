@@ -19,7 +19,7 @@ class CommentController extends Controller
 			event(new PusherEvent(['userId'=>$data['userId']]));
 		}
 		$data['cid'] = $user->id;
-		$data['name'] = $user->name;
+		$data['name'] = $user->nick_name;
 		$data['time'] = time();
 		if(!empty($data['noteId'])&&!empty($data['content'])){
 			$id = Message::submit_msg($data);

@@ -104,6 +104,7 @@
                     console.log(response)
                     if (response.code == 0) {
                         window.location.href='/wx#'
+                        location.reload()
                     } else {
                         alert(response.msg);
                     }

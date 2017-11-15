@@ -16,7 +16,7 @@ class User
         if ($fields) {
             $query->select($fields);
         } else {
-            $query->select('id','name','sex','phone','status','age','openid','code','credit_score','is_v','avatar','is_student');
+            $query->select('id','name','sex','phone','status','age','openid','code','credit_score','is_v','avatar','is_student','nick_name');
         }
         return $query->first();
     }
@@ -51,6 +51,20 @@ class User
             Log::info($e);
             return null;
         }
+    }
+
+    public static function set_auth($openid){
+        DB::table('user')->where('openid',$openid)->update([
+            'is_v'=>1,
+        ]);
+        return true;
+    }
+
+    public static function set_phone($phone){
+        DB::table('user')->where('openid',get_wx_user_openid())->update([
+            'phone'=>$phone,
+        ]);
+        return DB::table('user')->where('openid',get_wx_user_openid())->first();
     }
 
 

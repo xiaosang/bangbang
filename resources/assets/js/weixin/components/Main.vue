@@ -200,7 +200,13 @@
             get_announcementContent(){
                 axios.get('/wx/main/get_announcementContent')
                     .then((res)=>{
-                        this.announcementContent = res.data.result
+                        console.log(res.data.result)
+                        if(res.data.result){
+                            this.announcementContent = res.data.result.content
+                        }else{
+                            this.announcementContent = "暂无数据"
+                        }
+                        // this.announcementContent = res.data.result
                     })
                     .catch(()=>{
 

@@ -94,6 +94,7 @@
         bottom: 0;
         height: 40px;
         width: 100%;
+        background-color:#fff;
     }
     .xuanze a{
         display: inline-block;
@@ -154,6 +155,7 @@ export default {
         },
         methods:{
             choose_type(key){
+                this.can_get = true;
                 switch(key){
                     case 'all':
                         this.type = -1;
@@ -170,6 +172,7 @@ export default {
                 }
             },
             choose_status(key){
+                this.can_get = true;
                 switch(key){
                     case 'all':
                         this.status = -1;
@@ -232,6 +235,7 @@ export default {
                                 if(self.receive_list.length==self.num){
                                     self.can_get = true;
                                     self.load_more = true;
+                                    self.page++;
                                 }else{
                                     self.no_more = true;
                                 }
@@ -242,11 +246,11 @@ export default {
                                     self.no_data = true;
                                 }
                             }
-                            if(self.page>0){
-                                self.$nextTick(() => {
-                                    self.$refs.scroller.reset();
-                                })
-                            }
+//                            if(self.page>0){
+//                                self.$nextTick(() => {
+//                                    self.$refs.scroller.reset();
+//                                })
+//                            }
                         }else{
                             self.toast_message(response.data.msg,'warn');
                         }

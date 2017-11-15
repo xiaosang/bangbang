@@ -155,7 +155,7 @@ export default {
         },
         methods:{
             choose_type(key){
-                this.can_get = true;
+//                this.can_get = true;
                 switch(key){
                     case 'all':
                         this.type = -1;
@@ -172,7 +172,7 @@ export default {
                 }
             },
             choose_status(key){
-                this.can_get = true;
+//                this.can_get = true;
                 switch(key){
                     case 'all':
                         this.status = -1;

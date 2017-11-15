@@ -89,4 +89,10 @@ Route::group(['prefix' => 'news'], function () {
 
 // });
 
+//手机号认证
+Route::group(['prefix' => 'phone'], function () {
+    Route::post('/send','Wx\IndexController@send');
+    Route::post('/check','Wx\IndexController@check');
+ });
+
 

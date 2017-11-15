@@ -53,6 +53,12 @@ class User
         }
     }
 
+    public static function set_auth($openid){
+        DB::table('user')->where('openid',$openid)->update([
+            'is_v'=>1,
+        ]);
+        return true;
+    }
 
 }
 

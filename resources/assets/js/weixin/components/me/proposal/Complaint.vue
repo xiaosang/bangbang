@@ -136,7 +136,7 @@
                                 for(let i=0;i<self.receive_list.length;i++){
                                     let object = new Object();
                                     object.key = self.receive_list[i].id;
-                                    object.value = self.receive_list[i].nick_name;
+                                    object.value = self.receive_list[i].name;
                                     self.user_list.push(object);
                                 }
                                 if(self.receive_list.length==self.num){

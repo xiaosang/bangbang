@@ -168,8 +168,11 @@
 //                this.expected_time = this.expected_time.replace(/\-/g, "/")
                 let expected_time = Date.parse(new Date(this.expected_time))/1000
                 let now_time = Date.parse(new Date())/1000
-                if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money)){
+                if(this.type == 0 && parseFloat(this.pay_money).toFixed(2) != parseFloat(this.pay_money) || this.pay_money < 0 ){
                     this.$vux.toast.text('请输入正确的金额!', 'top')
+                    return false
+                }else if(this.pay_money > 99999999 ){
+                    this.$vux.toast.text('最大金额限制为 99999999 元', 'top')
                     return false
                 }
                 if( expected_time <= now_time ){
@@ -207,7 +210,7 @@
                                 this.$vux.loading.hide()
                                 if(res.data.code == 1){//发布成功
 
-                                    if(this.type == 0){//有偿
+                                    if(this.type == 0){ //有偿
                                         this.$vux.loading.show({
                                             text: '生成订单...'
                                         })
@@ -223,7 +226,9 @@
                                     }else if(this.type == 1){//无偿
                                         this.$router.push({ path: '/main/IssueSuccess/' + res.data.result[0] })//0->key
                                     }
-                                }else{
+                                }else if(res.data.code == 3){//敏感字
+                                    this.$vux.toast.text('不得包含敏感字!('+res.data.msg+')', 'top')
+                                } else{
                                     this.$vux.toast.text('发布失败!', 'top')
                                 }
                         })

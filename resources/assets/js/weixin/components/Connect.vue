@@ -133,6 +133,11 @@
                             self.pullTitle = "没有更多数据"
                         }
                     }else{
+                        //判断开始为空
+                        if(self.limit==0){
+                            self.connect = []
+                            self.bottomCount = 1
+                        }
                         self.pdState = false
                         self.pullDown = true
                         self.pullTitle = "没有更多数据"

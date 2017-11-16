@@ -12,12 +12,20 @@ use App\Http\Controllers\Controller;
 class CommentController extends Controller
 {
 	public $limit = 6;
+	//帖子id、信息、被回复用户id、回复帖子的id、回复姓名
 	public function submit_msg(Request $request){
 		$data = $request->all();
 		$user = get_session_user();
-		if($data['userId']>0&&$data['userId']!=$user->id){
-			event(new PusherEvent(['userId'=>$data['userId']]));
+		if($data['userId']>0){
+			if($data['userId']!=$user->id)
+				event(new PusherEvent(['userId'=>$data['userId']]));
+		}else{
+			$note = Note::get_a_note($data['noteId']);
+			$data['userId'] = $note[0]->uid;
+			$data['reply_name'] = $note[0]->name;
 		}
+		if($data['userId']==$user->id)
+			$data['is_view'] = 1;
 		$data['cid'] = $user->id;
 		$data['name'] = $user->nick_name;
 		$data['time'] = time();

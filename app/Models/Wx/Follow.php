@@ -33,4 +33,8 @@ class Follow extends Model
     public static function save_school($id,$school_id){
         return DB::table('user')->where('id', $id)->update(['school_id'=>$school_id]);
     }
+
+    public static function check_student($student_num,$school_id){
+        return DB::table('user')->where('student_num', $student_num)->where('school_id',$school_id)->first();
+    }
 }

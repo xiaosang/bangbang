@@ -70,6 +70,9 @@ class FollowController extends Controller
         // $school = config('school');
         // dd($school,$request->school_id==1);
         $school = $this->check_school($request->school_id);
+        if(Follow::check_student($request->user_id,$request->school_id)){
+            return responseToJson(1, 'error', '学号已被认证'); 
+        }
         $postData = $school['postData'];
         if($request->school_id == 1){
             $postData['dsdsdsdsdxcxdfgfg'] = $request->password;

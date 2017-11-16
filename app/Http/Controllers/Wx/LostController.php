@@ -129,7 +129,7 @@ class LostController extends Controller
      */
     function submit_lost(Request $request)
     {
-        $yzm = check_msg($request->yzm);
+        $yzm = check_msg($request->yzm,$request->user_phone);
         if(!$yzm){
             return responseToJson(0, '验证码有误');
         }

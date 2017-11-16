@@ -33,7 +33,7 @@ class IndexController extends Controller
     }
 
     public function check(Request $request){
-        if(check_msg($request->code)){
+        if(check_msg($request->code,$request->phone)){
             User::set_auth(get_wx_user_openid());
             $res = User::set_phone($request->phone);
             session(['user' => $res]);

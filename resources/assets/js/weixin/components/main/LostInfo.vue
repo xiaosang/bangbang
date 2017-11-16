@@ -34,6 +34,9 @@
                 
             </div>
             <!-- <hr></hr> -->
+            <div v-if="is_self" style="height:200px">
+
+            </div>
             <div v-if="is_self" class="over_btn">
                 
                 <x-button type="primary"  v-if="lostInfo.status == 0" @click.native="is_over = true">任务已完成</x-button>

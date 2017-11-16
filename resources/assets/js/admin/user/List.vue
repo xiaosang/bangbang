@@ -52,6 +52,10 @@
             label="姓名">
             </el-table-column>
             <el-table-column
+                    label="微信昵称"
+                    prop="nick_name">
+            </el-table-column>
+            <el-table-column
                     prop="student_num"
                     label="学号">
             </el-table-column>

@@ -32,7 +32,7 @@ class Note extends Model
 		$data = DB::table('note')->where([['is_delete',0],$serch])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
 			->select('note.id','note.name as title','user.nick_name as author','avatar','content','read_num','comment_num',
 				'label','note.update_time')
-			->orderBy('note.create_time', 'desc')->offset($num)->limit($limit)->get();
+			->orderBy('note.update_time', 'desc')->offset($num)->limit($limit)->get();
 		$time = time();
 		foreach ($data as $key => $value) {
 			$value->update_time = time_diff($time,$value->update_time);
@@ -46,12 +46,17 @@ class Note extends Model
 		3、返回文章数据
 	*/
 	public static function get_detail($id){
-		$data = DB::table('note')->where([['is_delete',0],['note.id',$id]])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
-			->select('note.id', 'note.name as title','content','describe','note.create_time as time','user.nick_name as name')->get();
+		self::add_read($id);//阅读量增加
+		$data = self::get_a_note();
 		if($data->count()==1)
 			$data[0]->time = date("Y-m-d",$data[0]->time);
 		else
 			$data = [];
+		return $data;
+	}
+	public static function get_a_note($id){
+		$data = DB::table('note')->where([['is_delete',0],['note.id',$id]])->leftJoin('user', 'user.id', '=', 'note.create_user_id')
+			->select('note.id', 'note.name as title','content','describe','note.create_time as time','user.nick_name as name','user.id as uid')->get();
 		return $data;
 	}
 	//得到用户发表帖子的记录

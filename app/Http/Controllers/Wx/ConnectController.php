@@ -50,7 +50,6 @@ class ConnectController extends Controller
 	}
 	//得到帖子的详细信息
 	public function get_detail($id){
-		Note::add_read($id);//阅读量增加
 		$data = Note::get_detail($id);
 		if(!empty($data)){
 			return responseToJson(1, $data,'success');

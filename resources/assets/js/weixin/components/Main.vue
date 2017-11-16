@@ -147,6 +147,10 @@
                 show_result:false,//暂时没有任务
             }
         },
+        beforeRouteLeave(to, from, next) {
+            to.meta.keepAlive = false;
+            next();
+        },
         methods:{
             noShowAnnouncement(){
                 //本地存储控制公告显示

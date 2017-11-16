@@ -5,22 +5,22 @@
 				<div class="msg-item">
 					<div class="msg-author">
 						<div class="author-avatar">
+							<!-- <img :src="item.author" alt=" "> -->
 							<span class="reply_person">
+								回复帖子<a  @click="$router.push('/note/detail/'+item.note_id)" class="author_name"><span class="scolor">：</span>{{ item.title }}</a>
 								用户<a  class="author_name"><span class="scolor">：</span>{{ item.author }}</a>
-								<span class="reply_time">时间:{{ item.time }}</span>
 				                        		</span>
 						</div>
-						<span class="comment-res" v-on:click="submitMsg">
-			                                		<!-- <i slot="icon" class="ion-ios-close-empty"></i> -->
-			                                		回复
+						<span class="comment-res" v-on:click="deleteMsg">
+			                                		<i slot="icon" class="ion-ios-close-empty"></i>
 			                        		</span>
 					</div>
 					<div class="reply_topic">
-						帖子<a  @click="$router.push('/note/detail/'+item.note_id)"><span class="scolor">：</span>{{ item.title }}</a>
+						时间<span class="reply_time">：{{ item.time }}</span>
 					</div>
 					<div class="reply-contain">
 						<span class="reply-lab">内容</span>
-						<p class="reply_content">：{{item.content}}</p>
+						<p class="reply_content"><span class="scolor">：</span>{{item.content}}</p>
 					</div>
 
 	      			</div>
@@ -81,7 +81,7 @@
 			.author_name, .reply_time {
 				padding-right: 8px;
 			}
-			.author_name{color: black}
+			.author_name{color: #4b84af}
 			.reply_time{
 				color: #969696;
 			}

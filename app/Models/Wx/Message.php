@@ -11,6 +11,7 @@ class Message extends Model
 			['note_id' => $obj['noteId'], 'content' => $obj['content'],'create_user_id'=>$obj['cid'],
 			'create_time'=>$obj['time'],'parent_id'=>$obj['reply_id'],'reply_user_id'=>$obj['userId'],
 			'create_user_name'=>$obj['name'],'reply_name'=>$obj['reply_name']]);
+		self::note_time($obj['noteId'],$obj['time']);
 		return $id;
 	}
 	//id=>(评论的id),type=>(-1删除的是一级评论，0<=type代表二级评论)、nid=>(帖子ID)
@@ -94,7 +95,7 @@ class Message extends Model
 		$res =   DB::table('comment')->whereIn('id',$data)->update(['is_view' => 1]);
 		return $res;
 	}
-	//更新用户未读信息的数据
+	//得到用户未读信息的数据
 	public static function msg_count($id){
 		$res = DB::table('comment')->where([['comment.is_delete',0],['comment.reply_user_id',$id],['is_view',0]])->count();
 		return $res;
@@ -103,5 +104,8 @@ class Message extends Model
 	public static function del_comment($id,$num){
 		$res = DB::table('note')->where('note.id',$id)->decrement('comment_num',$num);
 		return $res;
+	}
+	public static function note_time($id,$time){
+		$res = DB::table('note')->where('note.id',$id)->update(['update_time'=>$time]);
 	}
 }

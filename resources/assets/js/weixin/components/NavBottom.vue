@@ -85,6 +85,7 @@
                         break
                 }
                 this.check_unread();
+                console.log(this.select_num)
             },
             get_note_msg(){
                 if(localStorage.getItem('note-msg')==null)

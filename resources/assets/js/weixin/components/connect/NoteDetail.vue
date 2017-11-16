@@ -91,7 +91,7 @@
                 userId: 0,
                 content:{},
                 note: this.$route.params.id,
-                //帖子id、信息、被回复用户id、回复的id、回复姓名
+                //帖子id、信息、被回复用户id、回复帖子的id、回复姓名
                 message: {'noteId':null,'content':"",'userId':0,'reply_id':0,'reply_name':null},
                 remindState: false,  //是否显示提醒
                 remind: "",   //提示的信息

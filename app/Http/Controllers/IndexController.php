@@ -99,9 +99,9 @@ class IndexController extends Controller
 //            $order_find->out_trade_no = $out_trade_no; //在这里更新订单的支付ID
 //            $order_find->save();
             // return response()->json(['result'=>$result]);
-            $prepayId = $result->prepay_id;
+//            $prepayId = $result->prepay_id;
 //            $config = $payment->configForAppPayment($prepayId);
-            $config = $payment->configForJSSDKPayment($prepayId);
+            $config = $payment->configForJSSDKPayment($out_trade_no);
             $js = $app->js;
             $rlt = $js->config(array("chooseWXPay"), true);
             $arr = json_decode($rlt,true);

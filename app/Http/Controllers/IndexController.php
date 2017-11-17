@@ -60,7 +60,7 @@ class IndexController extends Controller
                 'key'                => 'def56bbd76f33932dbce862cd87d59de',
                 // 'cert_path'          => 'path/to/your/cert.pem', // XXX: 绝对路径！！！！
                 // 'key_path'           => 'path/to/your/key',      // XXX: 绝对路径！！！！
-                'notify_url'         => 'http://juankuan.marchsoft.cn/home/pay/wxnotify',       // 你也可以在下单时单独设置来想覆盖它
+                'notify_url'         => 'http://bangbang.marchsoft.cn/success',       // 你也可以在下单时单独设置来想覆盖它
                 // 'device_info'     => '013467007045764',
                 // 'sub_app_id'      => '',
                 // 'sub_merchant_id' => '',
@@ -87,7 +87,7 @@ class IndexController extends Controller
             'detail'           => "woshitest",//我这里是通过订单找到商品详情，你也可以自定义
             'out_trade_no'     => $out_trade_no,
             'total_fee'        => 1*100, //因为是以分为单位，所以订单里面的金额乘以100
-             'notify_url'       => 'http://juankuan.marchsoft.cn/home/pay/wxnotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+             'notify_url'       => 'http://bangbang.marchsoft.cn/success', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
              'openid'           => $openId, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
         ];

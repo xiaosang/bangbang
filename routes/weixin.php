@@ -97,5 +97,5 @@ Route::group(['prefix' => 'phone'], function () {
  });
 
 Route::any("/pay", 'IndexController@pay');
-Route::any("/wechat", 'IndexController@paySuccess');
+
 

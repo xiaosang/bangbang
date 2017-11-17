@@ -16,7 +16,7 @@ Route::any("/logout", 'LoginController@logout');
 Route::any("/wechat", 'Wx\WechatController@serve');
 Route::any("/menu_add",'Wx\WechatController@menu_add');
 Route::get('/test', function(){
-    return view('test.index');
+    return view('weixin.wx');
 });
 //Route::get('wx/', function () {
 //    return view('index');
@@ -41,3 +41,4 @@ include('admin.php');
 
 
 Route::get('/show_img','IndexController@show_img');
+Route::any("/success", 'IndexController@paySuccess');

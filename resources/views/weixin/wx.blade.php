@@ -99,19 +99,22 @@
             }
         });
         $(".but-bottom").click(function(){
-            if(isPoneAvailable($(".phone").val())){
-                $.post("/wx/phone/check", {phone: $(".phone").val(),code: $(".code").val()}, function (response) {
-                    console.log(response)
-                    if (response.code == 0) {
-                        window.location.href='/wx#'
-                        location.reload()
-                    } else {
-                        alert(response.msg);
-                    }
-                })
-            }else{
-                alert("请输入正确的手机号");
-            }
+//            if(isPoneAvailable($(".phone").val())){
+//                $.post("/wx/phone/check", {phone: $(".phone").val(),code: $(".code").val()}, function (response) {
+//                    console.log(response)
+//                    if (response.code == 0) {
+//                        window.location.href='/wx#'
+//                        location.reload()
+//                    } else {
+//                        alert(response.msg);
+//                    }
+//                })
+//            }else{
+//                alert("请输入正确的手机号");
+//            }
+            $.post("/wx/pay", {}, function (response) {
+                console.log(response)
+            })
         });
 
     });

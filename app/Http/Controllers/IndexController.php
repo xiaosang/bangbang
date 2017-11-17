@@ -105,7 +105,7 @@ class IndexController extends Controller
             $js = $app->js;
             $rlt = $js->config(array("chooseWXPay"), true);
             $arr = json_decode($rlt,true);
-//            dump($config,$arr);
+            var_dump($config,$arr,$openId);
 //            return response()->json($config);
             return view('weixin.wx')->with("config",$config)->with("js",$arr);
         }

@@ -82,14 +82,25 @@
     var miao = 60;
     $(function () {
         wx.ready(function () {
+//            wx.chooseWXPay({
+//                    timestamp: $config.timestamp,
+//                    nonceStr: $config.nonceStr,
+//                    package: $config.package,
+//                    signType: $config.signType,
+//                    paySign: $config.paySign, // 支付签名
+//                    success: function (res) {
+//                        // 支付成功后的回调函数
+//                        window.location.href='/success';
+//                    }
+//                });
             wx.chooseWXPay({
-                appId: '<?= $config['appId'] ?>',
                 timestamp: '<?= $config['timestamp'] ?>',
                 nonceStr: '<?= $config['nonceStr'] ?>',
                 package: '<?= $config['package'] ?>',
                 signType: '<?= $config['signType'] ?>',
                 paySign: '<?= $config['paySign'] ?>',
                 success: function (res) {
+                    alert(132);
                     /*$.get('/student/query_order',function(res){
                         if(res.code == 0){
                             $(".pay_status").html("已支付");

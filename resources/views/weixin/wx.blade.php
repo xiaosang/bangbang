@@ -81,46 +81,32 @@
 <script type="text/javascript">
     var miao = 60;
     $(function () {
+        wx.config({
+            debug: false,
+            appId: '{{$js["appId"]}}',
+            timestamp: '{{$js["timestamp"]}}',
+            nonceStr: '{{$js["nonceStr"]}}',
+            signature: '{{$js["signature"]}}',
+            jsApiList: ["chooseWXPay"]
+        });
         wx.ready(function () {
-//            wx.chooseWXPay({
-//                    timestamp: $config.timestamp,
-//                    nonceStr: $config.nonceStr,
-//                    package: $config.package,
-//                    signType: $config.signType,
-//                    paySign: $config.paySign, // 支付签名
-//                    success: function (res) {
-//                        // 支付成功后的回调函数
-//                        window.location.href='/success';
-//                    }
-//                });
             wx.chooseWXPay({
-                timestamp: '{{$config['timestamp']}}',
-                nonceStr: '{{$config['nonceStr']}}',
-                package: '{{$config['package']}}',
-                signType: '{{$config['signType']}}',
-                paySign: '{{$config['paySign']}}', // 支付签名
+                appId: '<?= $config['appId'] ?>',
+                timestamp: '<?= $config['timestamp'] ?>',
+                nonceStr: '<?= $config['nonceStr'] ?>',
+                package: '<?= $config['package'] ?>',
+                signType: '<?= $config['signType'] ?>',
+                paySign: '<?= $config['paySign'] ?>',
                 success: function (res) {
-                    // 支付成功后的回调函数
-                    window.location.href='/success';
+                    /*$.get('/student/query_order',function(res){
+                        if(res.code == 0){
+                            $(".pay_status").html("已支付");
+                        }else{
+                            alert(res.msg);
+                        }
+                    });*/
                 }
             });
-        {{--wx.chooseWXPay({--}}
-                {{--timestamp: '<?= $config['timestamp'] ?>',--}}
-                {{--nonceStr: '<?= $config['nonceStr'] ?>',--}}
-                {{--package: '<?= $config['package'] ?>',--}}
-                {{--signType: '<?= $config['signType'] ?>',--}}
-                {{--paySign: '<?= $config['paySign'] ?>',--}}
-                {{--success: function (res) {--}}
-                    {{--alert(132);--}}
-                    {{--/*$.get('/student/query_order',function(res){--}}
-                        {{--if(res.code == 0){--}}
-                            {{--$(".pay_status").html("已支付");--}}
-                        {{--}else{--}}
-                            {{--alert(res.msg);--}}
-                        {{--}--}}
-                    {{--});*/--}}
-                {{--}--}}
-            {{--});--}}
         })
         $.ajaxSetup({
             headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}

@@ -100,10 +100,14 @@ class IndexController extends Controller
 //            $order_find->save();
             // return response()->json(['result'=>$result]);
             $prepayId = $result->prepay_id;
-            $config = $payment->configForAppPayment($prepayId);
-            dump($config);
+//            $config = $payment->configForAppPayment($prepayId);
+            $config = $payment->configForJSSDKPayment($prepayId);
+            $js = $app->js;
+            $rlt = $js->config(array("chooseWXPay"), true);
+            $arr = json_decode($rlt,true);
+            dump($config,$arr);
 //            return response()->json($config);
-            return view('weixin.wx')->with('config',$config);
+            return view('weixin.wx')->with("config",$config)->with("js",$arr);
         }
 
     }

@@ -94,7 +94,7 @@
 //                    }
 //                });
             wx.chooseWXPay({
-                timestamp: {{$config['timestamp']}},
+                timestamp: '{{$config['timestamp']}}',
                 nonceStr: '{{$config['nonceStr']}}',
                 package: '{{$config['package']}}',
                 signType: '{{$config['signType']}}',

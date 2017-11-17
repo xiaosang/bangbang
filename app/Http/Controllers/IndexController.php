@@ -101,6 +101,7 @@ class IndexController extends Controller
             // return response()->json(['result'=>$result]);
             $prepayId = $result->prepay_id;
             $config = $payment->configForAppPayment($prepayId);
+            dump($config);
 //            return response()->json($config);
             return view('weixin.wx')->with('config',$config);
         }

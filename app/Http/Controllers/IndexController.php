@@ -103,11 +103,11 @@ class IndexController extends Controller
 //            $config = $payment->configForAppPayment($prepayId);
             $config = $payment->configForJSSDKPayment($out_trade_no);
             $js = $app->js;
-            $rlt = $js->config(array("chooseWXPay"), true);
-            $arr = json_decode($rlt,true);
-            dump($config,$arr);
+//            $rlt = $js->config(array("chooseWXPay"), true);
+//            $arr = json_decode($rlt,true);
+            dump($config);
 //            return response()->json($config);
-            return view('weixin.wx')->with("config",$config)->with("js",$arr);
+            return view('weixin.wx')->with("config",$config)->with("js",$js);
         }
 
     }

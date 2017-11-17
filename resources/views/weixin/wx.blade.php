@@ -79,32 +79,44 @@
 </script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+    wx.config(<?php echo $js->config(array('chooseWXPay'), false) ?>); //这里改成true就可以打开微信js的调试模式
     var miao = 60;
     $(function () {
-        wx.config({
-            debug: false,
-            appId: '{{$js["appId"]}}',
-            timestamp: '{{$js["timestamp"]}}',
-            nonceStr: '{{$js["nonceStr"]}}',
-            signature: '{{$js["signature"]}}',
-            jsApiList: ["chooseWXPay"]
-        });
+        {{--wx.config({--}}
+            {{--debug: false,--}}
+            {{--appId: '{{$js["appId"]}}',--}}
+            {{--timestamp: '{{$js["timestamp"]}}',--}}
+            {{--nonceStr: '{{$js["nonceStr"]}}',--}}
+            {{--signature: '{{$js["signature"]}}',--}}
+            {{--jsApiList: ["chooseWXPay"]--}}
+        {{--});--}}
         wx.ready(function () {
+            {{--wx.chooseWXPay({--}}
+                {{--appId: '<?= $config['appId'] ?>',--}}
+                {{--timestamp: '<?= $config['timestamp'] ?>',--}}
+                {{--nonceStr: '<?= $config['nonceStr'] ?>',--}}
+                {{--package: '<?= $config['package'] ?>',--}}
+                {{--signType: '<?= $config['signType'] ?>',--}}
+                {{--paySign: '<?= $config['paySign'] ?>',--}}
+                {{--success: function (res) {--}}
+                    {{--/*$.get('/student/query_order',function(res){--}}
+                        {{--if(res.code == 0){--}}
+                            {{--$(".pay_status").html("已支付");--}}
+                        {{--}else{--}}
+                            {{--alert(res.msg);--}}
+                        {{--}--}}
+                    {{--});*/--}}
+                {{--}--}}
+            {{--});--}}
             wx.chooseWXPay({
-                appId: '<?= $config['appId'] ?>',
-                timestamp: '<?= $config['timestamp'] ?>',
-                nonceStr: '<?= $config['nonceStr'] ?>',
-                package: '<?= $config['package'] ?>',
-                signType: '<?= $config['signType'] ?>',
-                paySign: '<?= $config['paySign'] ?>',
+                timestamp: '{{$config['timestamp']}}',
+                nonceStr: '{{$config['nonceStr']}}',
+                package: '{{$config['package']}}',
+                signType: '{{$config['signType']}}',
+                paySign: '{{$config['paySign']}}', // 支付签名
                 success: function (res) {
-                    /*$.get('/student/query_order',function(res){
-                        if(res.code == 0){
-                            $(".pay_status").html("已支付");
-                        }else{
-                            alert(res.msg);
-                        }
-                    });*/
+                    // 支付成功后的回调函数
+                    window.location.href='/mobile';
                 }
             });
         })

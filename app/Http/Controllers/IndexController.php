@@ -86,7 +86,7 @@ class IndexController extends Controller
             'body'             => '助力三月',
             'detail'           => "woshitest",//我这里是通过订单找到商品详情，你也可以自定义
             'out_trade_no'     => $out_trade_no,
-            'total_fee'        => 100*100, //因为是以分为单位，所以订单里面的金额乘以100
+            'total_fee'        => 1, //因为是以分为单位，所以订单里面的金额乘以100
              'notify_url'       => 'http://bangbang.marchsoft.cn/success', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
              'openid'           => $openId, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
@@ -116,6 +116,7 @@ class IndexController extends Controller
         $options = $this->options();
         $app = new Application($options);
         $response = $app->payment->handleNotify(function($notify, $successful){
+            echo "callback success.";
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
 //            $order = ExampleOrder::where('out_trade_no',$notify->out_trade_no)->first();
 //            if (count($order) == 0) { // 如果订单不存在

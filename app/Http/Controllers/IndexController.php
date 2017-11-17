@@ -49,8 +49,8 @@ class IndexController extends Controller
     protected function options(){ //选项设置
         return [
             // 前面的appid什么的也得保留哦
-            'app_id' => 'wx2fffc402a50e03a5', //你的APPID
-            'secret'  => '956397f1970f6d1b114a8ac835bc0a77',     // AppSecret
+            'app_id' => 'wx2d473dc1964a324a', //你的APPID
+            'secret'  => '8c5b7eac79978f656c73198aa3919504',     // AppSecret
             // 'token'   => 'your-token',          // Token
             // 'aes_key' => '',                    // EncodingAESKey，安全模式下请一定要填写！！！
             // ...
@@ -87,10 +87,10 @@ class IndexController extends Controller
             'out_trade_no'     => $out_trade_no,
             'total_fee'        => 1*100, //因为是以分为单位，所以订单里面的金额乘以100
              'notify_url'       => 'http://juankuan.marchsoft.cn/home/pay/wxnotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-             'openid'           => $payment->authCodeToOpenId($_GET['code']), // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
+             'openid'           => get_wx_user_openid(), // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
         ];
-        echo $_GET['code'];
+        echo get_wx_user_openid();
         $order = new Order($attributes);
         $result = $payment->prepare($order);
         dd($result);

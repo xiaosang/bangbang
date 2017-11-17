@@ -242,9 +242,16 @@ class JsApiPay
         //取出openid
         $data = json_decode($res,true);
         $this->data = $data;
-        dd($data);
-//        $openid = $data['openid'];
-//        return $openid;
+//        dd($data);
+        if(isset($data['openid'])) {
+            $openid = $data['openid'];
+            return $openid;
+        } else {
+            $baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING']);
+            $url = $this->__CreateOauthUrlForCode($baseUrl);
+            Header("Location: $url");
+            exit();
+        }
     }
 
     /**

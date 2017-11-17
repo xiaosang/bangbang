@@ -102,7 +102,7 @@ class IndexController extends Controller
             $prepayId = $result->prepay_id;
             $config = $payment->configForAppPayment($prepayId);
 //            return response()->json($config);
-            return view('wx')->with('config',$config);
+            return view('weixin.wx')->with('config',$config);
         }
 
     }

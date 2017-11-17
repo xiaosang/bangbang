@@ -114,19 +114,20 @@
 //                alert("请输入正确的手机号");
 //            }
             $.post("/wx/pay", {}, function (response) {
-                console.log(response)
-                var $config = response.data
-                wx.chooseWXPay({
-                    timestamp: $config.timestamp,
-                    nonceStr: $config.nonceStr,
-                    package: $config.package,
-                    signType: $config.signType,
-                    paySign: $config.paySign, // 支付签名
-                    success: function (res) {
-                        // 支付成功后的回调函数
-                        window.location.href='/success';
-                    }
-                });
+                alert(response);
+                var $config = response.data;
+                alert($config);
+//                wx.chooseWXPay({
+//                    timestamp: $config.timestamp,
+//                    nonceStr: $config.nonceStr,
+//                    package: $config.package,
+//                    signType: $config.signType,
+//                    paySign: $config.paySign, // 支付签名
+//                    success: function (res) {
+//                        // 支付成功后的回调函数
+//                        window.location.href='/success';
+//                    }
+//                });
             })
         });
 

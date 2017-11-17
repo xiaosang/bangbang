@@ -100,8 +100,8 @@ class IndexController extends Controller
 //            $order_find->save();
             // return response()->json(['result'=>$result]);
             $prepayId = $result->prepay_id;
-//            $config = $payment->configForAppPayment($prepayId);
-//            return response()->json($config);
+            $config = $payment->configForAppPayment($prepayId);
+            return response()->json($config);
         }
 
     }

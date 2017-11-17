@@ -101,7 +101,8 @@ class IndexController extends Controller
             // return response()->json(['result'=>$result]);
             $prepayId = $result->prepay_id;
             $config = $payment->configForAppPayment($prepayId);
-            return response()->json($config);
+//            return response()->json($config);
+            return view('wx')->with('config',$config);
         }
 
     }

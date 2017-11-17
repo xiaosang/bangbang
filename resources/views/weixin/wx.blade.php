@@ -81,6 +81,25 @@
 <script type="text/javascript">
     var miao = 60;
     $(function () {
+        wx.ready(function () {
+            wx.chooseWXPay({
+                appId: '<?= $config['appId'] ?>',
+                timestamp: '<?= $config['timestamp'] ?>',
+                nonceStr: '<?= $config['nonceStr'] ?>',
+                package: '<?= $config['package'] ?>',
+                signType: '<?= $config['signType'] ?>',
+                paySign: '<?= $config['paySign'] ?>',
+                success: function (res) {
+                    /*$.get('/student/query_order',function(res){
+                        if(res.code == 0){
+                            $(".pay_status").html("已支付");
+                        }else{
+                            alert(res.msg);
+                        }
+                    });*/
+                }
+            });
+        })
         $.ajaxSetup({
             headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
         });

@@ -41,6 +41,3 @@ include('admin.php');
 
 
 Route::get('/show_img','IndexController@show_img');
-
-Route::any("/pay", 'IndexController@pay');
-Route::any("/wechat", 'IndexController@paySuccess');

@@ -98,6 +98,7 @@
                 signType: '<?= $config['signType'] ?>',
                 paySign: '<?= $config['paySign'] ?>',
                 success: function (res) {
+                    alert(132);
                     /*$.get('/student/query_order',function(res){
                         if(res.code == 0){
                             $(".pay_status").html("已支付");

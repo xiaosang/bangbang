@@ -91,7 +91,7 @@ class IndexController extends Controller
              'openid'           => $openId, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
         ];
-        echo $openId;
+//        echo $openId;
         $order = new Order($attributes);
         $result = $payment->prepare($order);
 //        dd($result);

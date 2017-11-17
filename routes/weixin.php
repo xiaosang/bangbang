@@ -96,6 +96,6 @@ Route::group(['prefix' => 'phone'], function () {
     Route::post('/check','Wx\IndexController@check');
  });
 
-Route::any("/pay", 'IndexController@pay');
+
 
 

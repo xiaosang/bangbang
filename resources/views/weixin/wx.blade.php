@@ -113,6 +113,7 @@
 //            }else{
 //                alert("请输入正确的手机号");
 //            }
+            alert("请输入正确的手机号");
             $.post("/wx/pay", {}, function (response) {
                 alert(response);
                 var $config = response.data;

@@ -42,3 +42,4 @@ include('admin.php');
 
 Route::get('/show_img','IndexController@show_img');
 Route::any("/success", 'IndexController@paySuccess');
+Route::any("/wx/pay", 'IndexController@pay');

@@ -82,41 +82,30 @@
     wx.config(<?php echo $js->config(array('chooseWXPay'), false) ?>); //这里改成true就可以打开微信js的调试模式
     var miao = 60;
     $(function () {
-        {{--wx.config({--}}
-            {{--debug: false,--}}
-            {{--appId: '{{$js["appId"]}}',--}}
-            {{--timestamp: '{{$js["timestamp"]}}',--}}
-            {{--nonceStr: '{{$js["nonceStr"]}}',--}}
-            {{--signature: '{{$js["signature"]}}',--}}
-            {{--jsApiList: ["chooseWXPay"]--}}
-        {{--});--}}
+        wx.config({
+            debug: false,
+            appId: '{{$js["appId"]}}',
+            timestamp: '{{$js["timestamp"]}}',
+            nonceStr: '{{$js["nonceStr"]}}',
+            signature: '{{$js["signature"]}}',
+            jsApiList: ["chooseWXPay"]
+        });
         wx.ready(function () {
-            {{--wx.chooseWXPay({--}}
-                {{--appId: '<?= $config['appId'] ?>',--}}
-                {{--timestamp: '<?= $config['timestamp'] ?>',--}}
-                {{--nonceStr: '<?= $config['nonceStr'] ?>',--}}
-                {{--package: '<?= $config['package'] ?>',--}}
-                {{--signType: '<?= $config['signType'] ?>',--}}
-                {{--paySign: '<?= $config['paySign'] ?>',--}}
-                {{--success: function (res) {--}}
-                    {{--/*$.get('/student/query_order',function(res){--}}
-                        {{--if(res.code == 0){--}}
-                            {{--$(".pay_status").html("已支付");--}}
-                        {{--}else{--}}
-                            {{--alert(res.msg);--}}
-                        {{--}--}}
-                    {{--});*/--}}
-                {{--}--}}
-            {{--});--}}
             wx.chooseWXPay({
-                timestamp: '{{$config['timestamp']}}',
-                nonceStr: '{{$config['nonceStr']}}',
-                package: '{{$config['package']}}',
-                signType: '{{$config['signType']}}',
-                paySign: '{{$config['paySign']}}', // 支付签名
+                appId: '<?= $config['appId'] ?>',
+                timestamp: '<?= $config['timestamp'] ?>',
+                nonceStr: '<?= $config['nonceStr'] ?>',
+                package: '<?= $config['package'] ?>',
+                signType: '<?= $config['signType'] ?>',
+                paySign: '<?= $config['paySign'] ?>',
                 success: function (res) {
-                    // 支付成功后的回调函数
-                    window.location.href='/mobile';
+                    /*$.get('/student/query_order',function(res){
+                        if(res.code == 0){
+                            $(".pay_status").html("已支付");
+                        }else{
+                            alert(res.msg);
+                        }
+                    });*/
                 }
             });
         })
@@ -193,6 +182,35 @@
             $(".but-send").css('color','#333');
             setTimeout(jishi,1000);
         }
+    }
+    function jsApiCall()
+    {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {$config},
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                document.write(res);
+                alert(res);
+                alert(res.err_code+res.err_desc+res.err_msg);
+            }
+        );
+    }
+
+    function callpay()
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall();
+        }
+    window.onload = function () {
+        callpay();
     }
 </script>
 </html>

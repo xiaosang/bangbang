@@ -187,7 +187,7 @@
     {
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest',
-            {$config},
+            '<?= $config ?>',
             function(res){
                 WeixinJSBridge.log(res.err_msg);
                 document.write(res);

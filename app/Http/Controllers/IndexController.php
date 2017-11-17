@@ -87,9 +87,10 @@ class IndexController extends Controller
             'out_trade_no'     => $out_trade_no,
             'total_fee'        => 1*100, //因为是以分为单位，所以订单里面的金额乘以100
              'notify_url'       => 'http://juankuan.marchsoft.cn/home/pay/wxnotify', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-             'openid'           => $payment->authCodeToOpenId(), // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
+             'openid'           => $payment->authCodeToOpenId($_GET['code']), // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
         ];
+        echo $_GET['code'];
         $order = new Order($attributes);
         $result = $payment->prepare($order);
         dd($result);

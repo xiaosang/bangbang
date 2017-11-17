@@ -94,14 +94,14 @@ class IndexController extends Controller
         echo $openId;
         $order = new Order($attributes);
         $result = $payment->prepare($order);
-        dd($result);
+//        dd($result);
         if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
 //            $order_find->out_trade_no = $out_trade_no; //在这里更新订单的支付ID
 //            $order_find->save();
             // return response()->json(['result'=>$result]);
             $prepayId = $result->prepay_id;
             $config = $payment->configForAppPayment($prepayId);
-            dd(response()->json($config));
+            response()->json($config);
         }
 
     }

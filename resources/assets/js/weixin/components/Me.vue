@@ -12,7 +12,7 @@
                     </div>
                 </blur>
                 <div class="info">
-                    <p>{{nick_name}}</p>
+                    <p>{{nick_name}}{{ is_student !=0 ? '(学生)':'' }}</p>
                     <p>{{user_is_v}}</p>
                 </div>
                 <!--<div class="detail"><i class="fa fa-angle-right"></i></div>-->

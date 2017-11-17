@@ -406,9 +406,10 @@ function sendMsg($phone){
  * 
 */
 
-function check_msg($num){
+function check_msg($num,$phone){
     $res = DB::table('wx_phone_message')
     ->Where('openid',get_wx_user_openid())
+    ->where('phone',$phone)
     ->where('send_time','>=',time() - 5*60)
     ->where('is_use',0)->first();
     if($res){

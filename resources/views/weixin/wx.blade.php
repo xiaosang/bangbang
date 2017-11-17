@@ -79,7 +79,6 @@
 </script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-    wx.config(<?php echo $js->config(array('chooseWXPay'), false) ?>); //这里改成true就可以打开微信js的调试模式
     var miao = 60;
     $(function () {
         wx.config({
@@ -182,35 +181,6 @@
             $(".but-send").css('color','#333');
             setTimeout(jishi,1000);
         }
-    }
-    function jsApiCall()
-    {
-        WeixinJSBridge.invoke(
-            'getBrandWCPayRequest',
-            '<?= $config ?>',
-            function(res){
-                WeixinJSBridge.log(res.err_msg);
-                document.write(res);
-                alert(res);
-                alert(res.err_code+res.err_desc+res.err_msg);
-            }
-        );
-    }
-
-    function callpay()
-    {
-        if (typeof WeixinJSBridge == "undefined"){
-            if( document.addEventListener ){
-                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
-            }else if (document.attachEvent){
-                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
-                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
-            }
-        }else{
-            jsApiCall();
-        }
-    window.onload = function () {
-        callpay();
     }
 </script>
 </html>

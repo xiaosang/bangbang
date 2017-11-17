@@ -86,7 +86,7 @@ class IndexController extends Controller
             'body'             => '助力三月',
             'detail'           => "woshitest",//我这里是通过订单找到商品详情，你也可以自定义
             'out_trade_no'     => $out_trade_no,
-            'total_fee'        => 1*100, //因为是以分为单位，所以订单里面的金额乘以100
+            'total_fee'        => 10000, //因为是以分为单位，所以订单里面的金额乘以100
              'notify_url'       => 'http://bangbang.marchsoft.cn/success', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
              'openid'           => $openId, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
             // ...
@@ -105,7 +105,7 @@ class IndexController extends Controller
             $js = $app->js;
             $rlt = $js->config(array("chooseWXPay"), true);
             $arr = json_decode($rlt,true);
-            dump($config,$arr);
+//            dump($config,$arr);
 //            return response()->json($config);
             return view('weixin.wx')->with("config",$config)->with("js",$arr);
         }

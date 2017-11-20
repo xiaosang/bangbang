@@ -16,7 +16,7 @@
                     </div>
                     <load-more v-if="no_more" :show-loading="false" tip="没有更多" background-color="#fbf9fe"></load-more>
                     <load-more v-if="is_loading" :show-loading="true" tip="加载中..." background-color="#fbf9fe"></load-more>
-                    <load-more v-if="no_data" :show-loading="true" tip="没有数据" background-color="#fbf9fe"></load-more>
+                    <load-more v-if="no_data" :show-loading="false" tip="没有数据" background-color="#fbf9fe"></load-more>
                 </div>
             </scroller>
         </div>

@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Lost extends Model
 {
 
-   public static function get_list($time,$start,$num,$type){
+   public static function get_list($time,$start,$num,$type,$user_id = 0){
        $sql = DB::table('lost')
        ->where('is_delete',0);
        if($type != 0){
         $sql = $sql->where('is_lost',$type);
+       }
+       if($user_id != 0){
+        $sql = $sql->where('user_id',$user_id);
        }
        return $sql->where('create_time','<',$time)
        ->orderBy('create_time','desc')

@@ -72,69 +72,73 @@ class IndexController extends Controller
 
     }
 //传入订单ID即可，我这里是通过订单，来查询该订单的金额，当然你也可以自定义金额
-    public function pay(){
-//        $id = ;//传入订单ID
-//        $order_find = ; //找到该订单
+    public function pay(Request $request){
+        $id = $request->id;//传入订单ID
+        Log:info( $id."weixin-pay is ready.");
+        $order_find = DB::table('transaction_order')->
+            where(['id'=>$id,'release_user_id'=>get_session_user_id()])->first(); //找到该订单
 //        $mch_id = xxxxxxx;//你的MCH_ID
-        $openId = (new JsApiPay())->GetOpenid();
-        $options = $this->options();
-        $app = new Application($options);
-        $payment = $app->payment;
-        $out_trade_no = time() . uniqid() ; //拼一下订单号
-        $attributes = [
-            'trade_type'       => 'JSAPI', // JSAPI，NATIVE，APP...
-            'body'             => '助力三月',
-            'detail'           => "woshitest",//我这里是通过订单找到商品详情，你也可以自定义
-            'out_trade_no'     => $out_trade_no,
-            'total_fee'        => 1, //因为是以分为单位，所以订单里面的金额乘以100
-             'notify_url'       => 'http://bangbang.marchsoft.cn/success', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
-             'openid'           => $openId, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
-            // ...
-        ];
+        if($order_find&&$order_find->pay_money!=0&&$order_find->is_pay=0) {
+            $openId = (new JsApiPay())->GetOpenid();
+            $options = $this->options();
+            $app = new Application($options);
+            $payment = $app->payment;
+            $out_trade_no = $order_find->order_code; //拼一下订单号
+            $attributes = [
+                'trade_type' => 'JSAPI', // JSAPI，NATIVE，APP...
+                'body' => '助力三月',
+                'detail' => "woshitest",//我这里是通过订单找到商品详情，你也可以自定义
+                'out_trade_no' => $out_trade_no,
+                'total_fee' => $order_find->pay_money, //因为是以分为单位，所以订单里面的金额乘以100
+                'notify_url' => 'http://bangbang.marchsoft.cn/success', // 支付结果通知网址，如果不设置则会使用配置里的默认地址
+                'openid' => $openId, // trade_type=JSAPI，此参数必传，用户在商户appid下的唯一标识，
+                // ...
+            ];
 //        echo $openId;
-        $order = new Order($attributes);
-        $result = $payment->prepare($order);
+            $order = new Order($attributes);
+            $result = $payment->prepare($order);
 //        dd($result);
-        if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS'){
+            if ($result->return_code == 'SUCCESS' && $result->result_code == 'SUCCESS') {
 //            $order_find->out_trade_no = $out_trade_no; //在这里更新订单的支付ID
 //            $order_find->save();
-            // return response()->json(['result'=>$result]);
-            $prepayId = $result->prepay_id;
+                // return response()->json(['result'=>$result]);
+                $prepayId = $result->prepay_id;
 //            $config = $payment->configForAppPayment($prepayId);
-            $config = $payment->configForJSSDKPayment($prepayId);
-            $js = $app->js;
-            $rlt = $js->config(array("chooseWXPay"), true);
-            $arr = json_decode($rlt,true);
-            var_dump($config,$arr,$openId);
+                $config = $payment->configForJSSDKPayment($prepayId);
+                $js = $app->js;
+                $rlt = $js->config(array("chooseWXPay"), true);
+                $arr = json_decode($rlt, true);
+//            var_dump($config,$arr,$openId);
 //            return response()->json($config);
-            return view('weixin.wx')->with("config",$config)->with("js",$arr);
+                return view('weixin.wx')->with("config", $config)->with("js", $arr);
+            }
         }
-
     }
 //下面是回调函数
     public function paySuccess(){
         $options = $this->options();
         $app = new Application($options);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            Log:info( "weixin-pay callback success.");
+            Log:info( $notify->out_trade_no."weixin-pay callback success.");
+            $order = DB::table('transaction_order')
+                ->where('out_trade_no',$notify->out_trade_no)->first();
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
 //            $order = ExampleOrder::where('out_trade_no',$notify->out_trade_no)->first();
-//            if (count($order) == 0) { // 如果订单不存在
-//                return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
-//            }
+            if (!$order) { // 如果订单不存在
+                return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
+            }
 //            // 如果订单存在
 //            // 检查订单是否已经更新过支付状态
 //            if ($order->pay_time) { // 假设订单字段“支付时间”不为空代表已经支付
 //                return true; // 已经支付成功了就不再更新了
 //            }
 //            // 用户是否支付成功
-//            if ($successful) {
-//                // 不是已经支付状态则修改为已经支付状态
-//                $order->pay_time = time(); // 更新支付时间为当前时间
-//                $order->status = 6; //支付成功,
-//            } else { // 用户支付失败
-//                $order->status = 2; //待付款
-//            }
+            if ($successful) {
+                DB::table('transaction_order')
+                    ->where('out_trade_no',$notify->out_trade_no)->update(['is_pay'=>1]);
+            } else { // 用户支付失败
+
+            }
 //            $order->save(); // 保存订单
             return true; // 返回处理完成
         });

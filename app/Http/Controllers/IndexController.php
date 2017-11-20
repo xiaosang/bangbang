@@ -72,8 +72,8 @@ class IndexController extends Controller
 
     }
 //传入订单ID即可，我这里是通过订单，来查询该订单的金额，当然你也可以自定义金额
-    public function pay(Request $request){
-        $id = $request->id;//传入订单ID
+    public function pay(){
+        $id = $_GET['id'];//传入订单ID
         Log:info( $id."weixin-pay is ready.");
         $order_find = DB::table('transaction_order')
             ->where(['id'=>$id])->first(); //找到该订单

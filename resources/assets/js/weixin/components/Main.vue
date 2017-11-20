@@ -95,7 +95,7 @@
                         title:'公告'
                     },
                     {
-                        url: '/main/lost',
+                        url: '/main/lost/0',
                         img:'/img/icon-pwd.png',
                         icon:'ion-ios-help',
                         title:'寻物'

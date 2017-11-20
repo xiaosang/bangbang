@@ -13,7 +13,11 @@ class LostController extends Controller
         $start = $request->start;
         $num = $request->num;
         $type = $request->type;
-        $result = Lost::get_list($time,$start,$num,$type);
+        $user_id = 0;
+        if($request->flag != 0){
+            $user_id = get_session_user_id();
+        }
+        $result = Lost::get_list($time,$start,$num,$type,$user_id);
         $data = [];
         foreach ($result as $v){
             $temp = [];

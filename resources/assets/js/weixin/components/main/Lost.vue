@@ -121,7 +121,8 @@
                     onButtonClick: (name) => {
                     alert(`clicking ${name}`)
                     }
-                }*/]
+                }*/],
+                flag : 0,
             }
         },
         methods:{
@@ -132,12 +133,19 @@
                         time:this.time,
                         start:this.start,
                         num:this.num,
-                        type:this.type
+                        type:this.type,
+                        flag:this.flag
                     }
                axios.post('/wx/main/get_lost_list',params).then(res =>{
+
+                   if(res.data.result.length < this.num ){
+                       this.$refs.scroller.disablePullup()
+                   }else{
+                       this.$refs.scroller.enablePullup()
+                   }
                 //    console.log(res)
                 this.start += this.num
-                if(callback)callback();
+                if(callback)callback()
                    this.list = this.list.concat(res.data.result)
                    
                }).catch(error =>{
@@ -185,6 +193,7 @@
             }        
         },
         mounted() {
+            this.flag = this.$route.params.flag
             // console.log(123)
             // this.getList()
             

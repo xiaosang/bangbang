@@ -116,7 +116,7 @@ class IndexController extends Controller
         $options = $this->options();
         $app = new Application($options);
         $response = $app->payment->handleNotify(function($notify, $successful){
-            echo "callback success.";
+            Log:info( "weixin-pay callback success.");
             // 使用通知里的 "微信支付订单号" 或者 "商户订单号" 去自己的数据库找到订单
 //            $order = ExampleOrder::where('out_trade_no',$notify->out_trade_no)->first();
 //            if (count($order) == 0) { // 如果订单不存在

@@ -75,10 +75,10 @@ class IndexController extends Controller
     public function pay(Request $request){
         $id = $request->id;//传入订单ID
         Log:info( $id."weixin-pay is ready.");
-        $order_find = DB::table('transaction_order')->
-            where(['id'=>$id,'release_user_id'=>get_session_user_id()])->first(); //找到该订单
+        $order_find = DB::table('transaction_order')
+            ->where(['id'=>$id])->first(); //找到该订单
 //        $mch_id = xxxxxxx;//你的MCH_ID
-        if($order_find&&$order_find->pay_money!=0&&$order_find->is_pay=0) {
+        if($order_find&&$order_find->pay_money!=0&&$order_find->is_pay=1) {
             $openId = (new JsApiPay())->GetOpenid();
             $options = $this->options();
             $app = new Application($options);

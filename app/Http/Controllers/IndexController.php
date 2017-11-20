@@ -78,7 +78,7 @@ class IndexController extends Controller
         $order_find = DB::table('transaction_order')
             ->where(['id'=>$id])->first(); //找到该订单
 //        $mch_id = xxxxxxx;//你的MCH_ID
-        if($order_find&&$order_find->pay_money!=0&&$order_find->is_pay=1) {
+        if($order_find&&$order_find->pay_money!=0&&$order_find->is_pay=0) {
             $openId = (new JsApiPay())->GetOpenid();
             $options = $this->options();
             $app = new Application($options);

@@ -77,38 +77,9 @@
 </body>
 <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js">
 </script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     var miao = 60;
     $(function () {
-        wx.config({
-            debug: false,
-            appId: '{{$js["appId"]}}',
-            timestamp: '{{$js["timestamp"]}}',
-            nonceStr: '{{$js["nonceStr"]}}',
-            signature: '{{$js["signature"]}}',
-            jsApiList: ["chooseWXPay"]
-        });
-        wx.ready(function () {
-            wx.chooseWXPay({
-                appId: '<?= $config['appId'] ?>',
-                timestamp: '<?= $config['timestamp'] ?>',
-                nonceStr: '<?= $config['nonceStr'] ?>',
-                package: '<?= $config['package'] ?>',
-                signType: '<?= $config['signType'] ?>',
-                paySign: '<?= $config['paySign'] ?>',
-                success: function (res) {
-                    alert(132);
-                    /*$.get('/student/query_order',function(res){
-                        if(res.code == 0){
-                            $(".pay_status").html("已支付");
-                        }else{
-                            alert(res.msg);
-                        }
-                    });*/
-                }
-            });
-        })
         $.ajaxSetup({
             headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}
         });
@@ -128,36 +99,19 @@
             }
         });
         $(".but-bottom").click(function(){
-//            if(isPoneAvailable($(".phone").val())){
-//                $.post("/wx/phone/check", {phone: $(".phone").val(),code: $(".code").val()}, function (response) {
-//                    console.log(response)
-//                    if (response.code == 0) {
-//                        window.location.href='/wx#'
-//                        location.reload()
-//                    } else {
-//                        alert(response.msg);
-//                    }
-//                })
-//            }else{
-//                alert("请输入正确的手机号");
-//            }
-            alert("请输入正确的手机号");
-            $.post("/wx/pay", {}, function (response) {
-                alert(response);
-                var $config = response.data;
-                alert($config);
-//                wx.chooseWXPay({
-//                    timestamp: $config.timestamp,
-//                    nonceStr: $config.nonceStr,
-//                    package: $config.package,
-//                    signType: $config.signType,
-//                    paySign: $config.paySign, // 支付签名
-//                    success: function (res) {
-//                        // 支付成功后的回调函数
-//                        window.location.href='/success';
-//                    }
-//                });
-            })
+            if(isPoneAvailable($(".phone").val())){
+                $.post("/wx/phone/check", {phone: $(".phone").val(),code: $(".code").val()}, function (response) {
+                    console.log(response)
+                    if (response.code == 0) {
+                        window.location.href='/wx#'
+                        location.reload()
+                    } else {
+                        alert(response.msg);
+                    }
+                })
+            }else {
+                alert("请输入正确的手机号");
+            }
         });
 
     });

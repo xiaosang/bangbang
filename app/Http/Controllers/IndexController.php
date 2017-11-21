@@ -110,7 +110,7 @@ class IndexController extends Controller
                 $arr = json_decode($rlt, true);
 //            var_dump($config,$arr,$openId);
 //            return response()->json($config);
-                return view('weixin.wx')->with("config", $config)->with("js", $arr);
+                return view('weixin.wxpay')->with("config", $config)->with("js", $arr);
             }
         }
     }

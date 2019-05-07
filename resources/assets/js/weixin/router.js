@@ -137,7 +137,7 @@ export default new VueRouter({
         },
         {
             name:"寻物启事",
-            path:'/main/lost',
+            path:'/main/lost/:flag',
             meta:{keepAlive: true},
             component: resolve =>void(require(['./components/main/Lost.vue'], resolve))
         },

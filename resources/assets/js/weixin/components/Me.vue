@@ -35,6 +35,9 @@
                 <cell-box is-link link="/me/task/receive/list">
                     我接收的
                 </cell-box>
+                <cell-box is-link link="/main/lost/1">
+                    我发布的寻物启事
+                </cell-box>
             </group>
             <group title="消息">
                 <cell-box is-link link="/news/list">

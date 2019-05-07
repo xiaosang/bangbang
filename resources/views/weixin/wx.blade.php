@@ -109,7 +109,7 @@
                         alert(response.msg);
                     }
                 })
-            }else{
+            }else {
                 alert("请输入正确的手机号");
             }
         });

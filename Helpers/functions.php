@@ -424,3 +424,12 @@ function check_msg($num,$phone){
     }
     return false;//验证失败
 }
+
+function send_lost_template($content,$lost_time,$place,$user_phone,$type) {
+    $res = DB::table('wx_user')
+    ->where('is_subscribe',1)->get();
+    foreach($res as $re) {
+        App\Models\Template::lost_accept($re->openid,$content,$lost_time,$place,$user_phone,$type);
+    }
+    // Template::task_accept('ordUR0llJqpXNTh4yP-C0ofKX8gw','您发布的任务到了截止时间已经被取消，如若还需帮忙，需要重新发布。','我是标题','无偿','2017-10-10 12：12：12','感谢',"15937368751",'如还有什么需要，赶快联系接收人吧 ~');
+}

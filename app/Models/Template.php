@@ -91,6 +91,26 @@ class Template
         return Template::send_model_msg( $data);
     }
 
+    public static function lost_accept($openid,$content,$lost_time,$place,$user_phone,$type){
+        $template_id = "wXyUTJ0GfzQ2you3xUqnD_ZfCsuoGPhx5eeYwJ9L28o";
+
+        if ($type == 2) {
+            $template_id = "84JzwqYehJ3vsc44mG8nQmOM16igQ474XksR8qtG8fE";
+        }
+        $url = "";
+        $data = [
+            "touser" => $openid,//openid    ordUR0llJqpXNTh4yP-C0ofKX8gw
+            "template_id" => $template_id,//模板消息openid
+            "url" => $url,
+            "data" => [
+                "first" => ["value" => $content, "color" => ""],
+                "address" => ["value" => $place, "color" => ""],
+                "date" => ["value" => $lost_time, "color" => ""],
+                "phone" => ["value" => $user_phone, "color" => ""],
+            ]
+        ];
+        return Template::send_model_msg( $data);
+    }
 
 
 }

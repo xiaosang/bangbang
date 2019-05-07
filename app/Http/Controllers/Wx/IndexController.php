@@ -45,8 +45,9 @@ class IndexController extends Controller
     }
 
     public function test(){
-//        Template::test('ordUR0llJqpXNTh4yP-C0ofKX8gw','撕名牌提醒','周旭','开发一组','今天','7','加油加油');
-//        Template::task_stop('ordUR0llJqpXNTh4yP-C0ofKX8gw','您发布的任务到了截止时间已经被取消，如若还需帮忙，需要重新发布。','我是标题','无偿','2017-10-10 12：12：12','2017-10-10 12：12：12','如若任务类型为有偿任务，赏金将在二十四小时内到账，敬请等待。');
+        // return  "123";
+    //    Template::test('ordUR0llJqpXNTh4yP-C0ofKX8gw','撕名牌提醒','周旭','开发一组','今天','7','加油加油');
+    //    Template::task_stop('ordUR0llJqpXNTh4yP-C0ofKX8gw','您发布的任务到了截止时间已经被取消，如若还需帮忙，需要重新发布。','我是标题','无偿','2017-10-10 12：12：12','2017-10-10 12：12：12','如若任务类型为有偿任务，赏金将在二十四小时内到账，敬请等待。');
         Template::task_accept('ordUR0llJqpXNTh4yP-C0ofKX8gw','您发布的任务到了截止时间已经被取消，如若还需帮忙，需要重新发布。','我是标题','无偿','2017-10-10 12：12：12','感谢',"15937368751",'如还有什么需要，赶快联系接收人吧 ~');
     }
 

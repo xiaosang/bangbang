@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Wx;
 use App\Models\Wx\Lost;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Template;
 class LostController extends Controller
 {
 
@@ -165,6 +166,7 @@ class LostController extends Controller
         $result = Lost::submit_lost($name, $user_name, $user_id, $content, $lost_time, $place, time(), 0, $type, 0, $reward_content, $user_phone, $url);
 //        $result = Proposal::submit_feedback($user_id,$feedback_content,$url,$user_agent,$ip);
         if ($result) {
+            send_lost_template($content,date("Y-m-d H:i:s",$lost_time),$place,$user_phone,$type);
             return responseToJson(1, '成功');
         } else {
             return responseToJson(0, '失败');

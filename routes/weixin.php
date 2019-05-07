@@ -96,4 +96,6 @@ Route::group(['prefix' => 'phone'], function () {
     Route::post('/check','Wx\IndexController@check');
  });
 
+//测试模板消息
+Route::get('/test', 'Wx\IndexController@test');
 
